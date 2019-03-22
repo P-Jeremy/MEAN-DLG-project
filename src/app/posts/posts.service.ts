@@ -5,7 +5,6 @@ import { map } from 'rxjs/operators'
 
 /* POST interface */
 import { Post } from './post.model';
-import { pipe } from '@angular/core/src/render3';
 
 /*
 * Makes the service available at all 'root' levels of the application.
@@ -47,14 +46,13 @@ export class PostsService {
     return this.postUpdated.asObservable();
   }
 
-
   /**
    * @param takes the id of the post to edit
    *
    * @returns the post corresponding to the id
    */
   getSinglePost(id: string) {
-    return {...this.posts.find(p => p.id === id)};
+    return this.http.get<{_id: string, title: string, content: string}>('http://localhost:8080/api/posts/' + id);
   }
 
   /**
