@@ -17,6 +17,11 @@ export class PostsService {
 
   constructor(private http: HttpClient) {}
 
+  /**
+   *  Get Post method
+   *
+   * @returns all the posts of DB through the postUpdated observable
+   */
   getPosts() {
     this.http.get<{message: string, posts: any}>('http://localhost:8080/api/posts')
         .pipe(map((postData) => {
@@ -34,10 +39,21 @@ export class PostsService {
         });
   }
 
+  /**
+   * @returns the postUpdated as an observable
+   */
   getPostUpdatedListener() {
     return this.postUpdated.asObservable();
   }
 
+  /**
+   *  Add Post method
+   *
+   * @param title of the post to add
+   * @param content of the post to add
+   *
+   * @returns the response through the postUpdated observable
+   */
   addPosts(title: string, content: string) {
     const post: Post = {
       id: null,
@@ -54,6 +70,13 @@ export class PostsService {
         });
   }
 
+  /**
+   *  Delete Post method
+   *
+   * @param postId Id of the post to delete
+   *
+   * @returns the response through the postUpdated observable
+   */
   deletePost(postId: string) {
     this.http.delete('http://localhost:8080/api/posts/' + postId)
         .subscribe(() => {
