@@ -30,6 +30,8 @@ app.use(bodyParser.urlencoded({ extended: false}));
 //   next();
 // });
 
+
+/* Add a post in DB */
 app.post('/api/posts', (req, res, next) => {
   const post = new Post({
     title: req.body.title,
@@ -44,6 +46,7 @@ app.post('/api/posts', (req, res, next) => {
       });
 });
 
+/* Get all the posts from DB */
 app.get('/api/posts',(req, res, next)=>{
   Post.find()
     .then(documents => {
@@ -55,6 +58,20 @@ app.get('/api/posts',(req, res, next)=>{
     });
 });
 
+/* Update the post corresponding to the param id passed through URL from DB */
+app.put('/api/posts/:id', (req, res, next) => {
+  const post = new Post({
+    _id: req.body.id,
+    title: req.body.title,
+    content: req.body.content
+  })
+  Post.updateOne({_id: req.params.id}, post)
+    .then(result => {
+      res.status(200).json(`Update successful ! ${result}`)
+    })
+});
+
+/* Delete the post corresponding to the param id passed through URL from DB */
 app.delete('/api/posts/:id', (req, res, next) =>{
   Post.deleteOne({_id: req.params.id})
       .then((results) =>{
