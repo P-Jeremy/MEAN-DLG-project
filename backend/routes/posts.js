@@ -2,9 +2,7 @@ const express=require('express');
 
 const Post = require('../models/post');
 
-
 const router = express.Router();
-
 
 /* Add a post in DB */
 router.post('',(req, res, next) => {
