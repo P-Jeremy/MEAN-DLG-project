@@ -17,6 +17,7 @@ mongoose.connect(mongoConf, { useNewUrlParser: true })
     console.log(" Unable to connect to DB...");
   })
 
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false}));
@@ -41,14 +42,14 @@ app.post('/api/posts', (req, res, next) => {
 });
 
 app.get('/api/posts',(req, res, next)=>{
-  const posts = [
-    {id :"fake2fp", title: "First server-side post", content: " This comes from the server"},
-    {id :"fake1fp", title: "Second server-side post", content: " This comes from the server too"}
-  ];
-  res.status(200).json({
-    message: "Posts fetched successfully!",
-    posts
-  });
+  Post.find()
+    .then(documents => {
+      console.log(documents);
+      res.status(200).json({
+        message: "Posts fetched successfully!",
+        posts: documents
+      });
+    });
 });
 
 module.exports = app;
