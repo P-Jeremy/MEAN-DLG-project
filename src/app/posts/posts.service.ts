@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators'
 
 /* POST interface */
 import { Post } from './post.model';
+import { pipe } from '@angular/core/src/render3';
 
 /*
 * Makes the service available at all 'root' levels of the application.
@@ -46,6 +47,16 @@ export class PostsService {
     return this.postUpdated.asObservable();
   }
 
+
+  /**
+   * @param takes the id of the post to edit
+   *
+   * @returns the post corresponding to the id
+   */
+  getSinglePost(id: string) {
+    return {...this.posts.find(p => p.id === id)};
+  }
+
   /**
    *  Add Post method
    *
@@ -62,10 +73,32 @@ export class PostsService {
     };
     this.http.post<{message: string, postId: string}>('http://localhost:8080/api/posts', post)
         .subscribe((responseData) => {
-          console.log(responseData.message);
           const id = responseData.postId;
           post.id = id;
           this.posts.push(post);
+          this.postUpdated.next([...this.posts]);
+        });
+  }
+
+  /**
+   *  Update Post method
+   *
+   * @param postId Id of the post to delete
+   *
+   * @param title of the post
+   *
+   * @param content of the post
+   *
+   * @returns the response through the postUpdated observable
+   */
+  updatePost(id: string, title: string, content: string) {
+    const post: Post = {id, title, content};
+    this.http.put('http://localhost:8080/api/posts/' + id, post)
+        .subscribe(() => {
+          const updatedPosts = [...this.posts];
+          const oldPostIndex = updatedPosts.findIndex(p => p.id === post.id);
+          updatedPosts[oldPostIndex] = post;
+          this.posts = updatedPosts;
           this.postUpdated.next([...this.posts]);
         });
   }
