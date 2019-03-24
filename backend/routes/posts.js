@@ -1,23 +1,74 @@
 const express=require('express');
 
 const Post = require('../models/post');
+const multer = require('multer');
+const multerS3 = require('multer-s3');
 
 const router = express.Router();
+const aws =require('aws-sdk');
+
+const s3Password = process.env.AWS_KEY;
+const s3Id = process.env.AWS_ID;
+const bucket = process.env.BUCKET;
+
+
+const MIME_TYPE_MAP = {
+  'image/png': 'png',
+  'image/jpg': 'jpg',
+  'image/jpeg': 'jpg',
+};
+
+aws.config.update({
+  secretAccessKey: s3Password,
+  accessKeyId: s3Id
+});
+
+const s3 = new aws.S3();
+
+const upload = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: bucket,
+    acl: 'public-read',
+    metadata: function (req, file, cb) {
+      const isValid = MIME_TYPE_MAP[file.mimetype];
+      let error = new Error('Invalid mime type');
+      if (isValid) {
+        error = null;
+      }
+      cb(error, {fieldName: file.fieldname});
+    },
+    key: (req, file, cb) => {
+      const name = file.originalname.toLocaleLowerCase().split(' ').join('-');
+      const ext = MIME_TYPE_MAP[file.mimetype];
+      cb(null, name + '-' + Date.now()+ '.'+ ext);
+    }
+  })
+})
 
 /* Add a post in DB */
-router.post('',(req, res, next) => {
+router.post('', upload.single('image'), (req, res, next) => {
+
   const post = new Post({
     title: req.body.title,
-    content: req.body.content
+    content: req.body.content,
+    image: req.file.location
   });
   post.save()
       .then(result =>{
         res.status(201).json({
-          message: "Posts added",
-          postId :result._id
+          message: "Posts added :)",
+          post: {
+            id: result._id,
+            title: result.title,
+            content: result.content,
+            image: result.image
+          }
         });
       });
-});
+  });
+
+
 
 /* Get all the posts from DB */
 router.get('',(req, res, next)=>{
@@ -31,12 +82,21 @@ router.get('',(req, res, next)=>{
 });
 
 /* Update the post corresponding to the param id passed through URL from DB */
-router.put('/:id', (req, res, next) => {
+router.put('/:id', upload.single('image'), (req, res, next) => {
+  let imagePath;
+  if (req.file) {
+    imagePath = req.file.location
+  } else {
+    imagePath = req.body.image
+  }
   const post = new Post({
     _id: req.body.id,
     title: req.body.title,
-    content: req.body.content
+    content: req.body.content,
+    image: imagePath
   })
+  console.log(post);
+
   Post.updateOne({_id: req.params.id}, post)
     .then(result => {
       res.status(200).json(`Update successful ! ${result}`)

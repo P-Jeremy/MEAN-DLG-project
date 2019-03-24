@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Post } from '../post.model';
 import { PostsService } from '../posts.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { mimeType } from './mime-type.validator';
 
 @Component({
   selector: 'app-post-create',
@@ -27,7 +28,7 @@ export class PostCreateComponent implements OnInit {
     this.form = new FormGroup({
       title: new FormControl(null, {validators: [Validators.required, Validators.minLength(3)]}),
       content: new FormControl(null, {validators: [Validators.required]}),
-      image: new FormControl(null, {validators: [Validators.required]})
+      image: new FormControl(null, {validators: [Validators.required], asyncValidators :[mimeType]})
     });
 
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
@@ -41,11 +42,13 @@ export class PostCreateComponent implements OnInit {
               this.post = {
                 id: postData._id,
                 title: postData.title,
-                content: postData.content
+                content: postData.content,
+                image: postData.image
               };
               this.form.setValue({
                 title: this.post.title,
-                content: this.post.content
+                content: this.post.content,
+                image: this.post.image
               });
             });
       } else {
@@ -62,15 +65,14 @@ export class PostCreateComponent implements OnInit {
     const post: Post = {
       id: null,
       title: this.form.value.title,
-      content: this.form.value.content
+      content: this.form.value.content,
     };
     this.isLoading = true;
     if (this.mode === 'create') {
-      this.postsService.addPosts(post.title, post.content);
+      this.postsService.addPosts(post.title, post.content, this.form.value.image);
     } else {
-      this.postsService.updatePost(this.postId, post.title, post.content);
+      this.postsService.updatePost(this.postId, post.title, post.content, this.form.value.image);
     }
-
     this.form.reset();
   }
 
@@ -84,7 +86,6 @@ export class PostCreateComponent implements OnInit {
     reader.onload = () => {
       this.imagePreview = reader.result as string;
     };
-
     reader.readAsDataURL(file);
   }
 }
