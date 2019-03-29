@@ -48,7 +48,8 @@ const upload = multer({
 
 /* Add a post in DB */
 router.post('', upload.single('image'), (req, res, next) => {
-const post = new Post({
+
+  const post = new Post({
     title: req.body.title,
     content: req.body.content,
     image: req.file.location
@@ -56,11 +57,16 @@ const post = new Post({
   post.save()
       .then(result =>{
         res.status(201).json({
-          message: "Posts added",
-          postId :result._id
+          message: "Posts added :)",
+          post: {
+            id: result._id,
+            title: result.title,
+            content: result.content,
+            image: result.image
+          }
         });
       });
-});
+  });
 
 
 
@@ -76,12 +82,21 @@ router.get('',(req, res, next)=>{
 });
 
 /* Update the post corresponding to the param id passed through URL from DB */
-router.put('/:id', (req, res, next) => {
+router.put('/:id', upload.single('image'), (req, res, next) => {
+  let imagePath;
+  if (req.file) {
+    imagePath = req.file.location
+  } else {
+    imagePath = req.body.image
+  }
   const post = new Post({
     _id: req.body.id,
     title: req.body.title,
-    content: req.body.content
+    content: req.body.content,
+    image: imagePath
   })
+  console.log(post);
+
   Post.updateOne({_id: req.params.id}, post)
     .then(result => {
       res.status(200).json(`Update successful ! ${result}`)
