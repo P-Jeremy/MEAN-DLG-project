@@ -72,13 +72,27 @@ router.post('', upload.single('image'), (req, res, next) => {
 
 /* Get all the posts from DB */
 router.get('',(req, res, next)=>{
-  Post.find()
+  const pageSize = +req.query.pageSize; // The '+' allows to use the query as a number instead of a string
+  const currentPage = +req.query.page;
+  const postQuery = Post.find();
+  let fetchedPost;
+  if (pageSize && currentPage) {
+    postQuery
+      .skip(pageSize * (currentPage - 1))
+      .limit(pageSize);
+  }
+  postQuery
     .then(documents => {
+      fetchedPost = documents
+      return Post.countDocuments();
+      })
+    .then(count => {
       res.status(200).json({
-        message: "Posts fetched successfully!",
-        posts: documents
-      });
-    });
+        message: "Posts fetched !",
+        posts: fetchedPost,
+        maxPosts: count
+      })
+    })
 });
 
 /* Update the post corresponding to the param id passed through URL from DB */
