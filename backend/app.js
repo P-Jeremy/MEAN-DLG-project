@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 const postsRouter = require('./routes/posts');
+const authRouter = require('./routes/auth');
 
 const mongoConf = process.env.MONGO_CONFIG_URL;
 
@@ -31,5 +32,7 @@ app.use(bodyParser.urlencoded({ extended: false}));
 // });
 
 app.use('/api/posts', postsRouter);
+app.use('/api/auth', authRouter);
+
 
 module.exports = app;

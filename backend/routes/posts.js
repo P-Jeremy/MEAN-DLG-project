@@ -7,6 +7,8 @@ const multerS3 = require('multer-s3');
 const router = express.Router();
 const aws =require('aws-sdk');
 
+const checkAuth = require('../helpers/check-auth')
+
 const s3Password = process.env.AWS_KEY;
 const s3Id = process.env.AWS_ID;
 const bucket = process.env.BUCKET;
@@ -47,7 +49,7 @@ const upload = multer({
 })
 
 /* Add a post in DB */
-router.post('', upload.single('image'), (req, res, next) => {
+router.post('', checkAuth , upload.single('image'), (req, res, next) => {
 
   const post = new Post({
     title: req.body.title,
@@ -96,7 +98,7 @@ router.get('',(req, res, next)=>{
 });
 
 /* Update the post corresponding to the param id passed through URL from DB */
-router.put('/:id', upload.single('image'), (req, res, next) => {
+router.put('/:id', checkAuth, upload.single('image'), (req, res, next) => {
   let imagePath;
   if (req.file) {
     imagePath = req.file.location
@@ -130,7 +132,7 @@ router.get('/:id', (req,res,next) => {
 })
 
 /* Delete the post corresponding to the param id passed through URL from DB */
-router.delete('/:id', (req, res, next) =>{
+router.delete('/:id', checkAuth, (req, res, next) =>{
   Post.deleteOne({_id: req.params.id})
       .then((results) =>{
         res.status(200).json({message: `Post deleted ${results}`})
