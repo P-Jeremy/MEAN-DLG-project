@@ -7,6 +7,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
   constructor(private authService: AuthService) {}
 
+  /** If user is authenticated set the token in header in a cloned request */
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     const authToken = this.authService.getToken();
     const authRequest = req.clone({
