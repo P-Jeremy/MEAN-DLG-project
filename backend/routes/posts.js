@@ -54,7 +54,8 @@ router.post('', checkAuth , upload.single('image'), (req, res, next) => {
   const post = new Post({
     title: req.body.title,
     content: req.body.content,
-    image: req.file.location
+    image: req.file.location,
+    creator: req.userData.userId
   });
   post.save()
       .then(result =>{
@@ -64,7 +65,8 @@ router.post('', checkAuth , upload.single('image'), (req, res, next) => {
             id: result._id,
             title: result.title,
             content: result.content,
-            image: result.image
+            image: result.image,
+            creator: result.userId
           }
         });
       });
@@ -111,9 +113,7 @@ router.put('/:id', checkAuth, upload.single('image'), (req, res, next) => {
     content: req.body.content,
     image: imagePath
   })
-  console.log(post);
-
-  Post.updateOne({_id: req.params.id}, post)
+  Post.updateOne({_id: req.params.id, creator: req.userData.userId}, post)
     .then(result => {
       res.status(200).json(`Update successful ! ${result}`)
     })
