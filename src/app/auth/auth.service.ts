@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 
@@ -85,6 +84,9 @@ export class AuthService {
         });
   }
 
+  /**
+   * Authenticate automatically a user if auth info are still valid
+   */
   autoAuthUser() {
     const authInformation = this.getAuthData();
     if (!authInformation) {
@@ -115,11 +117,16 @@ export class AuthService {
     this.goHome();
   }
 
-  /* Return to home page */
+  /** Return to home page */
   goHome() {
     this.router.navigate(['/']);
   }
 
+  /**
+   * Set the timer to logout
+   *
+   * @param duration of the token set in the backend
+   */
   private setAuthTimer(duration: number) {
     this.tokenTimer = setTimeout(() => {
       this.logout();
@@ -150,6 +157,9 @@ export class AuthService {
     localStorage.removeItem('expiration');
   }
 
+  /**
+   * Get the auth info from local storage
+   */
   private getAuthData() {
     const token = localStorage.getItem('token');
     const expirationDate = localStorage.getItem('expiration');
