@@ -50,7 +50,7 @@ router.post('/login', (req, res, next) => {
         });
       }
       const token = jwt.sign(
-        {email: fetchedUser.email, userId: fetchedUser.userId},
+        {email: fetchedUser.email, userId: fetchedUser._id},
         secretJwt,
         {expiresIn: "1h"}
       );
