@@ -1,31 +1,29 @@
 const Post = require("../models/post");
 
-exports.addPost = (req, res, next) => {
-  const post = new Post({
-    title: req.body.title,
-    content: req.body.content,
-    image: req.file.location,
-    creator: req.userData.userId
-  });
-  post
-    .save()
-    .then(result => {
-      res.status(201).json({
-        message: "Posts added :)",
-        post: {
-          id: result._id,
-          title: result.title,
-          content: result.content,
-          image: result.image,
-          creator: result.userId
-        }
-      });
-    })
-    .catch(error => {
-      res.status(500).json({
-        message: "La création du post à échoué..."
-      });
+exports.addPost = async (req, res, next) => {
+  try {
+    const newPost = new Post({
+      title: req.body.title,
+      content: req.body.content,
+      image: req.file.location,
+      creator: req.userData.userId
     });
+    const result = await newPost.save();
+    return res.status(201).json({
+      message: "Posts added :)",
+      post: {
+        id: result._id,
+        title: result.title,
+        content: result.content,
+        image: result.image,
+        creator: result.userId
+      }
+    });
+  } catch {
+    return res.status(500).json({
+      message: "La création du post à échoué..."
+    });
+  }
 };
 
 exports.getPosts = (req, res, next) => {
@@ -50,7 +48,7 @@ exports.getPosts = (req, res, next) => {
     });
 };
 
-exports.updatePost = (req, res, next) => {
+exports.updatePost = async (req, res, next) => {
   let imagePath;
   if (req.file) {
     imagePath = req.file.location;
@@ -64,16 +62,15 @@ exports.updatePost = (req, res, next) => {
     image: imagePath,
     creator: req.userData.userId
   });
-  Post.updateOne(
+  const result = await Post.updateOne(
     { _id: req.params.id, creator: req.userData.userId },
     post
-  ).then(result => {
-    if (result.nModified > 0) {
-      res.status(200).json(`Update successful ! ${result}`);
-    } else {
-      res.status(401).json({ message: `Impossible de modifier ce post...` });
-    }
-  });
+  );
+  if (result.nModified > 0) {
+    res.status(200).json(`Update successful ! ${result}`);
+  } else {
+    res.status(401).json({ message: `Impossible de modifier ce post...` });
+  }
 };
 
 exports.getSinglePost = (req, res, next) => {
