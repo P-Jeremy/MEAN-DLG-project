@@ -6,13 +6,13 @@ const upload = require('../helpers/upload');
 
 
 /* Add a post in DB */
-router.post('', checkAuth , upload.single('image'), postController.addPost);
+router.post('', checkAuth , upload, postController.addPost);
 
 /* Get all the posts from DB */
 router.get('', postController.getPosts);
 
 /* Update the post corresponding to the param id passed through URL from client */
-router.put('/:id', checkAuth, upload.single('image'), postController.updatePost);
+router.put('/:id', checkAuth, upload, postController.updatePost);
 
 /* Get a post corresponding to the param id from client */
 router.get('/:id', postController.getSinglePost);

@@ -1,18 +1,15 @@
-const multer = require('multer');
-const multerS3 = require('multer-s3');
-const aws =require('aws-sdk');
-
-
+const multer = require("multer");
+const multerS3 = require("multer-s3");
+const aws = require("aws-sdk");
 
 const s3Password = process.env.AWS_KEY;
 const s3Id = process.env.AWS_ID;
 const bucket = process.env.BUCKET;
 
-
 const MIME_TYPE_MAP = {
-  'image/png': 'png',
-  'image/jpg': 'jpg',
-  'image/jpeg': 'jpg',
+  "image/png": "png",
+  "image/jpg": "jpg",
+  "image/jpeg": "jpg"
 };
 
 aws.config.update({
@@ -26,19 +23,22 @@ module.exports = multer({
   storage: multerS3({
     s3: s3,
     bucket: bucket,
-    acl: 'public-read',
-    metadata: function (req, file, cb) {
+    acl: "public-read",
+    metadata: function(req, file, cb) {
       const isValid = MIME_TYPE_MAP[file.mimetype];
-      let error = new Error('Invalid mime type');
+      let error = new Error("Invalid mime type");
       if (isValid) {
         error = null;
       }
-      cb(error, {fieldName: file.fieldname});
+      cb(error, { fieldName: file.fieldname });
     },
     key: (req, file, cb) => {
-      const name = file.originalname.toLocaleLowerCase().split(' ').join('-');
+      const name = file.originalname
+        .toLocaleLowerCase()
+        .split(" ")
+        .join("-");
       const ext = MIME_TYPE_MAP[file.mimetype];
-      cb(null, name + '-' + Date.now()+ '.'+ ext);
+      cb(null, name + "-" + Date.now() + "." + ext);
     }
   })
-})
+}).single("image");
