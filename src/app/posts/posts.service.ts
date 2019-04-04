@@ -66,7 +66,12 @@ export class PostsService {
    * @returns the post corresponding to the id
    */
   getSinglePost(id: string) {
-    return this.http.get<{_id: string, title: string, content: string, image: string}>('http://localhost:8080/api/posts/' + id);
+    return this.http.get<{
+      _id: string,
+      title: string,
+      content: string,
+      image: string,
+      creator: string}>('http://localhost:8080/api/posts/' + id);
   }
 
   /**
@@ -117,7 +122,8 @@ export class PostsService {
           id,
           title,
           content,
-          image
+          image,
+          creator: null
         };
     }
     this.http.put('http://localhost:8080/api/posts/' + id, postData)
