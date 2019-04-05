@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 
 
 /* USER interface */
 import { AuthData } from './authData.model';
+
 
 /*
 * Makes the service available at all 'root' levels of the application.
@@ -54,12 +55,13 @@ export class AuthService {
    *
    * @param password of the user
    */
-  createUser(email: string, password: string) {
+  createUser(email: string, password: string, passwordBis: string, apiKey: string) {
     const authData: AuthData = {
       email,
-      password
+      password,
+      passwordBis
     };
-    return this.http.post('http://localhost:8080/api/auth/signup', authData)
+    return this.http.post(`http://localhost:8080/api/auth/signup?key=${apiKey}`, authData)
       .subscribe(() => {
         this.goHome();
       }, error => {
@@ -78,9 +80,9 @@ export class AuthService {
   login(email: string, password: string) {
     const authData: AuthData = {
       email,
-      password
+      password,
     };
-    this.http.post<{token: string, expiresIn: number, userId: string}>('http://localhost:8080/api/auth/login', authData)
+    this.http.post<{token: string, expiresIn: number, userId: string}>(`http://localhost:8080/api/auth/login`, authData)
         .subscribe(response => {
           const token = response.token;
           this.token = token;
@@ -121,6 +123,35 @@ export class AuthService {
     }
   }
 
+  newPasswordAsked(email: string) {
+    const userEmail = {
+      email
+    };
+    return this.http.post(`http://localhost:8080/api/auth/newpassword`, userEmail)
+    .subscribe(() => {
+      this.goHome();
+    }, error => {
+      this.authStatusListener.next(false);
+    });
+  }
+
+  updatePassword(password: string, passwordBis: string, token: string) {
+    const authData: AuthData = {
+      password,
+      passwordBis,
+    };
+    console.log(token);
+
+    return this.http.put(
+      `http://localhost:8080/api/auth/newpassword`,
+      authData,
+      {headers: new HttpHeaders().set('authorization', `Bearer ${token}`)})
+    .subscribe(() => {
+      this.goHome();
+    }, error => {
+      this.authStatusListener.next(false);
+    });
+  }
 
   /**
    * Allows a user to logout
@@ -165,7 +196,6 @@ export class AuthService {
     localStorage.setItem('token', token);
     localStorage.setItem('expiration', expirationDate.toISOString());
     localStorage.setItem('userId', userId);
-
   }
 
   /**
@@ -187,7 +217,7 @@ export class AuthService {
     const token = localStorage.getItem('token');
     const expirationDate = localStorage.getItem('expiration');
     const userId = localStorage.getItem('userId');
-    if (!token || !expirationDate){
+    if (!token || !expirationDate) {
       return;
     }
     return {
