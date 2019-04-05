@@ -2,10 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material';
+import { ErrorComponent } from '../error/error.component';
+
 
 
 /* USER interface */
 import { AuthData } from './authData.model';
+
 
 /*
 * Makes the service available at all 'root' levels of the application.
@@ -19,8 +23,9 @@ export class AuthService {
   private token: string;
   private userId: string;
   private authStatusListener = new Subject<boolean>();
+  private message: string;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private dialog: MatDialog) {}
 
   /** Returns the token */
   getToken() {
@@ -54,12 +59,13 @@ export class AuthService {
    *
    * @param password of the user
    */
-  createUser(email: string, password: string) {
+  createUser(email: string, password: string, passwordBis: string, apiKey: string) {
     const authData: AuthData = {
       email,
-      password
+      password,
+      passwordBis
     };
-    return this.http.post('http://localhost:8080/api/auth/signup', authData)
+    return this.http.post(`http://localhost:8080/api/auth/signup?key=${apiKey}`, authData)
       .subscribe(() => {
         this.goHome();
       }, error => {
@@ -78,13 +84,14 @@ export class AuthService {
   login(email: string, password: string) {
     const authData: AuthData = {
       email,
-      password
+      password,
     };
-    this.http.post<{token: string, expiresIn: number, userId: string}>('http://localhost:8080/api/auth/login', authData)
+    this.http.post<{token: string, expiresIn: number, userId: string}>(`http://localhost:8080/api/auth/login`, authData)
         .subscribe(response => {
           const token = response.token;
           this.token = token;
           if (token) {
+            this.message = 'Vous êtes connecté :)';
             this.userId = response.userId;
             const expiresInDuration = response.expiresIn;
             this.setAuthTimer(expiresInDuration);
@@ -93,6 +100,7 @@ export class AuthService {
             const now = new Date ();
             const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
             this.saveAuthData(token, expirationDate, this.userId);
+            this.dialog.open(ErrorComponent, {data: {message: this.message}});
             this.goHome();
           }
         },
@@ -121,6 +129,45 @@ export class AuthService {
     }
   }
 
+  /**
+   * Allows a user to ask to change his password
+   * @param email of the user
+   */
+  newPasswordAsked(email: string) {
+    const userEmail = {
+      email
+    };
+    return this.http.post(`http://localhost:8080/api/auth/newpassword`, userEmail)
+    .subscribe(() => {
+      this.goHome();
+    }, error => {
+      this.authStatusListener.next(false);
+    });
+  }
+
+  /**
+   * Allows the user to choose a new password
+   * @param password new password
+   * @param passwordBis new password bis
+   * @param token token received in the link
+   */
+  updatePassword(password: string, passwordBis: string, token: string) {
+    this.clearAuthData();
+    const authData: AuthData = {
+      password,
+      passwordBis,
+    };
+    this.token = token ;
+    return this.http.put(`http://localhost:8080/api/auth/newpassword`, authData)
+    .subscribe(() => {
+      this.message = 'Nouveau mot de passe crée avec succès';
+      this.token = null;
+      this.dialog.open(ErrorComponent, {data: {message: this.message}});
+      this.goHome();
+    }, error => {
+      this.authStatusListener.next(false);
+    });
+  }
 
   /**
    * Allows a user to logout
@@ -165,7 +212,6 @@ export class AuthService {
     localStorage.setItem('token', token);
     localStorage.setItem('expiration', expirationDate.toISOString());
     localStorage.setItem('userId', userId);
-
   }
 
   /**
@@ -187,7 +233,7 @@ export class AuthService {
     const token = localStorage.getItem('token');
     const expirationDate = localStorage.getItem('expiration');
     const userId = localStorage.getItem('userId');
-    if (!token || !expirationDate){
+    if (!token || !expirationDate) {
       return;
     }
     return {
