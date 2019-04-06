@@ -14,13 +14,13 @@ export class ErrorInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
-        let errorMessage = 'Une erreur est survenue...';
+        let message = 'Une erreur est survenue...';
         if (error.error.message) {
-          errorMessage = error.error.message;
+          message = error.error.message;
         }
-        this.dialog.open(ErrorComponent, {data: {message: errorMessage }});
+        this.dialog.open(ErrorComponent, {data: {message}});
         return throwError(error);
       })
     );
   }
-}
+};

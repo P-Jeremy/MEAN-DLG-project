@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material';
+import { ErrorComponent } from '../error/error.component';
+
 
 
 /* USER interface */
@@ -20,8 +23,9 @@ export class AuthService {
   private token: string;
   private userId: string;
   private authStatusListener = new Subject<boolean>();
+  private message: string;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private dialog: MatDialog) {}
 
   /** Returns the token */
   getToken() {
@@ -87,6 +91,7 @@ export class AuthService {
           const token = response.token;
           this.token = token;
           if (token) {
+            this.message = 'Vous êtes connecté :)';
             this.userId = response.userId;
             const expiresInDuration = response.expiresIn;
             this.setAuthTimer(expiresInDuration);
@@ -95,6 +100,7 @@ export class AuthService {
             const now = new Date ();
             const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
             this.saveAuthData(token, expirationDate, this.userId);
+            this.dialog.open(ErrorComponent, {data: {message: this.message}});
             this.goHome();
           }
         },
@@ -123,6 +129,10 @@ export class AuthService {
     }
   }
 
+  /**
+   * Allows a user to ask to change his password
+   * @param email of the user
+   */
   newPasswordAsked(email: string) {
     const userEmail = {
       email
@@ -135,18 +145,24 @@ export class AuthService {
     });
   }
 
+  /**
+   * Allows the user to choose a new password
+   * @param password new password
+   * @param passwordBis new password bis
+   * @param token token received in the link
+   */
   updatePassword(password: string, passwordBis: string, token: string) {
+    this.clearAuthData();
     const authData: AuthData = {
       password,
       passwordBis,
     };
-    console.log(token);
-
-    return this.http.put(
-      `http://localhost:8080/api/auth/newpassword`,
-      authData,
-      {headers: new HttpHeaders().set('authorization', `Bearer ${token}`)})
+    this.token = token ;
+    return this.http.put(`http://localhost:8080/api/auth/newpassword`, authData)
     .subscribe(() => {
+      this.message = 'Nouveau mot de passe crée avec succès';
+      this.token = null;
+      this.dialog.open(ErrorComponent, {data: {message: this.message}});
       this.goHome();
     }, error => {
       this.authStatusListener.next(false);

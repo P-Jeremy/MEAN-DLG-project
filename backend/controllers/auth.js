@@ -74,7 +74,7 @@ exports.newPasswordAsk = async (req, res) => {
     }
 
     const tokenInfo = {
-      id: result._id,
+      userId: result._id,
       email,
       expiresIn: "1h"
     };
@@ -90,9 +90,10 @@ exports.newPasswordAsk = async (req, res) => {
   }
 };
 
-exports.newPasswordSet = async (req, res) => {
+exports.newPasswordSet = async (req, res, next) => {
   const { password, passwordBis } = req.body;
-  const { email } = req.userData.email;
+  const { email } = req.userData;
+
   if (password !== passwordBis) {
     return res.status(403).json({
       message: "Les mots de passe ne sont pas identiques..."
@@ -100,12 +101,8 @@ exports.newPasswordSet = async (req, res) => {
   }
   try {
     const result = await User.findOne({ email: email});
-    console.log(result);
-
     if (result.email === email && result.isActive === true) {
       const hash = await bcrypt.hash(password, 10);
-      console.log(hash);
-
       await User.updateOne({_id: result._id, password: hash })
     }
     return res.status(200).json({
