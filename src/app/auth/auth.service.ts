@@ -2,11 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material';
+import { AppMessagesComponent } from '../appMessages/appMessages.component';
+
 
 
 /* USER interface */
-import { AuthData } from './authData.model';
-
+import { AuthData } from '../models/authData.model';
+import { AppMessages } from '../models/appMessages.model';
 /*
 * Makes the service available at all 'root' levels of the application.
 * Wich means everywhere on the SPA
@@ -14,12 +17,18 @@ import { AuthData } from './authData.model';
 @Injectable({providedIn: 'root'})
 export class AuthService {
 
+
+  private message: AppMessages = {
+    title: 'Oh yeah!',
+    content: null
+  };
   private isAuthenticated = false;
   private tokenTimer: NodeJS.Timer;
   private token: string;
+  private userId: string;
   private authStatusListener = new Subject<boolean>();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private dialog: MatDialog) {}
 
   /** Returns the token */
   getToken() {
@@ -31,9 +40,19 @@ export class AuthService {
     return this.isAuthenticated;
   }
 
-  /** Returns the auth status */
+  /**
+   *
+   * Returns the auth status
+   * as an observable
+   *
+   */
   getAuthStatusListener() {
     return this.authStatusListener.asObservable();
+  }
+
+  /** Returns the user Id */
+  getUserId() {
+    return this.userId;
   }
 
   /**
@@ -42,15 +61,30 @@ export class AuthService {
    * @param email of the user
    *
    * @param password of the user
+   *
+   * @param passwordBis of the user
+   *
+   * @param pseudo of the user
+   *
+   * @param apiKey secret key of the api
    */
-  createUser(email: string, password: string) {
+  createUser(email: string, pseudo: string, password: string, passwordBis: string, apiKey: string) {
     const authData: AuthData = {
       email,
+      pseudo,
       password
     };
-    this.http.post('http://localhost:8080/api/auth/signup', authData)
-      .subscribe(response => {
-        console.log(response);
+    if (password !== passwordBis) {
+      this.message.title = 'Oh hell no...';
+      this.message.content = 'Veuillez entrer deux mots de passes identiques';
+      this.authStatusListener.next(false);
+      return this.dialog.open(AppMessagesComponent, {data: this.message});
+    }
+    return this.http.post(`http://localhost:8080/api/auth/signup?key=${apiKey}`, authData)
+      .subscribe(() => {
+        this.goHome();
+      }, error => {
+        this.authStatusListener.next(false);
       });
   }
 
@@ -65,22 +99,28 @@ export class AuthService {
   login(email: string, password: string) {
     const authData: AuthData = {
       email,
-      password
+      password,
     };
-    this.http.post<{token: string, expiresIn: number}>('http://localhost:8080/api/auth/login', authData)
+    this.http.post<{token: string, expiresIn: number, userId: string}>(`http://localhost:8080/api/auth/login`, authData)
         .subscribe(response => {
           const token = response.token;
           this.token = token;
           if (token) {
+            this.message.content = 'Vous êtes connectés';
+            this.userId = response.userId;
             const expiresInDuration = response.expiresIn;
             this.setAuthTimer(expiresInDuration);
             this.isAuthenticated = true;
             this.authStatusListener.next(true);
             const now = new Date ();
             const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
-            this.saveAuthData(token, expirationDate);
+            this.saveAuthData(token, expirationDate, this.userId);
+            this.dialog.open(AppMessagesComponent, {data: this.message});
             this.goHome();
           }
+        },
+        error => {
+          this.authStatusListener.next(false);
         });
   }
 
@@ -95,14 +135,62 @@ export class AuthService {
     const now = new Date();
     const expiresIn = authInformation.expirationDate.getTime() - now.getTime();
     if (expiresIn > 0) {
+      this.message.content = 'Hey, ça fait plaisir de vous revoir';
       this.token = authInformation.token;
       this.isAuthenticated = true;
+      this.userId = authInformation.userId;
       /* expiresIn is in milliseconds so we need to convert in seconds */
+      this.dialog.open(AppMessagesComponent, {data: {message: this.message}});
       this.setAuthTimer(expiresIn / 1000);
       this.authStatusListener.next(true);
     }
   }
 
+  /**
+   * Allows a user to ask to change his password
+   * @param email of the user
+   */
+  newPasswordAsked(email: string) {
+    const userEmail = {
+      email
+    };
+    return this.http.post(`http://localhost:8080/api/auth/newpassword`, userEmail)
+    .subscribe(() => {
+      this.message.content = 'Veillez vérifier votre boîte mail';
+      this.dialog.open(AppMessagesComponent, {data: {message: this.message}});
+      this.goHome();
+    }, error => {
+      this.authStatusListener.next(false);
+    });
+  }
+
+  /**
+   * Allows the user to choose a new password
+   * @param password new password
+   * @param passwordBis new password bis
+   * @param token token received in the link
+   */
+  updatePassword(password: string, passwordBis: string, token: string) {
+    if (password !== passwordBis) {
+      this.message.title = 'Oh hell no...';
+      this.message.content = 'Veuillez entrer deux mots de passes identiques';
+      return this.dialog.open(AppMessagesComponent, {data: this.message});
+    }
+    this.clearAuthData();
+    const authData: AuthData = {
+      password
+    };
+    this.token = token ;
+    return this.http.put(`http://localhost:8080/api/auth/newpassword`, authData)
+    .subscribe(() => {
+      this.message.content = 'Nouveau mot de passe crée avec succès';
+      this.token = null;
+      this.dialog.open(AppMessagesComponent, {data: {message: this.message}});
+      this.goHome();
+    }, error => {
+      this.authStatusListener.next(false);
+    });
+  }
 
   /**
    * Allows a user to logout
@@ -112,6 +200,7 @@ export class AuthService {
     this.token = null;
     this.isAuthenticated = false;
     this.authStatusListener.next(false);
+    this.userId = null;
     clearTimeout(this.tokenTimer);
     this.clearAuthData();
     this.goHome();
@@ -134,15 +223,18 @@ export class AuthService {
   }
 
   /**
-   * Saves token and expiration date in local storage
+   * Saves token, user id and expiration date in local storage
    *
    * @param token of the user
    *
    * @param expirationDate of the token
+   *
+   * @param userId of the user
    */
-  private saveAuthData(token: string, expirationDate: Date) {
+  private saveAuthData(token: string, expirationDate: Date, userId: string) {
     localStorage.setItem('token', token);
     localStorage.setItem('expiration', expirationDate.toISOString());
+    localStorage.setItem('userId', userId);
   }
 
   /**
@@ -163,12 +255,14 @@ export class AuthService {
   private getAuthData() {
     const token = localStorage.getItem('token');
     const expirationDate = localStorage.getItem('expiration');
-    if (!token || !expirationDate){
+    const userId = localStorage.getItem('userId');
+    if (!token || !expirationDate) {
       return;
     }
     return {
       token,
-      expirationDate: new Date(expirationDate)
+      expirationDate: new Date(expirationDate),
+      userId
     };
   }
 }
