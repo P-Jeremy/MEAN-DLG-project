@@ -3,14 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material';
-import { ErrorComponent } from '../error/error.component';
+import { AppMessagesComponent } from '../appMessages/appMessages.component';
 
 
 
 /* USER interface */
-import { AuthData } from './authData.model';
-
-
+import { AuthData } from '../models/authData.model';
+import { AppMessages } from '../models/appMessages.model';
 /*
 * Makes the service available at all 'root' levels of the application.
 * Wich means everywhere on the SPA
@@ -18,12 +17,16 @@ import { AuthData } from './authData.model';
 @Injectable({providedIn: 'root'})
 export class AuthService {
 
+
+  private message: AppMessages = {
+    title: 'Oh yeah!',
+    content: null
+  };
   private isAuthenticated = false;
   private tokenTimer: NodeJS.Timer;
   private token: string;
   private userId: string;
   private authStatusListener = new Subject<boolean>();
-  private message: string;
 
   constructor(private http: HttpClient, private router: Router, private dialog: MatDialog) {}
 
@@ -58,13 +61,25 @@ export class AuthService {
    * @param email of the user
    *
    * @param password of the user
+   *
+   * @param passwordBis of the user
+   *
+   * @param pseudo of the user
+   *
+   * @param apiKey secret key of the api
    */
-  createUser(email: string, password: string, passwordBis: string, apiKey: string) {
+  createUser(email: string, pseudo: string, password: string, passwordBis: string, apiKey: string) {
     const authData: AuthData = {
       email,
-      password,
-      passwordBis
+      pseudo,
+      password
     };
+    if (password !== passwordBis) {
+      this.message.title = 'Oh hell no...';
+      this.message.content = 'Veuillez entrer deux mots de passes identiques';
+      this.authStatusListener.next(false);
+      return this.dialog.open(AppMessagesComponent, {data: this.message});
+    }
     return this.http.post(`http://localhost:8080/api/auth/signup?key=${apiKey}`, authData)
       .subscribe(() => {
         this.goHome();
@@ -91,7 +106,7 @@ export class AuthService {
           const token = response.token;
           this.token = token;
           if (token) {
-            this.message = 'Vous êtes connecté :)';
+            this.message.content = 'Vous êtes connectés';
             this.userId = response.userId;
             const expiresInDuration = response.expiresIn;
             this.setAuthTimer(expiresInDuration);
@@ -100,7 +115,7 @@ export class AuthService {
             const now = new Date ();
             const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
             this.saveAuthData(token, expirationDate, this.userId);
-            this.dialog.open(ErrorComponent, {data: {message: this.message}});
+            this.dialog.open(AppMessagesComponent, {data: this.message});
             this.goHome();
           }
         },
@@ -120,10 +135,12 @@ export class AuthService {
     const now = new Date();
     const expiresIn = authInformation.expirationDate.getTime() - now.getTime();
     if (expiresIn > 0) {
+      this.message.content = 'Hey, ça fait plaisir de vous revoir';
       this.token = authInformation.token;
       this.isAuthenticated = true;
       this.userId = authInformation.userId;
       /* expiresIn is in milliseconds so we need to convert in seconds */
+      this.dialog.open(AppMessagesComponent, {data: {message: this.message}});
       this.setAuthTimer(expiresIn / 1000);
       this.authStatusListener.next(true);
     }
@@ -139,6 +156,8 @@ export class AuthService {
     };
     return this.http.post(`http://localhost:8080/api/auth/newpassword`, userEmail)
     .subscribe(() => {
+      this.message.content = 'Veillez vérifier votre boîte mail';
+      this.dialog.open(AppMessagesComponent, {data: {message: this.message}});
       this.goHome();
     }, error => {
       this.authStatusListener.next(false);
@@ -152,17 +171,21 @@ export class AuthService {
    * @param token token received in the link
    */
   updatePassword(password: string, passwordBis: string, token: string) {
+    if (password !== passwordBis) {
+      this.message.title = 'Oh hell no...';
+      this.message.content = 'Veuillez entrer deux mots de passes identiques';
+      return this.dialog.open(AppMessagesComponent, {data: this.message});
+    }
     this.clearAuthData();
     const authData: AuthData = {
-      password,
-      passwordBis,
+      password
     };
     this.token = token ;
     return this.http.put(`http://localhost:8080/api/auth/newpassword`, authData)
     .subscribe(() => {
-      this.message = 'Nouveau mot de passe crée avec succès';
+      this.message.content = 'Nouveau mot de passe crée avec succès';
       this.token = null;
-      this.dialog.open(ErrorComponent, {data: {message: this.message}});
+      this.dialog.open(AppMessagesComponent, {data: {message: this.message}});
       this.goHome();
     }, error => {
       this.authStatusListener.next(false);
