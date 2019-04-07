@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const sendEmail = require("../helpers/email/sendMail");
 const tokenSignUp = require("../helpers/email/templates/sendTokenSignUp");
-const newPassword = require('../helpers/email/templates/forgotPassword');
+const newPassword = require("../helpers/email/templates/forgotPassword");
 const secretJwt = process.env.JWT_CRYPTEX;
 const userApiKey = process.env.USER_API_KEY;
 const adminApiKey = process.env.ADMIN_API_KEY;
@@ -15,12 +15,9 @@ exports.signUp = async (req, res, next) => {
   const { key } = req.query;
   const { email, pseudo, password } = req.body;
 
-
   try {
-
     if (key === userApiKey || key === adminApiKey) {
-
-      const existingUser = await User.findOne({pseudo: pseudo});
+      const existingUser = await User.findOne({ pseudo: pseudo });
       if (existingUser) {
         return res.status(403).json({
           message: `Un utilisateur ${pseudo} existe déjà...`,
@@ -50,12 +47,10 @@ exports.signUp = async (req, res, next) => {
       });
     } else {
       return res.status(403).json({
-
         message: "Veuillez entrer une clé valide...",
         result
       });
     }
-
   } catch (error) {
     return res.status(500).json({
       message: "Inscription impossible..."
@@ -64,13 +59,16 @@ exports.signUp = async (req, res, next) => {
 };
 
 exports.confirmation = (req, res, next) => {
-  const {token}  = req.params;
+  const { token } = req.params;
   const decode = jwt.verify(token, secretJwt);
 
   try {
     const { id, key } = decode;
-    const update = (key === adminApiKey) ? {isActive: true, isAdmin: true} : {isActive: true};
-    User.findByIdAndUpdate({ _id: id}, update)
+    const update =
+      key === adminApiKey
+        ? { isActive: true, isAdmin: true }
+        : { isActive: true };
+    User.findByIdAndUpdate({ _id: id }, update);
     res.status(200);
     res.redirect(`${clientDomain}/login`);
   } catch {
@@ -84,7 +82,7 @@ exports.confirmation = (req, res, next) => {
 exports.newPasswordAsk = async (req, res) => {
   try {
     const { email } = req.body;
-    const result = await User.findOne({email: email});
+    const result = await User.findOne({ email: email });
     if (result.isActive === false) {
       return res.status(403).json({
         message: "Cet utilisateur ne possède pas de compte actif..."
@@ -118,10 +116,10 @@ exports.newPasswordSet = async (req, res, next) => {
     });
   }
   try {
-    const result = await User.findOne({ email: email});
+    const result = await User.findOne({ email: email });
     if (result.email === email && result.isActive === true) {
       const hash = await bcrypt.hash(password, 10);
-      await User.updateOne({_id: result._id, password: hash })
+      await User.updateOne({ _id: result._id, password: hash });
     }
     return res.status(200).json({
       message: "Nouveau mot de passe crée"
@@ -132,8 +130,13 @@ exports.newPasswordSet = async (req, res, next) => {
 };
 
 exports.signIn = async (req, res, next) => {
+  const fetchedUser = await User.findOne({ email: req.body.email });
+  if (fetchedUser.isActive === false) {
+    return res.status(403).json({
+      message: "Compte utilisateur non activé..."
+    });
+  }
   try {
-    const fetchedUser = await User.findOne({ email: req.body.email });
     const allowedUser = await bcrypt.compare(
       req.body.password,
       fetchedUser.password
