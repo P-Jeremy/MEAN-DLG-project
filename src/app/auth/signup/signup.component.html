@@ -11,18 +11,49 @@
         #emailInput="ngModel"
         required
         email/>
-        <mat-error *ngIf="emailInput.invalid" >Please enter a valid email</mat-error>
+        <mat-error *ngIf="emailInput.invalid" >Cet email n'est pas valide</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        type="text"
+        name="pseudo"
+        ngModel
+        placeholder="Pseudo"
+        #pseudoInput="ngModel"
+        required
+        />
     </mat-form-field>
     <mat-form-field>
       <input
       matInput
       type="password"
       name="password"
+      required
       ngModel
-      placeholder="Password"
+      placeholder="Mot de passe"
       #passwordInput="ngModel"/>
       <mat-error *ngIf="passwordInput" >Please enter a valid password</mat-error>
-      </mat-form-field>
+    </mat-form-field>
+      <mat-form-field>
+      <input
+      matInput
+      type="password"
+      name="passwordBis"
+      ngModel
+      placeholder="Veillez à nouveau saisir votre mot de passe"
+      #passwordBisInput="ngModel"/>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+      matInput
+      type="password"
+      name="apiKey"
+      ngModel
+      required
+      placeholder="Clé"
+      #apiKey="ngModel"/>
+    </mat-form-field>
     <button
       *ngIf="!isLoading"
       mat-raised-button

@@ -3,7 +3,8 @@ import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { ErrorComponent } from './error/error.component';
+import { AppMessagesComponent } from './appMessages/appMessages.component';
+import { AppMessages } from './models/appMessages.model';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -14,13 +15,16 @@ export class ErrorInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
-        let errorMessage = 'Une erreur est survenue...';
+        const message: AppMessages = {
+          title: 'Oh hell no...',
+          content: 'Une erreur est survenue...'
+        };
         if (error.error.message) {
-          errorMessage = error.error.message;
+          message.content = error.error.message;
         }
-        this.dialog.open(ErrorComponent, {data: {message: errorMessage }});
+        this.dialog.open(AppMessagesComponent, {data: message});
         return throwError(error);
       })
     );
   }
-}
+};

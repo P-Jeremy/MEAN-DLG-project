@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 
 
 /* POST interface */
-import { Post } from './post.model';
+import { Post } from '../models/post.model';
 
 /*
 * Makes the service available at all 'root' levels of the application.
