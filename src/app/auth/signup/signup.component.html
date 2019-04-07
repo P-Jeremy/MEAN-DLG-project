@@ -11,13 +11,25 @@
         #emailInput="ngModel"
         required
         email/>
-        <mat-error *ngIf="emailInput.invalid" >Please enter a valid email</mat-error>
+        <mat-error *ngIf="emailInput.invalid" >Cet email n'est pas valide</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        type="text"
+        name="pseudo"
+        ngModel
+        placeholder="Pseudo"
+        #pseudoInput="ngModel"
+        required
+        />
     </mat-form-field>
     <mat-form-field>
       <input
       matInput
       type="password"
       name="password"
+      required
       ngModel
       placeholder="Mot de passe"
       #passwordInput="ngModel"/>
@@ -38,6 +50,7 @@
       type="password"
       name="apiKey"
       ngModel
+      required
       placeholder="Clé"
       #apiKey="ngModel"/>
     </mat-form-field>

@@ -11,7 +11,7 @@ router.post("/signup", authController.signUp);
 /* Log user in */
 router.post("/login", authController.signIn);
 
-router.get("/confirmation", authController.confirmation)
+router.get("/confirmation/:token", authController.confirmation)
 
 router.post("/newpassword", authController.newPasswordAsk);
 

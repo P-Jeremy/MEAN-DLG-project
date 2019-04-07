@@ -14,7 +14,7 @@ import { LoginComponent } from './auth/login/login.component'
 import { PostListComponent } from './posts/post-list/post-list.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { AppRoutingModule } from './app-routing.module';
-import { ErrorComponent } from './error/error.component';
+import { AppMessagesComponent } from './appMessages/appMessages.component';
 import { NewPasswordComponent } from './auth/newPassword/newPassword.component';
 import { ForgottenPasswordComponent } from './auth/forgottenPassword/forgottenPassword.component';
 
@@ -28,7 +28,7 @@ import { ForgottenPasswordComponent } from './auth/forgottenPassword/forgottenPa
     SignupComponent,
     NewPasswordComponent,
     ForgottenPasswordComponent,
-    ErrorComponent
+    AppMessagesComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +45,7 @@ import { ForgottenPasswordComponent } from './auth/forgottenPassword/forgottenPa
 
   ],
   bootstrap: [AppComponent],
-  entryComponents: [ErrorComponent]
+  entryComponents: [AppMessagesComponent]
 })
 export class AppModule {}
 
