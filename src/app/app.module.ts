@@ -1,43 +1,30 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule, Component } from '@angular/core';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './auth/auth-interceptor';
 import { ErrorInterceptor } from './error-interceptor';
 
 import { AngularMaterialModule } from './angular-material.module';
 import { AppComponent } from './app.component';
-import { PostCreateComponent } from './posts/post-create/post-create.component';
 import { HeaderComponent } from './header/header.component';
-import { LoginComponent } from './auth/login/login.component'
-import { PostListComponent } from './posts/post-list/post-list.component';
-import { SignupComponent } from './auth/signup/signup.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppMessagesComponent } from './appMessages/appMessages.component';
-import { NewPasswordComponent } from './auth/newPassword/newPassword.component';
-import { ForgottenPasswordComponent } from './auth/forgottenPassword/forgottenPassword.component';
+import { PostModule } from './posts/post.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PostCreateComponent,
     HeaderComponent,
-    PostListComponent,
-    LoginComponent,
-    SignupComponent,
-    NewPasswordComponent,
-    ForgottenPasswordComponent,
     AppMessagesComponent
   ],
   imports: [
-    BrowserModule,
-    ReactiveFormsModule,
-    FormsModule,
+  BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
-    AngularMaterialModule
+    AngularMaterialModule,
+    PostModule,
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},

@@ -8,16 +8,6 @@ import {MatInputModule,
   MatDialogModule } from '@angular/material';
 
 @NgModule({
-  imports: [
-    MatInputModule,
-    MatCardModule,
-    MatButtonModule,
-    MatToolbarModule,
-    MatExpansionModule,
-    MatPaginatorModule,
-    MatProgressSpinnerModule,
-    MatDialogModule,
-  ],
   exports: [
     MatInputModule,
     MatCardModule,

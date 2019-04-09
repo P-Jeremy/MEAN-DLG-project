@@ -10,6 +10,12 @@ import { AppMessagesComponent } from '../appMessages/appMessages.component';
 /* USER interface */
 import { AuthData } from '../models/authData.model';
 import { AppMessages } from '../models/appMessages.model';
+
+import { environment } from '../../environments/environment';
+
+const API_DOMAIN = environment.apiDomain + '/auth/';
+
+
 /*
 * Makes the service available at all 'root' levels of the application.
 * Wich means everywhere on the SPA
@@ -80,7 +86,7 @@ export class AuthService {
       this.authStatusListener.next(false);
       return this.dialog.open(AppMessagesComponent, {data: this.message});
     }
-    return this.http.post(`http://localhost:8080/api/auth/signup?key=${apiKey}`, authData)
+    return this.http.post(API_DOMAIN + `signup?key=${apiKey}`, authData)
       .subscribe(() => {
         this.goHome();
       }, error => {
@@ -101,7 +107,7 @@ export class AuthService {
       email,
       password,
     };
-    this.http.post<{token: string, expiresIn: number, userId: string}>(`http://localhost:8080/api/auth/login`, authData)
+    this.http.post<{token: string, expiresIn: number, userId: string}>( API_DOMAIN + `login`, authData)
         .subscribe(response => {
           const token = response.token;
           this.token = token;
@@ -140,7 +146,6 @@ export class AuthService {
       this.isAuthenticated = true;
       this.userId = authInformation.userId;
       /* expiresIn is in milliseconds so we need to convert in seconds */
-      this.dialog.open(AppMessagesComponent, {data: {message: this.message}});
       this.setAuthTimer(expiresIn / 1000);
       this.authStatusListener.next(true);
     }
@@ -154,7 +159,7 @@ export class AuthService {
     const userEmail = {
       email
     };
-    return this.http.post(`http://localhost:8080/api/auth/newpassword`, userEmail)
+    return this.http.post( API_DOMAIN + `newpassword`, userEmail)
     .subscribe(() => {
       this.message.content = 'Veillez vérifier votre boîte mail';
       this.dialog.open(AppMessagesComponent, {data: {message: this.message}});
@@ -181,7 +186,7 @@ export class AuthService {
       password
     };
     this.token = token ;
-    return this.http.put(`http://localhost:8080/api/auth/newpassword`, authData)
+    return this.http.put( API_DOMAIN + `newpassword`, authData)
     .subscribe(() => {
       this.message.content = 'Nouveau mot de passe crée avec succès';
       this.token = null;
