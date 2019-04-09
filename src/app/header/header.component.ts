@@ -10,20 +10,28 @@ import { Subscription } from 'rxjs';
 export class HeaderComponent implements OnInit, OnDestroy {
 
   userIsAuth = false;
+  userIsAdmin = false;
 
   private authListenerSubs: Subscription;
+  private adminListenerSubs: Subscription;
+
 
   constructor(private authService: AuthService) {}
 
   ngOnInit() {
     this.userIsAuth = this.authService.getIsAuth();
+    this.userIsAdmin = this.authService.getIsAdmin();
     this.authListenerSubs = this.authService.getAuthStatusListener().subscribe(isAuth => {
       this.userIsAuth = isAuth;
     });
+    this.adminListenerSubs = this.authService.getAdminStatusListener().subscribe(isAdmin => {
+      this.userIsAdmin = isAdmin;
+    })
   }
 
   ngOnDestroy() {
     this.authListenerSubs.unsubscribe();
+    this.adminListenerSubs.unsubscribe();
   }
 
   onLogout() {
