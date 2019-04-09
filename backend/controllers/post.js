@@ -10,7 +10,7 @@ exports.addPost = async (req, res, next) => {
     });
     const result = await newPost.save();
     return res.status(201).json({
-      message: "Posts added :)",
+      message: "Post crée avec succès",
       post: {
         id: result._id,
         title: result.title,
