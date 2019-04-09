@@ -19,7 +19,7 @@ exports.addPost = async (req, res, next) => {
         creator: result.userId
       }
     });
-  } catch {
+  } catch (error) {
     return res.status(500).json({
       message: "La création du post à échoué..."
     });
@@ -66,7 +66,7 @@ exports.updatePost = async (req, res, next) => {
     { _id: req.params.id, creator: req.userData.userId },
     post
   );
-  if (result.nModified > 0) {
+  if (result.n > 0) {
     res.status(200).json(`Update successful ! ${result}`);
   } else {
     res.status(401).json({ message: `Impossible de modifier ce post...` });
