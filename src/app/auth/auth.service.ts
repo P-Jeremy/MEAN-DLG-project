@@ -28,11 +28,15 @@ export class AuthService {
     title: 'Oh yeah!',
     content: null
   };
+
+  private isAdmin = false;
   private isAuthenticated = false;
   private tokenTimer: NodeJS.Timer;
   private token: string;
   private userId: string;
   private authStatusListener = new Subject<boolean>();
+  private adminStatusListener = new Subject<boolean>();
+
 
   constructor(private http: HttpClient, private router: Router, private dialog: MatDialog) {}
 
@@ -46,6 +50,11 @@ export class AuthService {
     return this.isAuthenticated;
   }
 
+  /** Checks if user is an admin */
+  getIsAdmin() {
+    return this.isAdmin;
+  }
+
   /**
    *
    * Returns the auth status
@@ -54,6 +63,16 @@ export class AuthService {
    */
   getAuthStatusListener() {
     return this.authStatusListener.asObservable();
+  }
+
+  /**
+   *
+   * Returns the admin status
+   * as an observable
+   *
+   */
+  getAdminStatusListener() {
+    return this.adminStatusListener.asObservable();
   }
 
   /** Returns the user Id */
@@ -107,11 +126,15 @@ export class AuthService {
       email,
       password,
     };
-    this.http.post<{token: string, expiresIn: number, userId: string}>( API_DOMAIN + `login`, authData)
+    this.http.post<{token: string, expiresIn: number, userId: string, isAdmin: boolean}>( API_DOMAIN + `login`, authData)
         .subscribe(response => {
           const token = response.token;
           this.token = token;
           if (token) {
+            console.log(response);
+
+            this.isAdmin = response.isAdmin;
+            this.adminStatusListener.next(response.isAdmin);
             this.message.content = 'Vous êtes connectés';
             this.userId = response.userId;
             const expiresInDuration = response.expiresIn;
@@ -205,6 +228,8 @@ export class AuthService {
     this.token = null;
     this.isAuthenticated = false;
     this.authStatusListener.next(false);
+    this.isAdmin = false;
+    this.adminStatusListener.next(false);
     this.userId = null;
     clearTimeout(this.tokenTimer);
     this.clearAuthData();
