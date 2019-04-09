@@ -18,7 +18,7 @@ export const mimeType = (control: AbstractControl): Promise<{[key: string]: any}
       }
       // Check if file === jpeg or png
       switch (header) {
-        case '89504c47':
+        case '89504e47':
           isValid = true;
           break;
         case 'ffd8ffe0':

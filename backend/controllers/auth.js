@@ -1,4 +1,4 @@
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const sendEmail = require("../helpers/email/sendMail");
 const tokenSignUp = require("../helpers/email/templates/sendTokenSignUp");
@@ -70,7 +70,7 @@ exports.confirmation = (req, res, next) => {
         : { isActive: true };
     User.findByIdAndUpdate({ _id: id }, update);
     res.status(200);
-    res.redirect(`${clientDomain}/login`);
+    res.redirect(`${clientDomain}/auth/login`);
   } catch {
     res.redirect(`${clientDomain}`);
     res.status(403).json({

@@ -8,6 +8,10 @@ import { Router } from '@angular/router';
 /* POST interface */
 import { Post } from '../models/post.model';
 
+import { environment } from '../../environments/environment';
+
+const API_DOMAIN = environment.apiDomain + '/posts/';
+
 /*
 * Makes the service available at all 'root' levels of the application.
 * Wich means everywhere on the SPA
@@ -16,6 +20,8 @@ import { Post } from '../models/post.model';
 export class PostsService {
   private posts: Post[] = [];
   private postUpdated = new Subject<{posts: Post[], postCount: number}>();
+  private postStatusListener = new Subject<boolean>();
+
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -30,7 +36,7 @@ export class PostsService {
    */
   getPosts(postsPerPage: number, currentPage: number) {
     const queryPaginationParams = `?pageSize=${postsPerPage}&page=${currentPage}`;
-    this.http.get<{message: string, posts: any, maxPosts: number}>('http://localhost:8080/api/posts' + queryPaginationParams)
+    this.http.get<{message: string, posts: any, maxPosts: number}>(API_DOMAIN + queryPaginationParams)
         .pipe(map((postData) => {
           return {
             posts: postData.posts.map(post => {
@@ -71,7 +77,7 @@ export class PostsService {
       title: string,
       content: string,
       image: string,
-      creator: string}>('http://localhost:8080/api/posts/' + id);
+      creator: string}>(API_DOMAIN + id);
   }
 
   /**
@@ -88,8 +94,13 @@ export class PostsService {
     postData.append('content', content);
     postData.append('image', image, title);
 
-    this.http.post<{message: string, post: Post}>('http://localhost:8080/api/posts', postData)
+    this.http.post<{message: string, post: Post}>(API_DOMAIN, postData)
         .subscribe(() => {
+          this.postStatusListener.next(true);
+          this.goHome();
+        },
+        error => {
+          this.postStatusListener.next(false);
           this.goHome();
         });
   }
@@ -126,7 +137,7 @@ export class PostsService {
           creator: null
         };
     }
-    this.http.put('http://localhost:8080/api/posts/' + id, postData)
+    this.http.put(API_DOMAIN + id, postData)
         .subscribe(() => {
           this.goHome();
         });
@@ -143,6 +154,6 @@ export class PostsService {
    * @param postId Id of the post to delete
    */
   deletePost(postId: string) {
-    return this.http.delete('http://localhost:8080/api/posts/' + postId);
+    return this.http.delete(API_DOMAIN + postId);
   }
 }
