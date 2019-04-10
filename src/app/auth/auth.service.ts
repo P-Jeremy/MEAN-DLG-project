@@ -131,8 +131,6 @@ export class AuthService {
           const token = response.token;
           this.token = token;
           if (token) {
-            console.log(response);
-
             this.isAdmin = response.isAdmin;
             this.adminStatusListener.next(response.isAdmin);
             this.message.content = 'Vous êtes connectés';
@@ -143,7 +141,7 @@ export class AuthService {
             this.authStatusListener.next(true);
             const now = new Date ();
             const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
-            this.saveAuthData(token, expirationDate, this.userId);
+            this.saveAuthData(token, expirationDate, this.userId, this.isAdmin);
             this.dialog.open(AppMessagesComponent, {data: this.message});
             this.goHome();
           }
@@ -164,13 +162,14 @@ export class AuthService {
     const now = new Date();
     const expiresIn = authInformation.expirationDate.getTime() - now.getTime();
     if (expiresIn > 0) {
-      this.message.content = 'Hey, ça fait plaisir de vous revoir';
       this.token = authInformation.token;
       this.isAuthenticated = true;
       this.userId = authInformation.userId;
+      this.isAdmin = (authInformation.isAdmin) ? true : false;
       /* expiresIn is in milliseconds so we need to convert in seconds */
       this.setAuthTimer(expiresIn / 1000);
       this.authStatusListener.next(true);
+      this.adminStatusListener.next(this.isAdmin);
     }
   }
 
@@ -261,10 +260,12 @@ export class AuthService {
    *
    * @param userId of the user
    */
-  private saveAuthData(token: string, expirationDate: Date, userId: string) {
+  private saveAuthData(token: string, expirationDate: Date, userId: string, isAdmin: boolean) {
     localStorage.setItem('token', token);
     localStorage.setItem('expiration', expirationDate.toISOString());
     localStorage.setItem('userId', userId);
+    localStorage.setItem('isAdmin', isAdmin.toString());
+
   }
 
   /**
@@ -277,6 +278,8 @@ export class AuthService {
   private clearAuthData() {
     localStorage.removeItem('token');
     localStorage.removeItem('expiration');
+    localStorage.removeItem('isAdmin');
+    localStorage.removeItem('userId');
   }
 
   /**
@@ -286,13 +289,15 @@ export class AuthService {
     const token = localStorage.getItem('token');
     const expirationDate = localStorage.getItem('expiration');
     const userId = localStorage.getItem('userId');
+    const isAdmin = localStorage.getItem('isAdmin') === 'true' ? true : false;
     if (!token || !expirationDate) {
       return;
     }
     return {
       token,
       expirationDate: new Date(expirationDate),
-      userId
+      userId,
+      isAdmin
     };
   }
 }
