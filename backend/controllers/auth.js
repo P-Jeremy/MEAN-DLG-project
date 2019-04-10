@@ -141,7 +141,6 @@ exports.signIn = async (req, res, next) => {
       req.body.password,
       fetchedUser.password
     );
-
     if (allowedUser) {
       const token = jwt.sign(
         { email: fetchedUser.email, userId: fetchedUser._id },
@@ -151,7 +150,8 @@ exports.signIn = async (req, res, next) => {
       return res.status(200).json({
         token: token,
         expiresIn: 3600,
-        userId: fetchedUser._id
+        userId: fetchedUser._id,
+        isAdmin: fetchedUser.isAdmin
       });
     } else {
       return res.status(403).json({
