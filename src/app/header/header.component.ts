@@ -26,7 +26,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
     this.adminListenerSubs = this.authService.getAdminStatusListener().subscribe(isAdmin => {
       this.userIsAdmin = isAdmin;
-    })
+    });
   }
 
   ngOnDestroy() {

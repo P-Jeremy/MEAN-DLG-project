@@ -38,5 +38,5 @@
   <button *ngIf="userIsAuth" mat-menu-item routerLink="/create" routerLinkActive="mat-accent">Add a post</button>
   <button *ngIf="!userIsAuth" mat-menu-item routerLink="auth/login" routerLinkActive="mat-accent">Login</button>
   <button *ngIf="!userIsAuth" mat-menu-item routerLink="auth/signup" routerLinkActive="mat-accent">Sign up</button>
-  <button *ngIf="userIsAuth" mat-menu-item  (click)="onLogout()">Logout</button>
+  <button *ngIf="userIsAuth" mat-menu-item color="warn" (click)="onLogout()">Logout</button>
 </mat-menu>
