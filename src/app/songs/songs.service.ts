@@ -104,11 +104,11 @@ export class SongsService {
     this.http.post<{message: string, song: Song}>(API_DOMAIN, songData)
         .subscribe(() => {
           this.songStatusListener.next(true);
-          this.goHome();
+          this.redirect();
         },
         error => {
           this.songStatusListener.next(false);
-          this.goHome();
+          this.redirect();
         });
   }
 
@@ -155,19 +155,19 @@ export class SongsService {
     }
     this.http.put(API_DOMAIN + id, songData)
         .subscribe(() => {
-          this.goHome();
+          this.redirect();
         });
   }
 
   /** Return to home page */
-  goHome() {
-    this.router.navigate(['/']);
+  redirect() {
+    this.router.navigate(['/song']);
   }
 
   /**
-   *  Delete Post method
+   *  Delete Song method
    *
-   * @param songId Id of the post to delete
+   * @param songId Id of the song to delete
    */
   deleteSong(songId: string) {
     return this.http.delete(API_DOMAIN + songId);

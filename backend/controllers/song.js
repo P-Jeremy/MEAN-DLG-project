@@ -1,8 +1,6 @@
 const Song = require("../models/song");
 
 exports.addSong = async (req, res, next) => {
-  console.log(req.files.lyrics[0].location);
-
   try {
     const newSong = new Song({
       title: req.body.title,
@@ -50,61 +48,75 @@ exports.getSongs = (req, res, next) => {
     });
 };
 
-// exports.updatePost = async (req, res, next) => {
-//   let imagePath;
-//   if (req.file) {
-//     imagePath = req.file.location;
-//   } else {
-//     imagePath = req.body.image;
-//   }
-//   const post = new Post({
-//     _id: req.body.id,
-//     title: req.body.title,
-//     content: req.body.content,
-//     image: imagePath,
-//     creator: req.userData.userId
-//   });
-//   const result = await Post.updateOne(
-//     { _id: req.params.id, creator: req.userData.userId },
-//     post
-//   );
-//   if (result.n > 0) {
-//     res.status(200).json(`Update successful ! ${result}`);
-//   } else {
-//     res.status(401).json({ message: `Impossible de modifier ce post...` });
-//   }
-// };
+exports.updateSong = async (req, res, next) => {
+  let lyricsPath;
+  let tabPath;
+  let isAdmin = req.userData.isAdmin;
+  if (!isAdmin) {
+    return res.status(403).json({
+      message: 'Vous n\'êtes pas authorisé'
+    })
+  }
+  if (req.files) {
+    lyricsPath = req.files.lyrics[0].location;
+    tabPath = req.files.tab[0].location;
+  } else {
+    lyricsPath = req.body.lyrics;
+    tabPath = req.body.tab
+  }
+  const song = new Song({
+    _id: req.body.id,
+    title: req.body.title,
+    author: req.body.author,
+    lyrics: lyricsPath,
+    tab: tabPath
+  });
+  const result = await Song.updateOne(
+    { _id: req.params.id},
+    song
+  );
+  if (result.n > 0) {
+    res.status(200).json(`Update successful ! ${result}`);
+  } else {
+    res.status(401).json({ message: `Impossible de modifier ce titre...` });
+  }
+};
 
-// exports.getSinglePost = (req, res, next) => {
-//   Post.findById(req.params.id)
-//     .then(post => {
-//       if (post) {
-//         res.status(200).json(post);
-//       } else {
-//         res.status(404).json({ message: "Post non trouvé" });
-//       }
-//     })
-//     .catch(error => {
-//       res.status(500).json({
-//         message: "La modification du post à échoué..."
-//       });
-//     });
-// };
+exports.getSingleSong = (req, res, next) => {
+  Song.findById(req.params.id)
+    .then(song => {
+      if (song) {
+        res.status(200).json(song);
+      } else {
+        res.status(404).json({ message: "Titre non trouvé" });
+      }
+    })
+    .catch(error => {
+      res.status(500).json({
+        message: "La modification du titre à échoué..."
+      });
+    });
+};
 
-// exports.deletePost = (req, res, next) => {
-//   Post.deleteOne({ _id: req.params.id, creator: req.userData.userId })
-//     .then(result => {
-//       if (result.n > 0) {
-//         res.status(200).json(`Deletion successful ! ${result}`);
-//       } else {
-//         res
-//           .status(401)
-//           .json({ message: `Vous n'êtes pas authorisé à modifier ce post` });
-//       }
-//     })
-//     .catch(error => {
-//       res.status(500).json({
-//         message: "La suppression du post à échoué..."
-//       });
-//     });
-// };
+exports.deleteSong = (req, res, next) => {
+  const isAdmin = req.userData.isAdmin;
+  console.log(isAdmin);
+
+  if (!isAdmin) {
+    return res
+    .status(403)
+    .json({ message: `Vous n'êtes pas authorisé à modifier ce titre` });
+  } else {
+    Song.deleteOne({ _id: req.params.id})
+    .then(result => {
+      if (result.n > 0) {
+        res.status(200).json(`Deletion successful ! ${result}`);
+      }
+    })
+    .catch(error => {
+      res.status(500).json({
+        message: "La suppression du titre à échoué..."
+      });
+    });
+  }
+};

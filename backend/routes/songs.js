@@ -11,14 +11,14 @@ router.post('', checkAdmin , upload.fields([{name: "lyrics", maxCount :1}, {name
 /* Get all the songs from DB */
 router.get('', songController.getSongs);
 
-// /* Update the song corresponding to the param id passed through URL from client */
-// router.put('/:id', checkAdmin, upload.fields([{name: "lyrics", maxCount :1}, {name: "tab", maxCount :1}]), songController.updateSong);
+/* Update the song corresponding to the param id passed through URL from client */
+router.put('/:id', checkAdmin, upload.fields([{name: "lyrics", maxCount :1}, {name: "tab", maxCount :1}]), songController.updateSong);
 
-// /* Get a song corresponding to the param id from client */
-// router.get('/:id', songController.getSingleSong);
+/* Get a song corresponding to the param id from client */
+router.get('/:id', songController.getSingleSong);
 
-// /* Delete the song corresponding to the param id passed through URL from client */
-// router.delete('/:id', checkAdmin, songController.deleteSong);
+/* Delete the song corresponding to the param id passed through URL from client */
+router.delete('/:id', checkAdmin, songController.deleteSong);
 
 
 module.exports = router;

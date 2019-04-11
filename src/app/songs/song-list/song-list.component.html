@@ -6,8 +6,8 @@
       {{song.title}} <br>
       {{song.author}}
     </mat-expansion-panel-header>
-    <a [href]="song.lyrics" download>Paroles</a>
-    <a [href]="song.tab" download>Tablature</a>
+    <a mat-button color="primary" [href]="song.lyrics" download>Paroles</a>
+    <a mat-button color="primary" [href]="song.tab" download>Tablature</a>
     <mat-action-row>
       <a *ngIf="userIsAdmin" [routerLink]="['/edit_song', song.id]" mat-button color="primary">Editer</a>
       <button *ngIf="userIsAdmin" mat-button color="warn" (click)="onDelete(song.id)">Supprimer</button>
