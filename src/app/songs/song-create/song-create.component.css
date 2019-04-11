@@ -1,0 +1,30 @@
+mat-card {
+  width: 50%;
+  margin: 0 auto;
+}
+
+mat-form-field, textarea {
+  width: 100%;
+}
+
+mat-spinner {
+  margin: auto;
+}
+
+input[type="file"] {
+  visibility: hidden;
+}
+
+.buttons_container {
+  margin: 0 auto;
+  width: 80%;
+}
+
+.upload_container {
+  margin: 0 auto;
+}
+
+.upload_container, button {
+  width: 100px;
+  text-align: center;
+}

@@ -13,12 +13,6 @@ import { AuthService } from '../../auth/auth.service';
 })
 export class PostListComponent implements OnInit, OnDestroy {
 
-  // public posts = [
-  //   {title: 'First post', content: 'this is the first post blablabla'},
-  //   {title: 'Second post', content: 'this is the second post blablabla'},
-  //   {title: 'Third post', content: 'this is the third post blablabla'},
-  // ]
-
   posts: Post[] = [];
   isLoading = false;
   totalPosts = 0;

@@ -1,0 +1,18 @@
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<mat-icon *ngIf="userIsAdmin" mat-icon-button routerLink="/create_song">control_point</mat-icon>
+<mat-accordion multi="true" *ngIf="songs.length && !isLoading">
+  <mat-expansion-panel *ngFor="let song of songs">
+    <mat-expansion-panel-header>
+      {{song.title}} <br>
+      {{song.author}}
+    </mat-expansion-panel-header>
+    <a [href]="song.lyrics" download>Paroles</a>
+    <a [href]="song.tab" download>Tablature</a>
+    <mat-action-row>
+      <a *ngIf="userIsAdmin" [routerLink]="['/edit_song', song.id]" mat-button color="primary">Editer</a>
+      <button *ngIf="userIsAdmin" mat-button color="warn" (click)="onDelete(song.id)">Supprimer</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+</mat-accordion>
+<mat-paginator *ngIf="songs.length > 0" [length]="totalSongs" [pageSize]="songsPerPage" [pageSizeOptions]="pageSizeOptions" (page)="onChangedPage($event)"></mat-paginator>
+<p class="mat-body-1 info-text" *ngIf="!songs.length && !isLoading">Pas de titres dans la setlist...</p>
