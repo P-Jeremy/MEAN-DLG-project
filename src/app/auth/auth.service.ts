@@ -10,6 +10,12 @@ import { AppMessagesComponent } from '../appMessages/appMessages.component';
 /* USER interface */
 import { AuthData } from '../models/authData.model';
 import { AppMessages } from '../models/appMessages.model';
+
+import { environment } from '../../environments/environment';
+
+const API_DOMAIN = environment.apiDomain + '/auth/';
+
+
 /*
 * Makes the service available at all 'root' levels of the application.
 * Wich means everywhere on the SPA
@@ -22,11 +28,15 @@ export class AuthService {
     title: 'Oh yeah!',
     content: null
   };
+
+  private isAdmin = false;
   private isAuthenticated = false;
   private tokenTimer: NodeJS.Timer;
   private token: string;
   private userId: string;
   private authStatusListener = new Subject<boolean>();
+  private adminStatusListener = new Subject<boolean>();
+
 
   constructor(private http: HttpClient, private router: Router, private dialog: MatDialog) {}
 
@@ -40,6 +50,11 @@ export class AuthService {
     return this.isAuthenticated;
   }
 
+  /** Checks if user is an admin */
+  getIsAdmin() {
+    return this.isAdmin;
+  }
+
   /**
    *
    * Returns the auth status
@@ -48,6 +63,16 @@ export class AuthService {
    */
   getAuthStatusListener() {
     return this.authStatusListener.asObservable();
+  }
+
+  /**
+   *
+   * Returns the admin status
+   * as an observable
+   *
+   */
+  getAdminStatusListener() {
+    return this.adminStatusListener.asObservable();
   }
 
   /** Returns the user Id */
@@ -80,7 +105,7 @@ export class AuthService {
       this.authStatusListener.next(false);
       return this.dialog.open(AppMessagesComponent, {data: this.message});
     }
-    return this.http.post(`http://localhost:8080/api/auth/signup?key=${apiKey}`, authData)
+    return this.http.post(API_DOMAIN + `signup?key=${apiKey}`, authData)
       .subscribe(() => {
         this.goHome();
       }, error => {
@@ -101,11 +126,13 @@ export class AuthService {
       email,
       password,
     };
-    this.http.post<{token: string, expiresIn: number, userId: string}>(`http://localhost:8080/api/auth/login`, authData)
+    this.http.post<{token: string, expiresIn: number, userId: string, isAdmin: boolean}>( API_DOMAIN + `login`, authData)
         .subscribe(response => {
           const token = response.token;
           this.token = token;
           if (token) {
+            this.isAdmin = response.isAdmin;
+            this.adminStatusListener.next(response.isAdmin);
             this.message.content = 'Vous êtes connectés';
             this.userId = response.userId;
             const expiresInDuration = response.expiresIn;
@@ -114,7 +141,7 @@ export class AuthService {
             this.authStatusListener.next(true);
             const now = new Date ();
             const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
-            this.saveAuthData(token, expirationDate, this.userId);
+            this.saveAuthData(token, expirationDate, this.userId, this.isAdmin);
             this.dialog.open(AppMessagesComponent, {data: this.message});
             this.goHome();
           }
@@ -135,14 +162,14 @@ export class AuthService {
     const now = new Date();
     const expiresIn = authInformation.expirationDate.getTime() - now.getTime();
     if (expiresIn > 0) {
-      this.message.content = 'Hey, ça fait plaisir de vous revoir';
       this.token = authInformation.token;
       this.isAuthenticated = true;
       this.userId = authInformation.userId;
+      this.isAdmin = (authInformation.isAdmin) ? true : false;
       /* expiresIn is in milliseconds so we need to convert in seconds */
-      this.dialog.open(AppMessagesComponent, {data: {message: this.message}});
       this.setAuthTimer(expiresIn / 1000);
       this.authStatusListener.next(true);
+      this.adminStatusListener.next(this.isAdmin);
     }
   }
 
@@ -154,7 +181,7 @@ export class AuthService {
     const userEmail = {
       email
     };
-    return this.http.post(`http://localhost:8080/api/auth/newpassword`, userEmail)
+    return this.http.post( API_DOMAIN + `newpassword`, userEmail)
     .subscribe(() => {
       this.message.content = 'Veillez vérifier votre boîte mail';
       this.dialog.open(AppMessagesComponent, {data: {message: this.message}});
@@ -181,7 +208,7 @@ export class AuthService {
       password
     };
     this.token = token ;
-    return this.http.put(`http://localhost:8080/api/auth/newpassword`, authData)
+    return this.http.put( API_DOMAIN + `newpassword`, authData)
     .subscribe(() => {
       this.message.content = 'Nouveau mot de passe crée avec succès';
       this.token = null;
@@ -200,6 +227,8 @@ export class AuthService {
     this.token = null;
     this.isAuthenticated = false;
     this.authStatusListener.next(false);
+    this.isAdmin = false;
+    this.adminStatusListener.next(false);
     this.userId = null;
     clearTimeout(this.tokenTimer);
     this.clearAuthData();
@@ -231,10 +260,12 @@ export class AuthService {
    *
    * @param userId of the user
    */
-  private saveAuthData(token: string, expirationDate: Date, userId: string) {
+  private saveAuthData(token: string, expirationDate: Date, userId: string, isAdmin: boolean) {
     localStorage.setItem('token', token);
     localStorage.setItem('expiration', expirationDate.toISOString());
     localStorage.setItem('userId', userId);
+    localStorage.setItem('isAdmin', isAdmin.toString());
+
   }
 
   /**
@@ -247,6 +278,8 @@ export class AuthService {
   private clearAuthData() {
     localStorage.removeItem('token');
     localStorage.removeItem('expiration');
+    localStorage.removeItem('isAdmin');
+    localStorage.removeItem('userId');
   }
 
   /**
@@ -256,13 +289,15 @@ export class AuthService {
     const token = localStorage.getItem('token');
     const expirationDate = localStorage.getItem('expiration');
     const userId = localStorage.getItem('userId');
+    const isAdmin = localStorage.getItem('isAdmin') === 'true' ? true : false;
     if (!token || !expirationDate) {
       return;
     }
     return {
       token,
       expirationDate: new Date(expirationDate),
-      userId
+      userId,
+      isAdmin
     };
   }
 }
