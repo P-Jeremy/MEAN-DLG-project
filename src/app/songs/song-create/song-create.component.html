@@ -20,21 +20,21 @@
     </mat-form-field>
     <div fxLayout="row"fxLayout.xs="column" class="buttons_container">
       <div class="upload_container" fxFlex="50%" >
-        <button (click)="lyricsPicker.click()" mat-stroked-button type="button">
+        <button [ngClass]="{'green': form.get('lyrics').valid}" (click)="lyricsPicker.click()" mat-stroked-button type="button">
           Paroles
         </button>
         <input type="file" #lyricsPicker (change)="onLyricsPicked($event)" />
         <mat-error *ngIf="lyrics && form.get('lyrics').invalid"
-        >Mauvais format de fichier</mat-error
+        >Pdf seulement...</mat-error
       >
       </div>
       <div class="upload_container" fxFlex="50%" >
-        <button (click)="tabPicker.click()" mat-stroked-button type="button">
+        <button [ngClass]="{'green': form.get('tab').valid}" (click)="tabPicker.click()" mat-stroked-button type="button">
           Tablatures
         </button>
         <input type="file" #tabPicker (change)="onTabPicked($event)" />
         <mat-error *ngIf="tab && form.get('tab').invalid"
-        >Mauvais format de fichier</mat-error
+        >Pdf seulement...</mat-error
       >
       </div>
     </div>
