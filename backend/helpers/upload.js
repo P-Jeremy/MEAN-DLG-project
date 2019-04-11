@@ -9,7 +9,8 @@ const bucket = process.env.BUCKET;
 const MIME_TYPE_MAP = {
   "image/png": "png",
   "image/jpg": "jpg",
-  "image/jpeg": "jpg"
+  "image/jpeg": "jpg",
+  "application/pdf" : "pdf"
 };
 
 aws.config.update({
@@ -43,4 +44,4 @@ module.exports = multer({
     }
   }),
   limits: {fileSize : 2 * 1024 *1024}
-}).single("image");
+});
