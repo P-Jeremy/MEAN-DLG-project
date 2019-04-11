@@ -63,6 +63,11 @@ export class SongListComponent implements OnInit, OnDestroy {
     });
   }
 
+  onShuffle() {
+// tslint:disable-next-line: no-bitwise
+    this.songsService.getRandomSong();
+  }
+
 /**
  * Handle switch between 2 filter modes
  * @param ev box check status

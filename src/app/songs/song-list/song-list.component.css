@@ -16,5 +16,50 @@ mat-spinner {
 }
 
 mat-icon {
-  font-size: 6vw;
+  font-size: 3vw;
+}
+
+.search_bar_container {
+  width: 100%;
+  padding-bottom: 30px;
+}
+
+.search_bar {
+  display: flex;
+  flex-direction: column;
+  width: 45%;
+  margin: 0 auto;
+  text-align: center;
+  padding-bottom: 8px;
+}
+
+.search_bar input {
+  border-radius: 50px;
+  height: 20px;
+  outline: none;
+  background: none;
+}
+
+.check_box {
+  display: flex;
+  width: 50%;
+  margin: 0 auto;
+  justify-content: space-evenly;
+  font-size: 14px;
+  font-size-adjust: inherit
+}
+
+::-webkit-input-placeholder {
+  text-align: center;
+}
+:-moz-placeholder {
+  /* Firefox 18- */
+  text-align: center;
+}
+::-moz-placeholder {
+  /* Firefox 19+ */
+  text-align: center;
+}
+:-ms-input-placeholder {
+  text-align: center;
 }

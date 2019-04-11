@@ -66,6 +66,12 @@ export class SongsService {
     return this.songUpdated.asObservable();
   }
 
+  getRandomSong() {
+// tslint:disable-next-line: no-bitwise
+    const randomSong = this.songs[this.songs.length * Math.random() | 0];
+    return this.songUpdated.next({songs : [randomSong], songCount: 1});
+  }
+
   /**
    * @param takes the id of the song to edit
    *
