@@ -20,6 +20,9 @@ export class SongListComponent implements OnInit, OnDestroy {
   currentPage = 1;
   pageSizeOptions = [1, 3, 5, 10];
   userIsAdmin = false;
+  filter: string;
+  isTitle = true;
+  isAuthor = false;
 
   private songSub: Subscription;
   private adminListenerSub: Subscription;
@@ -60,6 +63,41 @@ export class SongListComponent implements OnInit, OnDestroy {
       this.isLoading = false;
     });
   }
+
+  onBoxChecked(ev: any, src: string) {
+    switch (src) {
+      case 'title':
+        this.filter = 'filterTitle';
+        this.isTitle = ev.checked;
+        this.isAuthor = false;
+        break;
+      case 'author':
+        this.filter = 'filterAuthor';
+        this.isAuthor = ev.checked;
+        this.isTitle = false;
+        break;
+      default:
+        break;
+    }
+  }
+
+  // public onToggleClick(ev: any, src: string) {
+
+  //   const currentBasket = this._basketService.getCurrentBasket();
+  //   switch (src) {
+  //     case 'discount':
+  //       this.isDiscount = ev.checked;
+  //       this.isSample = false;
+  //       this._basketService.updateIsSample(this.isSample);
+  //       break;
+
+  //     case 'sample' :
+  //       this.isDiscount = false;
+  //       this.isSample = ev.checked;
+  //       this._basketService.updateIsSample(this.isSample);
+  //       break;
+  //   }
+  // }
 
   ngOnDestroy() {
     this.songSub.unsubscribe();
