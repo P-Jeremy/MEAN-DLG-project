@@ -265,7 +265,6 @@ export class AuthService {
     localStorage.setItem('expiration', expirationDate.toISOString());
     localStorage.setItem('userId', userId);
     localStorage.setItem('isAdmin', isAdmin.toString());
-
   }
 
   /**

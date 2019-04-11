@@ -143,7 +143,7 @@ exports.signIn = async (req, res, next) => {
     );
     if (allowedUser) {
       const token = jwt.sign(
-        { email: fetchedUser.email, userId: fetchedUser._id },
+        { email: fetchedUser.email, userId: fetchedUser._id, isAdmin:fetchedUser.isAdmin },
         secretJwt,
         { expiresIn: "1h" }
       );
