@@ -49,21 +49,14 @@ exports.getSongs = (req, res, next) => {
 };
 
 exports.updateSong = async (req, res, next) => {
-  let lyricsPath;
-  let tabPath;
-  let isAdmin = req.userData.isAdmin;
+  const isAdmin = req.userData.isAdmin;
   if (!isAdmin) {
     return res.status(403).json({
       message: 'Vous n\'êtes pas authorisé'
     })
   }
-  if (req.files) {
-    lyricsPath = req.files.lyrics[0].location;
-    tabPath = req.files.tab[0].location;
-  } else {
-    lyricsPath = req.body.lyrics;
-    tabPath = req.body.tab
-  }
+  const lyricsPath = req.files.lyrics ? req.files.lyrics[0].location :req.body.lyrics;
+  const tabPath = req.files.tab ? req.files.tab[0].location :req.body.tab;
   const song = new Song({
     _id: req.body.id,
     title: req.body.title,
