@@ -5,10 +5,16 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class FilterTitlePipe implements PipeTransform {
 
-  transform(songs: any, term: any): any {
+  transform(songs: any, term: any, isTitle: boolean): any {
     if (term === undefined) { return songs; }
-    return songs.filter((song) => {
-      return song.title.toLowerCase().includes(term.toLowerCase());
-    });
+    if (isTitle) {
+      return songs.filter((song) => {
+        return song.title.toLowerCase().includes(term.toLowerCase());
+      });
+    } else {
+      return songs.filter((song) => {
+        return song.author.toLowerCase().includes(term.toLowerCase());
+      });
+    }
   }
 }

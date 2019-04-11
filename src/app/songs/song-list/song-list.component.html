@@ -1,22 +1,87 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
-<mat-icon *ngIf="userIsAdmin" mat-icon-button routerLink="/create_song">control_point</mat-icon>
-<div>
-  <label>Filtrer chansons par titre</label>
-  <input type="text" [(ngModel)]="titre"  [ngModelOptions]="{standalone: true}">
+<div class="shuffle_button_container">
+  <a class="shuffle" mat-stroked-button *ngIf="isShuffle" (click)="onShuffle()"><mat-icon> swap_calls</mat-icon></a>
 </div>
-<mat-accordion multi="true" *ngIf="songs.length && !isLoading">
-  <mat-expansion-panel *ngFor="let song of songs | filterTitle: titre">
+<div *ngIf="!isShuffle" class="search_bar_container">
+  <div class="search_bar">
+    <input
+      type="text"
+      placeholder="Rechercher"
+      [(ngModel)]="term"
+      [ngModelOptions]="{ standalone: true }"
+    />
+  </div>
+  <div class="toggle">
+    <div>
+      <mat-icon [ngClass]="{'selected': !isTitle}">perm_identity</mat-icon>
+    </div>
+    <mat-slide-toggle
+      (change)="onBoxChecked($event, 'title')"
+      [checked]="isTitle"
+      [disabled]="false"
+      >
+    </mat-slide-toggle>
+
+    <div>
+      <mat-icon [ngClass]="{'selected': isTitle}">audiotrack</mat-icon>
+    </div>
+  </div>
+</div>
+<mat-accordion multi="true" *ngIf="songs.length && !isLoading && !isShuffle">
+  <mat-expansion-panel *ngFor="let song of (songs | filterTitle: term:isTitle)">
     <mat-expansion-panel-header>
-      {{song.title}} <br>
-      {{song.author}}
+      {{ song.title }} <br />
+      {{ song.author }}
     </mat-expansion-panel-header>
     <a mat-button color="primary" [href]="song.lyrics" download>Paroles</a>
     <a mat-button color="primary" [href]="song.tab" download>Tablature</a>
     <mat-action-row>
-      <a *ngIf="userIsAdmin" [routerLink]="['/edit_song', song.id]" mat-button color="primary">Editer</a>
-      <button *ngIf="userIsAdmin" mat-button color="warn" (click)="onDelete(song.id)">Supprimer</button>
+      <a
+        *ngIf="userIsAdmin"
+        [routerLink]="['/edit_song', song.id]"
+        mat-button
+        color="primary"
+        >Editer</a
+      >
+      <button
+        *ngIf="userIsAdmin"
+        mat-button
+        color="warn"
+        (click)="onDelete(song.id)"
+      >
+        Supprimer
+      </button>
     </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>
-<mat-paginator *ngIf="songs.length > 0" [length]="totalSongs" [pageSize]="songsPerPage" [pageSizeOptions]="pageSizeOptions" (page)="onChangedPage($event)"></mat-paginator>
-<p class="mat-body-1 info-text" *ngIf="!songs.length && !isLoading">Pas de titres dans la setlist...</p>
+<div class="shuffle_accordion" *ngIf="isShuffle" >
+  <mat-accordion multi="true" *ngIf="songs.length && !isLoading">
+  <mat-expansion-panel *ngFor="let song of (songs)">
+    <mat-expansion-panel-header>
+      {{ song.title }} <br />
+      {{ song.author }}
+    </mat-expansion-panel-header>
+    <a mat-button color="primary" [href]="song.lyrics" download>Paroles</a>
+    <a mat-button color="primary" [href]="song.tab" download>Tablature</a>
+  </mat-expansion-panel>
+</mat-accordion>
+</div>
+
+
+<a
+  *ngIf="userIsAdmin && !isShuffle"
+  mat-stroked-button
+  color="primary"
+  routerLink="/create_song"
+  >Ajouter</a
+>
+<mat-paginator
+  *ngIf="songs.length > 0 && !isShuffle"
+  [length]="totalSongs"
+  [pageSize]="songsPerPage"
+  [pageSizeOptions]="pageSizeOptions"
+  (page)="onChangedPage($event)"
+></mat-paginator>
+<p class="mat-body-1 info-text" *ngIf="!songs.length && !isLoading">
+  Pas de titres dans la setlist...
+</p>
