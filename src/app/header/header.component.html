@@ -1,5 +1,7 @@
 <mat-toolbar color="primary">
-  <span><a routerLink="/">Home</a></span>
+  <span><a *ngIf="userIsAuth" routerLink="/song">Home</a></span>
+  <span>Home</span>
+
   <span class="spacer"></span>
 
   <span class="fill-remaining-space"></span>

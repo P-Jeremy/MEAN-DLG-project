@@ -1,7 +1,11 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
 <mat-icon *ngIf="userIsAdmin" mat-icon-button routerLink="/create_song">control_point</mat-icon>
+<div>
+  <label>Filtrer chansons par titre</label>
+  <input type="text" [(ngModel)]="titre"  [ngModelOptions]="{standalone: true}">
+</div>
 <mat-accordion multi="true" *ngIf="songs.length && !isLoading">
-  <mat-expansion-panel *ngFor="let song of songs">
+  <mat-expansion-panel *ngFor="let song of songs | filterTitle: titre">
     <mat-expansion-panel-header>
       {{song.title}} <br>
       {{song.author}}
