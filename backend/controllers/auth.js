@@ -40,7 +40,7 @@ exports.signUp = async (req, res, next) => {
       };
       const token = jwt.sign(tokenInfo, secretJwt);
 
-      sendEmail(tokenSignUp(email, `${apiDomain}auth/confirmation/${token}`));
+      sendEmail(tokenSignUp(email, `${apiDomain}/auth/confirmation/${token}`));
       return res.status(201).json({
         message: "Veuillez verifier votre boite mail",
         result
@@ -66,9 +66,16 @@ exports.confirmation = (req, res, next) => {
     const { id, key } = decode;
     const update =
       key === adminApiKey
-        ? { isActive: true, isAdmin: true }
-        : { isActive: true };
-    User.findByIdAndUpdate({ _id: id }, update);
+        ? { isActive: 'true', isAdmin: 'true' }
+        : { isActive: 'true', isAdmin: 'false' };
+
+    User.updateOne({ _id: id }, update, (err, raw) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(raw);
+      }
+    });
     res.status(200);
     res.redirect(`${clientDomain}/auth/login`);
   } catch {
@@ -143,7 +150,11 @@ exports.signIn = async (req, res, next) => {
     );
     if (allowedUser) {
       const token = jwt.sign(
-        { email: fetchedUser.email, userId: fetchedUser._id, isAdmin:fetchedUser.isAdmin },
+        {
+          email: fetchedUser.email,
+          userId: fetchedUser._id,
+          isAdmin: fetchedUser.isAdmin
+        },
         secretJwt,
         { expiresIn: "1h" }
       );

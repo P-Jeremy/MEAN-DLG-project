@@ -107,7 +107,7 @@ export class AuthService {
     }
     return this.http.post(API_DOMAIN + `signup?key=${apiKey}`, authData)
       .subscribe(() => {
-        this.redirect(['/login']);
+        this.redirect(['/auth/login']);
       }, error => {
         this.authStatusListener.next(false);
       });
@@ -213,7 +213,7 @@ export class AuthService {
       this.message.content = 'Nouveau mot de passe crée avec succès';
       this.token = null;
       this.dialog.open(AppMessagesComponent, {data: {message: this.message}});
-      this.redirect(['/login']);
+      this.redirect(['/auth/login']);
     }, error => {
       this.authStatusListener.next(false);
     });
