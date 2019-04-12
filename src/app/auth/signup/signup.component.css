@@ -10,3 +10,9 @@ mat-form-field {
 mat-spinner {
   margin: auto;
 }
+
+@media only screen and (max-width: 425px)  {
+  mat-card {
+    width: 80%;
+  }
+}

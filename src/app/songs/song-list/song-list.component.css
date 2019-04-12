@@ -20,6 +20,10 @@ mat-spinner {
   text-align: center;
 }
 
+.add_song {
+  margin-top: 20px;
+}
+
 .selected {
   color: #4156b5;
 }
