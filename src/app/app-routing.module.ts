@@ -17,6 +17,7 @@ const routes: Routes = [
   { path: 'create_post', component: PostCreateComponent, canActivate: [AuthGuard] },
   { path: 'edit_post/:postId', component: PostCreateComponent, canActivate: [AuthGuard] },
   { path: 'song', component: SongListComponent, canActivate: [AuthGuard] },
+  { path: 'song/:shuffle', component: SongListComponent, canActivate: [AuthGuard] },
   { path: 'create_song', component: SongCreateComponent, canActivate: [AdminGuard] },
   { path: 'edit_song/:songId', component: SongCreateComponent, canActivate: [AdminGuard] },
   { path: 'auth', loadChildren: './auth/auth.module#AuthModule' }

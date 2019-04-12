@@ -15,8 +15,20 @@ mat-spinner {
   margin: auto;
 }
 
-mat-icon {
-  font-size: 3vw;
+.shuffle_button_container {
+  width: 100%;
+  text-align: center;
+}
+
+.shuffle {
+  width: 40px;
+  left: 0;
+  right : 0;
+  margin: 0 auto;
+}
+
+.shuffle_accordion {
+  margin-top: 15px;
 }
 
 .search_bar_container {
@@ -27,7 +39,7 @@ mat-icon {
 .search_bar {
   display: flex;
   flex-direction: column;
-  width: 45%;
+  width: 250px;
   margin: 0 auto;
   text-align: center;
   padding-bottom: 8px;
@@ -35,18 +47,24 @@ mat-icon {
 
 .search_bar input {
   border-radius: 50px;
-  height: 20px;
+  height: 25px;
+  padding: 0 10px 0 10px;
   outline: none;
   background: none;
+  border: 3px solid #4156B5;
 }
 
-.check_box {
+.toggle {
   display: flex;
-  width: 50%;
+  width: 20%;
   margin: 0 auto;
   justify-content: space-evenly;
   font-size: 14px;
-  font-size-adjust: inherit
+  height: 15px
+}
+
+.toggle mat-icon {
+  font-size: 23px;
 }
 
 ::-webkit-input-placeholder {
@@ -62,4 +80,11 @@ mat-icon {
 }
 :-ms-input-placeholder {
   text-align: center;
+}
+
+::ng-deep.mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+  background-color:rgba(0,0,0,.38);
+}
+::ng-deep.mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+  background-color:white;
 }

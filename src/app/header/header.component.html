@@ -9,7 +9,8 @@
   <div fxLayout="row" fxHide fxShow.gt-sm>
     <ul>
       <li *ngIf="userIsAuth">
-        <a mat-button routerLink="song" routerLinkActive="mat-accent">Setlist</a>
+        <a mat-button  [mat-menu-trigger-for]="subMenuSet">Playlist</a>
+
       </li>
       <li *ngIf="userIsAuth">
         <a mat-button routerLink="post" routerLinkActive="mat-accent"
@@ -35,8 +36,12 @@
     <mat-icon>menu</mat-icon>
   </button>
 </mat-toolbar>
+<mat-menu #subMenuSet>
+  <button *ngIf="userIsAuth" mat-menu-item routerLink="/song" routerLinkActive="mat-accent">Recherche</button>
+  <button *ngIf="userIsAuth" mat-menu-item [routerLink]="['/song', shuffle]" routerLinkActive="mat-accent">Shuffle</button>
+</mat-menu>
 <mat-menu x-position="before" #menu>
-  <button *ngIf="userIsAuth" mat-menu-item routerLink="/song" routerLinkActive="mat-accent">Setlist</button>
+  <button *ngIf="userIsAuth" mat-menu-item [mat-menu-trigger-for]="subMenuSet">Playlist</button>
   <button *ngIf="userIsAuth" mat-menu-item routerLink="/post" routerLinkActive="mat-accent">Taverne</button>
   <button *ngIf="!userIsAuth" mat-menu-item routerLink="auth/login" routerLinkActive="mat-accent">Login</button>
   <button *ngIf="!userIsAuth" mat-menu-item routerLink="auth/signup" routerLinkActive="mat-accent">Sign up</button>

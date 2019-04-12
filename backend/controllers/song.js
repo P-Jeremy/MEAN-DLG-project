@@ -55,8 +55,12 @@ exports.updateSong = async (req, res, next) => {
       message: 'Vous n\'êtes pas authorisé'
     })
   }
-  const lyricsPath = req.files.lyrics ? req.files.lyrics[0].location :req.body.lyrics;
-  const tabPath = req.files.tab ? req.files.tab[0].location :req.body.tab;
+  console.log("COUCU");
+
+  console.log(req.body);
+
+  const lyricsPath = req.body.lyrics  ? req.body.lyrics : req.files.lyrics[0].location;
+  const tabPath = req.body.tab  ? req.body.tab : req.files.tab[0].location;
   const song = new Song({
     _id: req.body.id,
     title: req.body.title,
@@ -93,8 +97,6 @@ exports.getSingleSong = (req, res, next) => {
 
 exports.deleteSong = (req, res, next) => {
   const isAdmin = req.userData.isAdmin;
-  console.log(isAdmin);
-
   if (!isAdmin) {
     return res
     .status(403)
