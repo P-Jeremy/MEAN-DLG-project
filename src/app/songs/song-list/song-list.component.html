@@ -73,17 +73,23 @@
     >
   </div>
 </div>
-<div class="shuffle_accordion" *ngIf="isShuffle">
-  <mat-accordion multi="true" *ngIf="songs.length && !isLoading">
-    <mat-expansion-panel *ngFor="let song of songs">
-      <mat-expansion-panel-header>
-        {{ song.title }} <br />
-        {{ song.author }}
-      </mat-expansion-panel-header>
-      <a mat-button color="primary" [href]="song.lyrics" download>Paroles</a>
-      <a mat-button color="primary" [href]="song.tab" download>Tablature</a>
-    </mat-expansion-panel>
-  </mat-accordion>
+<div class="list_container">
+  <div class="list">
+    <div class="shuffle_accordion" *ngIf="isShuffle">
+      <mat-accordion multi="true" *ngIf="songs.length && !isLoading">
+        <mat-expansion-panel *ngFor="let song of songs">
+          <mat-expansion-panel-header>
+            {{ song.title }} <br />
+            {{ song.author }}
+          </mat-expansion-panel-header>
+          <a mat-button color="primary" [href]="song.lyrics" download
+            >Paroles</a
+          >
+          <a mat-button color="primary" [href]="song.tab" download>Tablature</a>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </div>
 </div>
 <mat-paginator
   *ngIf="songs.length > 0 && !isShuffle"

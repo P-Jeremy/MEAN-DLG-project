@@ -24,12 +24,17 @@ mat-spinner {
   margin: auto;
 }
 
-mat-accordion {
-  width: 40%;
+.post_container {
+  width: 100%;
+}
+
+.post {
+  width: 60%;
+  margin: 0 auto;
 }
 
 @media only screen and (max-width: 425px)  {
-  mat-accordion {
-    width: 80%;
+  .post {
+    width: 90%;
   }
 }
