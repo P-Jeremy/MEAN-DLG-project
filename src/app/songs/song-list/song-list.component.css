@@ -20,6 +20,10 @@ mat-spinner {
   text-align: center;
 }
 
+.selected {
+  color: #4156b5;
+}
+
 .shuffle {
   width: 40px;
   left: 0;
