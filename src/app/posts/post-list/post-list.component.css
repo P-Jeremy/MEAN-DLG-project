@@ -23,3 +23,13 @@ mat-paginator {
 mat-spinner {
   margin: auto;
 }
+
+mat-accordion {
+  width: 40%;
+}
+
+@media only screen and (max-width: 425px)  {
+  mat-accordion {
+    width: 80%;
+  }
+}

@@ -75,6 +75,21 @@ mat-spinner {
   font-size: 23px;
 }
 
+.list_container {
+  width: 100%;
+}
+
+.list {
+  width: 60%;
+  margin: 0 auto;
+}
+
+@media only screen and (max-width: 425px)  {
+  .list {
+    width: 90%;
+  }
+}
+
 ::-webkit-input-placeholder {
   text-align: center;
 }

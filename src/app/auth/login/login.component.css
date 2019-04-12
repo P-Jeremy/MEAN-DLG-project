@@ -21,4 +21,7 @@ mat-spinner {
   mat-card {
     width: 80%;
   }
+  .login {
+    margin-bottom: 8px;
+  }
 }
