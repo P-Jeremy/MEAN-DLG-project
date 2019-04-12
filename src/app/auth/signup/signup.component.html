@@ -23,6 +23,7 @@
         #pseudoInput="ngModel"
         required
         />
+        <mat-error *ngIf="pseudoInput.invalid" >Veuillez saisir un pseudo</mat-error>
     </mat-form-field>
     <mat-form-field>
       <input
@@ -33,7 +34,7 @@
       ngModel
       placeholder="Mot de passe"
       #passwordInput="ngModel"/>
-      <mat-error *ngIf="passwordInput" >Please enter a valid password</mat-error>
+      <mat-error *ngIf="passwordInput">Veuillez saisir un mot de passe</mat-error>
     </mat-form-field>
       <mat-form-field>
       <input

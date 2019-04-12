@@ -16,10 +16,30 @@
   box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
 }
 
+.addPost_button_container {
+  width: 100%;
+  text-align: center;
+}
+
 mat-paginator {
   margin-top: 1rem;
 }
 
 mat-spinner {
   margin: auto;
+}
+
+.post_container {
+  width: 100%;
+}
+
+.post {
+  width: 60%;
+  margin: 0 auto;
+}
+
+@media only screen and (max-width: 425px)  {
+  .post {
+    width: 90%;
+  }
 }

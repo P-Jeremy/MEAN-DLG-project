@@ -10,28 +10,38 @@
         placeholder="Email"
         #emailInput="ngModel"
         required
-        email/>
-        <mat-error *ngIf="emailInput.invalid" >Please enter a valid email</mat-error>
+        email
+      />
+      <mat-error *ngIf="emailInput.invalid"
+        >Please enter a valid email</mat-error
+      >
     </mat-form-field>
     <mat-form-field>
       <input
-      matInput
-      type="password"
-      name="password"
-      ngModel
-      placeholder="Password"
-      #passwordInput="ngModel"/>
-      <mat-error *ngIf="passwordInput" >Please enter a valid password</mat-error>
-      </mat-form-field>
-    <button
-      *ngIf="!isLoading"
-      mat-raised-button
-      color="primary"
-      type="submit">
-      Login
-    </button>
-    <a [routerLink]="['/login/resetpassword']">mot de passe oublié ?</a>
+        matInput
+        type="password"
+        name="password"
+        ngModel
+        placeholder="Password"
+        #passwordInput="ngModel"
+      />
+      <mat-error *ngIf="passwordInput">Please enter a valid password</mat-error>
+    </mat-form-field>
+    <div class="connection">
+      <div class="login">
+        <button
+          *ngIf="!isLoading"
+          mat-raised-button
+          color="primary"
+          type="submit"
+        >
+          Login
+        </button>
+      </div>
+      <div>
+        <a [routerLink]="['resetpassword']">mot de passe oublié ?</a>
+      </div>
+    </div>
     <mat-spinner *ngIf="isLoading"></mat-spinner>
   </form>
 </mat-card>
-

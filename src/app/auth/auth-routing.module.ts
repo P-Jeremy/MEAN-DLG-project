@@ -11,7 +11,7 @@ const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'newpassword/:token', component: NewPasswordComponent },
   { path: 'login/resetpassword', component: ForgottenPasswordComponent },
-]
+];
 @NgModule({
   imports: [
     RouterModule.forChild(routes)

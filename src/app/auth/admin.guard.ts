@@ -18,10 +18,8 @@ export class AdminGuard implements CanActivate {
     state: RouterStateSnapshot
   ): boolean | Observable<boolean> | Promise<boolean> {
     const isAdmin = this.authService.getIsAdmin();
-    console.log(isAdmin);
-
     if (!isAdmin) {
-      this.authService.goHome();
+      this.authService.redirect(['/']);
     }
     return isAdmin;
   }

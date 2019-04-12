@@ -1,18 +1,52 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
-<mat-accordion multi="true" *ngIf="posts.length && !isLoading">
-  <mat-expansion-panel *ngFor="let post of posts">
-    <mat-expansion-panel-header>
-      {{post.title}}
-    </mat-expansion-panel-header>
-    <div class="post-image">
-      <img [src]="post.image" [alt]="post.title">
-    </div>
-    <p>{{post.content}}</p>
-    <mat-action-row>
-      <a *ngIf="userIsAuth  && userId == post.creator" [routerLink]="['/edit_post', post.id]" mat-button color="primary">Edit</a>
-      <button *ngIf="userIsAuth && userId == post.creator" mat-button color="warn" (click)="onDelete(post.id)">Delete</button>
-    </mat-action-row>
-  </mat-expansion-panel>
-</mat-accordion>
-<mat-paginator *ngIf="posts.length > 0" [length]="totalPosts" [pageSize]="postsPerPage" [pageSizeOptions]="pageSizeOptions" (page)="onChangedPage($event)"></mat-paginator>
-<p class="mat-body-1 info-text" *ngIf="!posts.length && !isLoading">Nothing posted yet</p>
+<div class="addPost_button_container">
+  <a
+    class="addPost"
+    mat-stroked-button
+    *ngIf="userIsAuth"
+    routerLink="/create_post"
+    ><mat-icon> mail_outline</mat-icon></a
+  >
+</div>
+<div class="post_container">
+  <div class="post">
+    <mat-accordion multi="true" *ngIf="posts.length && !isLoading">
+      <mat-expansion-panel *ngFor="let post of posts">
+        <mat-expansion-panel-header>
+          <strong>{{post.creator_pseudo}}</strong> &nbsp;&nbsp;{{ post.title }}
+        </mat-expansion-panel-header>
+        <div class="post-image">
+          <img [src]="post.image" [alt]="post.title" />
+        </div>
+        <p>{{ post.content }}</p>
+        <mat-action-row>
+          <a
+            *ngIf="userIsAuth && userId == post.creator_id"
+            [routerLink]="['/edit_post', post.id]"
+            mat-button
+            color="primary"
+            >Edit</a
+          >
+          <button
+            *ngIf="userIsAuth && userId == post.creator_id"
+            mat-button
+            color="warn"
+            (click)="onDelete(post.id)"
+          >
+            Delete
+          </button>
+        </mat-action-row>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <mat-paginator
+      *ngIf="posts.length > 0"
+      [length]="totalPosts"
+      [pageSize]="postsPerPage"
+      [pageSizeOptions]="pageSizeOptions"
+      (page)="onChangedPage($event)"
+    ></mat-paginator>
+  </div>
+</div>
+<p class="mat-body-1 info-text" *ngIf="!posts.length && !isLoading">
+  Nothing posted yet
+</p>
