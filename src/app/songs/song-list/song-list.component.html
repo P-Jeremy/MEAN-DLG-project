@@ -71,6 +71,13 @@
       routerLink="/create_song"
       >Ajouter</a
     >
+    <mat-paginator
+  *ngIf="songs.length > 0 && !isShuffle"
+  [length]="totalSongs"
+  [pageSize]="songsPerPage"
+  [pageSizeOptions]="pageSizeOptions"
+  (page)="onChangedPage($event)"
+></mat-paginator>
   </div>
 </div>
 <div class="list_container">
@@ -91,13 +98,6 @@
     </div>
   </div>
 </div>
-<mat-paginator
-  *ngIf="songs.length > 0 && !isShuffle"
-  [length]="totalSongs"
-  [pageSize]="songsPerPage"
-  [pageSizeOptions]="pageSizeOptions"
-  (page)="onChangedPage($event)"
-></mat-paginator>
 <p class="mat-body-1 info-text" *ngIf="!songs.length && !isLoading">
   Pas de titres dans la setlist...
 </p>
