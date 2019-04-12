@@ -66,6 +66,12 @@ export class SongsService {
     return this.songUpdated.asObservable();
   }
 
+  getRandomSong() {
+// tslint:disable-next-line: no-bitwise
+    const randomSong = this.songs[this.songs.length * Math.random() | 0];
+    return this.songUpdated.next({songs : [randomSong], songCount: 1});
+  }
+
   /**
    * @param takes the id of the song to edit
    *
@@ -134,8 +140,11 @@ export class SongsService {
       songData = new FormData();
       songData.append('id', id);
       songData.append('title', title);
-      songData.append('content', author);
+      songData.append('author', author);
       songData.append('lyrics', lyrics, title);
+      songData.append('tab', tab);
+
+
     /* Else, image === url as a string */
     } else if (typeof(tab) === 'object') {
         songData = new FormData();
@@ -143,6 +152,7 @@ export class SongsService {
         songData.append('title', title);
         songData.append('content', author);
         songData.append('tab', tab, title);
+        songData.append('lyrics', lyrics)
       /* Else, image === url as a string */
     } else {
         songData = {
