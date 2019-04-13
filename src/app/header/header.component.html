@@ -1,31 +1,34 @@
 <mat-toolbar color="primary">
-  <span><a routerLink="/">Home</a></span>
+  <span><a *ngIf="!userIsAuth" routerLink="/">Home</a></span>
+  <span *ngIf="userIsAuth">Home</span>
+
   <span class="spacer"></span>
 
   <span class="fill-remaining-space"></span>
 
   <div fxLayout="row" fxHide fxShow.gt-sm>
     <ul>
-      <li *ngIf="userIsAdmin">
-        <button mat-button>Setlist</button>
+      <li *ngIf="userIsAuth">
+        <a mat-button  [mat-menu-trigger-for]="subMenuSet"><h4>Playlist</h4></a>
+
       </li>
       <li *ngIf="userIsAuth">
-        <a mat-button routerLink="/create" routerLinkActive="mat-accent"
-          >Add a post</a
+        <a mat-button routerLink="post" routerLinkActive="mat-accent"
+          ><h4>Taverne</h4></a
         >
       </li>
       <li *ngIf="!userIsAuth">
         <a mat-button routerLink="auth/login" routerLinkActive="mat-accent"
-          >Login</a
+          ><h4>Login</h4></a
         >
       </li>
       <li *ngIf="!userIsAuth">
         <a mat-button routerLink="auth/signup" routerLinkActive="mat-accent"
-          >Sign up</a
+          ><h4>Sign up</h4></a
         >
       </li>
       <li *ngIf="userIsAuth">
-        <button mat-button (click)="onLogout()">Logout</button>
+        <a mat-button (click)="onLogout()"><mat-icon class="logout" color="warn">power_settings_new</mat-icon></a>
       </li>
     </ul>
   </div>
@@ -33,10 +36,14 @@
     <mat-icon>menu</mat-icon>
   </button>
 </mat-toolbar>
+<mat-menu #subMenuSet>
+  <button *ngIf="userIsAuth" mat-menu-item routerLink="/song" routerLinkActive="mat-accent">Liste</button>
+  <button *ngIf="userIsAuth" mat-menu-item [routerLink]="['/song', 'shuffle']" routerLinkActive="mat-accent">Shuffle</button>
+</mat-menu>
 <mat-menu x-position="before" #menu>
-  <button *ngIf="userIsAdmin" mat-menu-item>Setlist</button>
-  <button *ngIf="userIsAuth" mat-menu-item routerLink="/create" routerLinkActive="mat-accent">Add a post</button>
+  <button *ngIf="userIsAuth" mat-menu-item [mat-menu-trigger-for]="subMenuSet">Playlist</button>
+  <button *ngIf="userIsAuth" mat-menu-item routerLink="/post" routerLinkActive="mat-accent">Taverne</button>
   <button *ngIf="!userIsAuth" mat-menu-item routerLink="auth/login" routerLinkActive="mat-accent">Login</button>
   <button *ngIf="!userIsAuth" mat-menu-item routerLink="auth/signup" routerLinkActive="mat-accent">Sign up</button>
-  <button *ngIf="userIsAuth" mat-menu-item color="warn" (click)="onLogout()">Logout</button>
+  <button *ngIf="userIsAuth" mat-menu-item (click)="onLogout()"><mat-icon color="warn">power_settings_new</mat-icon></button>
 </mat-menu>

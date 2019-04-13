@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class AdminGuard implements CanActivate {
 
   constructor(private authService: AuthService) {}
 
@@ -17,10 +17,10 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean | Observable<boolean> | Promise<boolean> {
-    const isAuth = this.authService.getIsAuth();
-    if (!isAuth) {
+    const isAdmin = this.authService.getIsAdmin();
+    if (!isAdmin) {
       this.authService.redirect(['/']);
     }
-    return isAuth;
+    return isAdmin;
   }
 }

@@ -107,7 +107,7 @@ export class AuthService {
     }
     return this.http.post(API_DOMAIN + `signup?key=${apiKey}`, authData)
       .subscribe(() => {
-        this.goHome();
+        this.redirect(['/auth/login']);
       }, error => {
         this.authStatusListener.next(false);
       });
@@ -143,7 +143,7 @@ export class AuthService {
             const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
             this.saveAuthData(token, expirationDate, this.userId, this.isAdmin);
             this.dialog.open(AppMessagesComponent, {data: this.message});
-            this.goHome();
+            this.redirect(['/song']);
           }
         },
         error => {
@@ -185,7 +185,7 @@ export class AuthService {
     .subscribe(() => {
       this.message.content = 'Veillez vérifier votre boîte mail';
       this.dialog.open(AppMessagesComponent, {data: {message: this.message}});
-      this.goHome();
+      this.redirect(['/login']);
     }, error => {
       this.authStatusListener.next(false);
     });
@@ -213,7 +213,7 @@ export class AuthService {
       this.message.content = 'Nouveau mot de passe crée avec succès';
       this.token = null;
       this.dialog.open(AppMessagesComponent, {data: {message: this.message}});
-      this.goHome();
+      this.redirect(['/auth/login']);
     }, error => {
       this.authStatusListener.next(false);
     });
@@ -232,12 +232,12 @@ export class AuthService {
     this.userId = null;
     clearTimeout(this.tokenTimer);
     this.clearAuthData();
-    this.goHome();
+    this.redirect(['/']);
   }
 
   /** Return to home page */
-  goHome() {
-    this.router.navigate(['/']);
+  redirect(to: any[]) {
+    this.router.navigate(to);
   }
 
   /**
@@ -265,7 +265,6 @@ export class AuthService {
     localStorage.setItem('expiration', expirationDate.toISOString());
     localStorage.setItem('userId', userId);
     localStorage.setItem('isAdmin', isAdmin.toString());
-
   }
 
   /**

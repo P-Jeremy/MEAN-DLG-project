@@ -11,7 +11,9 @@ import {
   MatPaginatorModule,
   MatProgressSpinnerModule,
   MatDialogModule,
-  MatMenuModule
+  MatMenuModule,
+  MatCheckboxModule,
+  MatSlideToggleModule
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -32,7 +34,9 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatIconModule,
     MatButtonModule,
     FlexLayoutModule,
-    MatMenuModule
+    MatMenuModule,
+    MatCheckboxModule,
+    MatSlideToggleModule
   ]
 })
 

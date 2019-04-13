@@ -11,12 +11,15 @@ import { HeaderComponent } from './header/header.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppMessagesComponent } from './appMessages/appMessages.component';
 import { PostModule } from './posts/post.module';
+import { SongModule } from './songs/song.module';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    AppMessagesComponent
+    AppMessagesComponent,
+    HomeComponent
   ],
   imports: [
   BrowserModule,
@@ -25,6 +28,7 @@ import { PostModule } from './posts/post.module';
     HttpClientModule,
     AngularMaterialModule,
     PostModule,
+    SongModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},

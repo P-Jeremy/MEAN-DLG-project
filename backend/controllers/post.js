@@ -1,12 +1,21 @@
 const Post = require("../models/post");
+const User = require("../models/user");
+
 
 exports.addPost = async (req, res, next) => {
+  const fetchedUser = await User.findById({_id:req.userData.userId })
+  if (!fetchedUser || !fetchedUser.isActive) {
+    return res.status(403).json({
+      message: "Cet utilisateur ne possède pas de compte actif"
+    });
+  }
   try {
     const newPost = new Post({
       title: req.body.title,
       content: req.body.content,
       image: req.file.location,
-      creator: req.userData.userId
+      creator_id: req.userData.userId,
+      creator_pseudo: fetchedUser.pseudo
     });
     const result = await newPost.save();
     return res.status(201).json({
@@ -16,11 +25,12 @@ exports.addPost = async (req, res, next) => {
         title: result.title,
         content: result.content,
         image: result.image,
-        creator: result.userId
+        creator_id: result.userId,
+        creator_pseudo: result.pseudo
       }
     });
   } catch (error) {
-    return res.status(500).json({
+    res.status(500).json({
       message: "La création du post à échoué..."
     });
   }
@@ -90,7 +100,7 @@ exports.getSinglePost = (req, res, next) => {
 };
 
 exports.deletePost = (req, res, next) => {
-  Post.deleteOne({ _id: req.params.id, creator: req.userData.userId })
+  Post.deleteOne({ _id: req.params.id, creator_id: req.userData.userId })
     .then(result => {
       if (result.n > 0) {
         res.status(200).json(`Deletion successful ! ${result}`);
