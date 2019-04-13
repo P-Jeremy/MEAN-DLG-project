@@ -4,6 +4,6 @@ export interface Post {
   content: string;
   image?: File | string;
   creator_id: string;
-  creator_pseudo: string;
-  date: Date;
+  creator_pseudo?: string;
+  date?: Date;
 }

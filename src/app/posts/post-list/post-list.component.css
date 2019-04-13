@@ -18,6 +18,28 @@
   text-align: center;
 }
 
+.header {
+  width: 100%
+}
+
+.top_header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.top_header div {
+  width: 50%
+}
+
+.top_header :nth-child(2) {
+  text-align: end
+}
+
+.bottom_header {
+  display: flex;
+  justify-content: flex-end
+}
+
 mat-paginator {
   margin-top: 1rem;
 }
@@ -27,8 +49,8 @@ mat-spinner {
 }
 
 .post_container {
-  margin-top: 30px;
-  width: 100%;
+  margin: 0 auto;
+  width: 60%;
 }
 
 .post {
@@ -36,8 +58,12 @@ mat-spinner {
   margin: 0 auto;
 }
 
-@media only screen and (max-width: 425px)  {
-  .post {
-    width: 90%;
+@media only screen and (max-width: 750px)  {
+  .post_container {
+    width: 100%;
+  }
+  mat-card-content {
+    height: 80px;
+    overflow-y: auto ;
   }
 }

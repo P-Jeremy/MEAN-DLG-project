@@ -52,7 +52,8 @@ export class PostCreateComponent implements OnInit, OnDestroy {
                 title: postData.title,
                 content: postData.content,
                 image: postData.image,
-                creator: postData.creator
+                creator_id: postData.creator_id,
+                creator_pseudo: postData.creator_pseudo
               };
               this.form.setValue({
                 title: this.post.title,
@@ -75,7 +76,7 @@ export class PostCreateComponent implements OnInit, OnDestroy {
       id: null,
       title: this.form.value.title,
       content: this.form.value.content,
-      creator: null
+      creator_id: null
     };
     this.isLoading = true;
     if (this.mode === 'create') {

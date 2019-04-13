@@ -8,12 +8,74 @@
     ><mat-icon> mail_outline</mat-icon></a
   >
 </div>
-<div class="post_container">
+<div class="post_container" *ngIf="posts.length && !isLoading">
+  <div class="post_card" *ngFor="let post of posts">
+    <mat-card>
+      <mat-card-subtitle>
+        <div class="header">
+          <div class="top_header">
+            <div>
+              <strong>{{ post.title }} </strong>
+            </div>
+            <div>Posté le: &nbsp;{{ post.date }}</div>
+          </div>
+          <div class="bottom_header">Par: &nbsp;{{ post.creator_pseudo }}</div>
+        </div>
+      </mat-card-subtitle>
+      <img mat-card-image [src]="post.image" [alt]="post.title" />
+      <mat-card-content>
+        <p>{{ post.content }}</p></mat-card-content
+      >
+      <mat-card-actions
+        ><a
+          *ngIf="userIsAuth && userId == post.creator_id"
+          [routerLink]="['/edit_post', post.id]"
+          mat-button
+          color="primary"
+          >Editer</a
+        >
+        <button
+          *ngIf="userIsAuth && userId == post.creator_id"
+          mat-button
+          color="warn"
+          (click)="onDelete(post.id)"
+        >
+          Supprimer
+        </button></mat-card-actions
+      >
+      <mat-card-footer
+        ><mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title> Commentaires </mat-panel-title>
+          </mat-expansion-panel-header >
+          <div class="comments_container">
+          <p>This is the primary content of the panel.</p>
+          <mat-card-actions>
+          </mat-card-actions
+        >
+        </div>
+        </mat-expansion-panel>
+      </mat-card-footer>
+    </mat-card>
+  </div>
+</div>
+
+<!-- <div class="post_container">
   <div class="post">
     <mat-accordion multi="true" *ngIf="posts.length && !isLoading">
       <mat-expansion-panel *ngFor="let post of posts">
         <mat-expansion-panel-header>
-          <strong>{{post.creator_pseudo}}</strong> &nbsp;&nbsp;{{ post.date }}
+          <div class="header">
+            <div class="top_header">
+              <div>
+                <strong>{{ post.creator_pseudo }} </strong>
+              </div>
+              <div>{{ post.date }}</div>
+            </div>
+            <div class="bottom_header">
+              {{ post.title }}
+            </div>
+          </div>
         </mat-expansion-panel-header>
         <div class="post-image">
           <img [src]="post.image" [alt]="post.title" />
@@ -45,8 +107,8 @@
       [pageSizeOptions]="pageSizeOptions"
       (page)="onChangedPage($event)"
     ></mat-paginator>
-  </div>
-</div>
+  </div> -->
+<!-- </div> -->
 <p class="mat-body-1 info-text" *ngIf="!posts.length && !isLoading">
   Nothing posted yet
 </p>
