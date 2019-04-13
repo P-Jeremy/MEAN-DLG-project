@@ -40,13 +40,15 @@ export class PostsService {
       .pipe(map((postData) => {
         return {
           posts: postData.posts.map(post => {
+            const postDate = new Date(post.updatedAt).toLocaleDateString();
             return {
               title: post.title,
               content: post.content,
               id: post._id,
               image: post.image,
               creator_id: post.creator_id,
-              creator_pseudo: post.creator_pseudo
+              creator_pseudo: post.creator_pseudo,
+              date: postDate
             };
           }),
           maxPosts: postData.maxPosts
@@ -81,6 +83,7 @@ export class PostsService {
       image: string,
       creator_id: string,
       creator_pseudo: string
+      date: Date
     }>(API_DOMAIN + id);
   }
 
@@ -101,11 +104,11 @@ export class PostsService {
     this.http.post<{ message: string, post: Post }>(API_DOMAIN, postData)
       .subscribe(() => {
         this.postStatusListener.next(true);
-        this.goHome();
+        this.redirect(['/post']);
       },
         error => {
           this.postStatusListener.next(false);
-          this.goHome();
+          this.redirect(['/post']);
         });
   }
 
@@ -138,18 +141,20 @@ export class PostsService {
         title,
         content,
         image,
-        creator: null
+        creator_id: null,
+        creator_pseudo: null,
+        date: null
       };
     }
     this.http.put(API_DOMAIN + id, postData)
       .subscribe(() => {
-        this.goHome();
+        this.redirect(['/post']);
       });
   }
 
   /** Return to home page */
-  goHome() {
-    this.router.navigate(['/']);
+  redirect(to: any[]) {
+    this.router.navigate(to);
   }
 
   /**

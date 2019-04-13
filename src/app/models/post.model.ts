@@ -3,5 +3,7 @@ export interface Post {
   title: string;
   content: string;
   image?: File | string;
-  creator: string;
+  creator_id: string;
+  creator_pseudo: string;
+  date: Date;
 }
