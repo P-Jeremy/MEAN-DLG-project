@@ -1,9 +1,8 @@
 const Post = require("../models/post");
 const User = require("../models/user");
 
-
 exports.addPost = async (req, res, next) => {
-  const fetchedUser = await User.findById({_id:req.userData.userId })
+  const fetchedUser = await User.findById({ _id: req.userData.userId });
   if (!fetchedUser || !fetchedUser.isActive) {
     return res.status(403).json({
       message: "Cet utilisateur ne possède pas de compte actif"
