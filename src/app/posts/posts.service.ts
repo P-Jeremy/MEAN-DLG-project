@@ -16,14 +16,14 @@ const API_DOMAIN = environment.apiDomain + '/posts/';
 * Makes the service available at all 'root' levels of the application.
 * Wich means everywhere on the SPA
 */
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class PostsService {
   private posts: Post[] = [];
-  private postUpdated = new Subject<{posts: Post[], postCount: number}>();
+  private postUpdated = new Subject<{ posts: Post[], postCount: number }>();
   private postStatusListener = new Subject<boolean>();
 
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) { }
 
   /**
    *  Get Post method
@@ -36,27 +36,29 @@ export class PostsService {
    */
   getPosts(postsPerPage: number, currentPage: number) {
     const queryPaginationParams = `?pageSize=${postsPerPage}&page=${currentPage}`;
-    this.http.get<{message: string, posts: any, maxPosts: number}>(API_DOMAIN + queryPaginationParams)
-        .pipe(map((postData) => {
-          return {
-            posts: postData.posts.map(post => {
-              return {
-                title: post.title,
-                content: post.content,
-                id: post._id,
-                image: post.image,
-                creator: post.creator
-              };
-            }),
-            maxPosts: postData.maxPosts};
-        }))
-        .subscribe((transformedPostData) => {
-          this.posts = transformedPostData.posts;
-          this.postUpdated.next({
-            posts: [...this.posts],
-            postCount: transformedPostData.maxPosts
-          });
+    this.http.get<{ message: string, posts: any, maxPosts: number }>(API_DOMAIN + queryPaginationParams)
+      .pipe(map((postData) => {
+        return {
+          posts: postData.posts.map(post => {
+            return {
+              title: post.title,
+              content: post.content,
+              id: post._id,
+              image: post.image,
+              creator_id: post.creator_id,
+              creator_pseudo: post.creator_pseudo
+            };
+          }),
+          maxPosts: postData.maxPosts
+        };
+      }))
+      .subscribe((transformedPostData) => {
+        this.posts = transformedPostData.posts;
+        this.postUpdated.next({
+          posts: [...this.posts],
+          postCount: transformedPostData.maxPosts
         });
+      });
   }
 
   /**
@@ -77,7 +79,9 @@ export class PostsService {
       title: string,
       content: string,
       image: string,
-      creator: string}>(API_DOMAIN + id);
+      creator_id: string,
+      creator_pseudo: string
+    }>(API_DOMAIN + id);
   }
 
   /**
@@ -94,11 +98,11 @@ export class PostsService {
     postData.append('content', content);
     postData.append('image', image, title);
 
-    this.http.post<{message: string, post: Post}>(API_DOMAIN, postData)
-        .subscribe(() => {
-          this.postStatusListener.next(true);
-          this.goHome();
-        },
+    this.http.post<{ message: string, post: Post }>(API_DOMAIN, postData)
+      .subscribe(() => {
+        this.postStatusListener.next(true);
+        this.goHome();
+      },
         error => {
           this.postStatusListener.next(false);
           this.goHome();
@@ -121,26 +125,26 @@ export class PostsService {
   updatePost(id: string, title: string, content: string, image: File | string) {
     let postData: Post | FormData;
     /* If updated post has a new image as a file */
-    if (typeof(image) === 'object') {
+    if (typeof (image) === 'object') {
       postData = new FormData();
       postData.append('id', id);
       postData.append('title', title);
       postData.append('content', content);
       postData.append('image', image, title);
-    /* Else, image === url as a string */
+      /* Else, image === url as a string */
     } else {
-        postData = {
-          id,
-          title,
-          content,
-          image,
-          creator: null
-        };
+      postData = {
+        id,
+        title,
+        content,
+        image,
+        creator: null
+      };
     }
     this.http.put(API_DOMAIN + id, postData)
-        .subscribe(() => {
-          this.goHome();
-        });
+      .subscribe(() => {
+        this.goHome();
+      });
   }
 
   /** Return to home page */

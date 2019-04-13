@@ -7,4 +7,7 @@ const songSchema = mongoose.Schema({
   tab: {type: String, required: true},
 });
 
+songSchema.set('timestamps', true);
+
+
 module.exports = mongoose.model('Song', songSchema);

@@ -55,10 +55,6 @@ exports.updateSong = async (req, res, next) => {
       message: 'Vous n\'êtes pas authorisé'
     })
   }
-  console.log("COUCU");
-
-  console.log(req.body);
-
   const lyricsPath = req.body.lyrics  ? req.body.lyrics : req.files.lyrics[0].location;
   const tabPath = req.body.tab  ? req.body.tab : req.files.tab[0].location;
   const song = new Song({
