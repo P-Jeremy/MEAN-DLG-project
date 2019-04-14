@@ -8,6 +8,9 @@ const upload = require('../helpers/upload');
 /* Add a post in DB */
 router.post('', checkAuth , upload.single("image"), postController.addPost);
 
+/* Add a comment in DB */
+router.post('/comment/:id', checkAuth , postController.addComment);
+
 /* Get all the posts from DB */
 router.get('', postController.getPosts);
 
