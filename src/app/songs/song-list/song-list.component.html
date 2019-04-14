@@ -39,7 +39,8 @@
         *ngFor="let song of (songs | filterTitle: term:isTitle)"
       >
         <mat-expansion-panel-header>
-          {{ song.title }} <br />
+          <strong>{{ song.title }}</strong>
+          <span class="spacer"></span>
           {{ song.author }}
         </mat-expansion-panel-header>
         <a mat-button color="primary" [href]="song.lyrics" download>Paroles</a>
