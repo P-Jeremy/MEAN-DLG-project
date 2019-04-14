@@ -29,7 +29,10 @@ mat-spinner {
   left: 0;
   right : 0;
   margin: 0 0 30px 0;
+}
 
+.spacer {
+  flex: 1 1 auto;
 }
 
 .shuffle_accordion {
@@ -74,6 +77,10 @@ mat-spinner {
 
 .list_container {
   width: 100%;
+}
+
+mat-expansion-panel-header :nth-child(3) {
+  margin-right: 15px
 }
 
 .list {
