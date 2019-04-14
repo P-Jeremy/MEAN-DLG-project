@@ -42,6 +42,8 @@ export class PostListComponent implements OnInit, OnDestroy {
           this.totalPosts = postData.postCount;
           this.posts = postData.posts;
           this.isLoading = false;
+          console.log(this.posts);
+
         });
     this.userIsAuth = this.authService.getIsAuth();
     this.authListenerSub =  this.authService
@@ -70,11 +72,12 @@ export class PostListComponent implements OnInit, OnDestroy {
     });
   }
 
-  onSaveComment() {
+  onSaveComment(postId: string) {
     if (this.form.invalid) {
       return;
     }
     console.log(this.form.value.comment);
+    this.postsService.addComment(postId, this.form.value.comment );
     this.commentInput = false;
 
   }

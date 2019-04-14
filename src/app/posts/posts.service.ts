@@ -48,7 +48,8 @@ export class PostsService {
               image: post.image,
               creator_id: post.creator_id,
               creator_pseudo: post.creator_pseudo,
-              date: postDate
+              date: postDate,
+              comments: post.comments
             };
           }),
           maxPosts: postData.maxPosts
@@ -110,6 +111,19 @@ export class PostsService {
           this.postStatusListener.next(false);
           this.redirect(['/post']);
         });
+  }
+
+  addComment( postId: string, comment: string) {
+    console.log(comment);
+    const commentData = {
+      comment
+    };
+    this.http.post<{ message: string, post: Post }>(`${API_DOMAIN}/comment/` + postId, commentData)
+      .subscribe((result) => {
+        console.log(result);
+        this.postStatusListener.next(true);
+        this.redirect(['/post']);
+      });
   }
 
   /**

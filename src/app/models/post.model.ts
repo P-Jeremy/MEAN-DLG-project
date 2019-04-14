@@ -6,4 +6,5 @@ export interface Post {
   creator_id: string;
   creator_pseudo?: string;
   date?: Date;
+  comments?: [];
 }

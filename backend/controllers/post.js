@@ -35,6 +35,21 @@ exports.addPost = async (req, res, next) => {
   }
 };
 
+exports.addComment = async (req, res, next) => {
+
+  const fetchedUser = await User.findById({ _id: req.userData.userId });
+  const result = await Post.findOneAndUpdate({_id: req.params.id}, {$push: {comments: {
+    content: req.body.comment,
+    creator_id: fetchedUser._id
+  }}})
+
+  res.status(200).json({
+    message: "Ok",
+    post: result
+  })
+
+}
+
 exports.getPosts = (req, res, next) => {
   const pageSize = +req.query.pageSize; // The '+' allows to use the query as a number instead of a string
   const currentPage = +req.query.page;
