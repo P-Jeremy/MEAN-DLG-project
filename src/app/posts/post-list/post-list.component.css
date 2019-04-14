@@ -71,6 +71,11 @@ mat-spinner {
   word-wrap: break-word;
 }
 
+.comments_container {
+  width: 100%;
+  border-top: 1px solid lightgray;
+}
+
 @media only screen and (max-width: 750px)  {
   .post_container {
     width: 100%;

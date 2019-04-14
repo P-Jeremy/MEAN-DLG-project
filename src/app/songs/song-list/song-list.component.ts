@@ -17,9 +17,9 @@ export class SongListComponent implements OnInit, OnDestroy {
   songs: Song[] = [];
   isLoading = false;
   totalSongs = 0;
-  songsPerPage = 2;
+  songsPerPage = 5;
   currentPage = 1;
-  pageSizeOptions = [1, 3, 5, 10];
+  pageSizeOptions = [5, 10, 20];
   userIsAdmin = false;
   isTitle = true;
   isAuthor = false;
