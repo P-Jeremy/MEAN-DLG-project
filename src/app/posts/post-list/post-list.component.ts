@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { Post } from '../../models/post.model';
@@ -28,29 +28,27 @@ export class PostListComponent implements OnInit, OnDestroy {
   private postSub: Subscription;
   private authListenerSub: Subscription;
 
-  constructor(public postsService: PostsService, private authService: AuthService) {}
+  constructor(public postsService: PostsService, private authService: AuthService) { }
 
   ngOnInit() {
     this.form = new FormGroup({
-      comment: new FormControl(null, {validators: [Validators.required, Validators.maxLength(250)]}),
+      comment: new FormControl(null, { validators: [Validators.required, Validators.maxLength(250)] }),
     });
     this.isLoading = true;
     this.userId = this.authService.getUserId();
     this.postsService.getPosts(this.postsPerPage, this.currentPage);
     this.postSub = this.postsService.getPostUpdatedListener()
-        .subscribe((postData: { posts: Post[], postCount: number}) => {
-          this.totalPosts = postData.postCount;
-          this.posts = postData.posts;
-          this.isLoading = false;
-          console.log(this.posts);
-
-        });
+      .subscribe((postData: { posts: Post[], postCount: number }) => {
+        this.totalPosts = postData.postCount;
+        this.posts = postData.posts;
+        this.isLoading = false;
+      });
     this.userIsAuth = this.authService.getIsAuth();
-    this.authListenerSub =  this.authService
+    this.authListenerSub = this.authService
       .getAuthStatusListener()
       .subscribe(isUserAuth => {
-      this.userIsAuth = isUserAuth;
-      this.userId = this.authService.getUserId();
+        this.userIsAuth = isUserAuth;
+        this.userId = this.authService.getUserId();
       });
   }
 
@@ -61,25 +59,34 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.postsService.getPosts(this.postsPerPage, this.currentPage);
   }
 
-  /* Callback to handle post delete on the DB */
+  /* Callback to handle post delete in the DB */
   onDelete(postId: string) {
     this.isLoading = true;
     this.postsService.deletePost(postId)
+      .subscribe(() => {
+        this.postsService.getPosts(this.postsPerPage, this.currentPage);
+      }, error => {
+        this.isLoading = false;
+      });
+  }
+
+  /* Callback to handle comment saving in the DB */
+  onSaveComment(postId: string) {
+    if (this.form.invalid) {
+      return;
+    }
+    this.postsService.addComment(postId, this.form.value.comment);
+    this.commentInput = false;
+  }
+
+  /* Callback to handle comment deleting in the DB */
+  onDeleteComment(commentId: string, postId: string) {
+    this.postsService.deleteComment(commentId, postId)
     .subscribe(() => {
       this.postsService.getPosts(this.postsPerPage, this.currentPage);
     }, error => {
       this.isLoading = false;
     });
-  }
-
-  onSaveComment(postId: string) {
-    if (this.form.invalid) {
-      return;
-    }
-    console.log(this.form.value.comment);
-    this.postsService.addComment(postId, this.form.value.comment );
-    this.commentInput = false;
-
   }
 
   ngOnDestroy() {

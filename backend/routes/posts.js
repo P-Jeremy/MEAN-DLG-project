@@ -11,6 +11,10 @@ router.post('', checkAuth , upload.single("image"), postController.addPost);
 /* Add a comment in DB */
 router.post('/comment/:id', checkAuth , postController.addComment);
 
+/* Delete a comment from DB */
+router.delete('/comment/:commentId/:postId', checkAuth , postController.deleteComment);
+
+
 /* Get all the posts from DB */
 router.get('', postController.getPosts);
 

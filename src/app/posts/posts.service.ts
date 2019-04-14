@@ -127,6 +127,15 @@ export class PostsService {
   }
 
   /**
+   * Mehthod that handles comment delete
+   * @param commentId id of the comment
+   * @param postId id of the post wich the comment is related to
+   */
+  deleteComment( commentId: string, postId: string) {
+    return this.http.delete(`${API_DOMAIN}/comment/${commentId}/${postId}`)
+  }
+
+  /**
    *  Update Post method
    *
    * @param postId Id of the post to delete
