@@ -130,7 +130,7 @@ export class PostsService {
    * @param postId id of the post wich the comment is related to
    */
   deleteComment( commentId: string, postId: string) {
-    return this.http.delete(`${API_DOMAIN}/comment/${commentId}/${postId}`)
+    return this.http.delete(`${API_DOMAIN}/comment/${commentId}/${postId}`);
   }
 
   /**
