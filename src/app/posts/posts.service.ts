@@ -117,7 +117,7 @@ export class PostsService {
     const commentData = {
       comment
     };
-    this.http.post<{ message: string, post: Post }>(`${API_DOMAIN}/comment/` + postId, commentData)
+    return this.http.post<{ message: string, post: Post }>(`${API_DOMAIN}/comment/` + postId, commentData)
       .subscribe((result) => {
         this.postStatusListener.next(true);
         this.redirect(['/post']);

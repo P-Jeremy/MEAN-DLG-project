@@ -75,19 +75,23 @@ export class PostListComponent implements OnInit, OnDestroy {
     if (this.form.invalid) {
       return;
     }
+    this.isLoading = true;
     this.postsService.addComment(postId, this.form.value.comment);
-    this.postsService.getPosts(this.postsPerPage, this.currentPage);
+    setTimeout(() => {
+      this.postsService.getPosts(this.postsPerPage, this.currentPage);
+    }, 200);
+    this.form.reset();
     this.commentInput = false;
   }
 
   /* Callback to handle comment deleting in the DB */
   onDeleteComment(commentId: string, postId: string) {
     this.postsService.deleteComment(commentId, postId)
-    .subscribe(() => {
-      this.postsService.getPosts(this.postsPerPage, this.currentPage);
-    }, error => {
-      this.isLoading = false;
-    });
+      .subscribe(() => {
+        this.postsService.getPosts(this.postsPerPage, this.currentPage);
+      }, error => {
+        this.isLoading = false;
+      });
   }
 
   ngOnDestroy() {

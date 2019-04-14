@@ -82,7 +82,7 @@
           </mat-card-actions>
           <div class="comments_container" *ngFor="let comment of post.comments">
             <p><strong>{{comment.creator_pseudo}}</strong></p>
-            <p>{{comment.content}}</p>
+            <p class="comment_content">{{comment.content}}</p>
             <button mat-raised-button *ngIf="userId === comment.creator_id" color="warn" (click)="onDeleteComment(comment._id, post.id)">
                 supprimer
             </button>
@@ -92,56 +92,6 @@
     </mat-card>
   </div>
 </div>
-
-<!-- <div class="post_container">
-  <div class="post">
-    <mat-accordion multi="true" *ngIf="posts.length && !isLoading">
-      <mat-expansion-panel *ngFor="let post of posts">
-        <mat-expansion-panel-header>
-          <div class="header">
-            <div class="top_header">
-              <div>
-                <strong>{{ post.creator_pseudo }} </strong>
-              </div>
-              <div>{{ post.date }}</div>
-            </div>
-            <div class="bottom_header">
-              {{ post.title }}
-            </div>
-          </div>
-        </mat-expansion-panel-header>
-        <div class="post-image">
-          <img [src]="post.image" [alt]="post.title" />
-        </div>
-        <p>{{ post.content }}</p>
-        <mat-action-row>
-          <a
-            *ngIf="userIsAuth && userId == post.creator_id"
-            [routerLink]="['/edit_post', post.id]"
-            mat-button
-            color="primary"
-            >Edit</a
-          >
-          <button
-            *ngIf="userIsAuth && userId == post.creator_id"
-            mat-button
-            color="warn"
-            (click)="onDelete(post.id)"
-          >
-            Delete
-          </button>
-        </mat-action-row>
-      </mat-expansion-panel>
-    </mat-accordion>
-    <mat-paginator
-      *ngIf="posts.length > 0"
-      [length]="totalPosts"
-      [pageSize]="postsPerPage"
-      [pageSizeOptions]="pageSizeOptions"
-      (page)="onChangedPage($event)"
-    ></mat-paginator>
-  </div> -->
-<!-- </div> -->
 <p class="mat-body-1 info-text" *ngIf="!posts.length && !isLoading">
   Nothing posted yet
 </p>
