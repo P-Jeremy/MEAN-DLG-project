@@ -76,6 +76,7 @@ export class PostListComponent implements OnInit, OnDestroy {
       return;
     }
     this.postsService.addComment(postId, this.form.value.comment);
+    this.postsService.getPosts(this.postsPerPage, this.currentPage);
     this.commentInput = false;
   }
 

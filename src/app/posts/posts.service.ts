@@ -114,13 +114,11 @@ export class PostsService {
   }
 
   addComment( postId: string, comment: string) {
-    console.log(comment);
     const commentData = {
       comment
     };
     this.http.post<{ message: string, post: Post }>(`${API_DOMAIN}/comment/` + postId, commentData)
       .subscribe((result) => {
-        console.log(result);
         this.postStatusListener.next(true);
         this.redirect(['/post']);
       });
