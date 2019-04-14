@@ -8,12 +8,107 @@
     ><mat-icon> mail_outline</mat-icon></a
   >
 </div>
-<div class="post_container">
+<div class="post_container" *ngIf="posts.length && !isLoading">
+  <div class="post_card" *ngFor="let post of posts">
+    <mat-card>
+      <mat-card-subtitle>
+        <div class="header">
+          <div class="top_header">
+            <div>
+              <strong>{{ post.title }} </strong>
+            </div>
+            <div>Posté le: &nbsp;{{ post.date }}</div>
+          </div>
+          <div class="bottom_header">Par: &nbsp;{{ post.creator_pseudo }}</div>
+        </div>
+      </mat-card-subtitle>
+      <img mat-card-image [src]="post.image" [alt]="post.title" />
+      <mat-card-content>
+        <p>{{ post.content }}</p></mat-card-content
+      >
+      <mat-card-actions
+        ><a
+          *ngIf="userIsAuth && userId == post.creator_id"
+          [routerLink]="['/edit_post', post.id]"
+          mat-button
+          color="primary"
+          >Editer</a
+        >
+        <button
+          *ngIf="userIsAuth && userId == post.creator_id"
+          mat-button
+          color="warn"
+          (click)="onDelete(post.id)"
+        >
+          Supprimer
+        </button></mat-card-actions
+      >
+      <mat-card-footer
+        ><mat-expansion-panel>
+          <mat-expansion-panel-header>
+  <mat-panel-title> Commentaires <span class="spacer"></span>{{post.comments.length}} </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-card-actions>
+            <a
+              *ngIf="userIsAuth && !commentInput"
+              mat-button
+              color="primary"
+              (click)="commentInput = true"
+              >Commenter</a
+            >
+            <form
+              *ngIf="commentInput"
+              [formGroup]="form"
+              (submit)="onSaveComment(post.id)"
+            >
+              <mat-form-field>
+                <input
+                  matInput
+                  type="text"
+                  formControlName="comment"
+                  placeholder="Entrez votre commentaire"
+                />
+                <mat-error *ngIf="form.get('comment').invalid"
+                  >Entrez un commentaire</mat-error
+                >
+              </mat-form-field>
+              <button mat-raised-button color="primary" type="submit">
+                Poster
+              </button>
+              <button mat-raised-button color="warn" type="submit" (click)="commentInput = false">
+                  annuler
+              </button>
+            </form>
+          </mat-card-actions>
+          <div class="comments_container" *ngFor="let comment of post.comments">
+            <p><strong>{{comment.creator_pseudo}}</strong></p>
+            <p>{{comment.content}}</p>
+            <button mat-raised-button *ngIf="userId === comment.creator_id" color="warn" (click)="onDeleteComment(comment._id, post.id)">
+                supprimer
+            </button>
+          </div>
+        </mat-expansion-panel>
+      </mat-card-footer>
+    </mat-card>
+  </div>
+</div>
+
+<!-- <div class="post_container">
   <div class="post">
     <mat-accordion multi="true" *ngIf="posts.length && !isLoading">
       <mat-expansion-panel *ngFor="let post of posts">
         <mat-expansion-panel-header>
-          <strong>{{post.creator_pseudo}}</strong> &nbsp;&nbsp;{{ post.date }}
+          <div class="header">
+            <div class="top_header">
+              <div>
+                <strong>{{ post.creator_pseudo }} </strong>
+              </div>
+              <div>{{ post.date }}</div>
+            </div>
+            <div class="bottom_header">
+              {{ post.title }}
+            </div>
+          </div>
         </mat-expansion-panel-header>
         <div class="post-image">
           <img [src]="post.image" [alt]="post.title" />
@@ -45,8 +140,8 @@
       [pageSizeOptions]="pageSizeOptions"
       (page)="onChangedPage($event)"
     ></mat-paginator>
-  </div>
-</div>
+  </div> -->
+<!-- </div> -->
 <p class="mat-body-1 info-text" *ngIf="!posts.length && !isLoading">
   Nothing posted yet
 </p>

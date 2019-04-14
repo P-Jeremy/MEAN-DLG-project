@@ -48,7 +48,8 @@ export class PostsService {
               image: post.image,
               creator_id: post.creator_id,
               creator_pseudo: post.creator_pseudo,
-              date: postDate
+              date: postDate,
+              comments: post.comments
             };
           }),
           maxPosts: postData.maxPosts
@@ -110,6 +111,26 @@ export class PostsService {
           this.postStatusListener.next(false);
           this.redirect(['/post']);
         });
+  }
+
+  addComment( postId: string, comment: string) {
+    const commentData = {
+      comment
+    };
+    this.http.post<{ message: string, post: Post }>(`${API_DOMAIN}/comment/` + postId, commentData)
+      .subscribe((result) => {
+        this.postStatusListener.next(true);
+        this.redirect(['/post']);
+      });
+  }
+
+  /**
+   * Mehthod that handles comment delete
+   * @param commentId id of the comment
+   * @param postId id of the post wich the comment is related to
+   */
+  deleteComment( commentId: string, postId: string) {
+    return this.http.delete(`${API_DOMAIN}/comment/${commentId}/${postId}`)
   }
 
   /**
