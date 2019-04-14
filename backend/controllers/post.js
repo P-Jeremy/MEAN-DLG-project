@@ -40,8 +40,28 @@ exports.addComment = async (req, res, next) => {
   const fetchedUser = await User.findById({ _id: req.userData.userId });
   const result = await Post.findOneAndUpdate({_id: req.params.id}, {$push: {comments: {
     content: req.body.comment,
-    creator_id: fetchedUser._id
+    creator_id: fetchedUser._id,
+    creator_pseudo: fetchedUser.pseudo
   }}})
+
+  res.status(200).json({
+    message: "Ok",
+    post: result
+  })
+
+}
+
+exports.deleteComment = async (req, res, next) => {
+  console.log("coucou");
+
+console.log(req.params.postId);
+console.log(req.params.commentId);
+
+
+  const result = await Post.findOneAndUpdate({_id: req.params.postId}, {$pull: {comments: {
+    _id: req.params.commentId,
+  }}})
+console.log(result);
 
   res.status(200).json({
     message: "Ok",

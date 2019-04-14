@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const commentSchema  = mongoose.Schema({
   content: {type: String, required: true},
   creator_id : {type: String, required: true},
+  creator_pseudo: {type: String, required: true},
   createdAt: { type: Date, default: Date.now, required: false },
   updatedAt: { type: Date, default: Date.now, required: false },
 })

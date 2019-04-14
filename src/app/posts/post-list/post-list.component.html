@@ -46,7 +46,7 @@
       <mat-card-footer
         ><mat-expansion-panel>
           <mat-expansion-panel-header>
-            <mat-panel-title> Commentaires </mat-panel-title>
+  <mat-panel-title> Commentaires <span class="spacer"></span>{{post.comments.length}} </mat-panel-title>
           </mat-expansion-panel-header>
           <mat-card-actions>
             <a
@@ -81,7 +81,11 @@
             </form>
           </mat-card-actions>
           <div class="comments_container" *ngFor="let comment of post.comments">
+            <p><strong>{{comment.creator_pseudo}}</strong></p>
             <p>{{comment.content}}</p>
+            <button mat-raised-button *ngIf="userId === comment.creator_id" color="warn" (click)="onDeleteComment(comment._id, post.id)">
+                supprimer
+            </button>
           </div>
         </mat-expansion-panel>
       </mat-card-footer>

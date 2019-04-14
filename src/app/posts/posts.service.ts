@@ -114,16 +114,23 @@ export class PostsService {
   }
 
   addComment( postId: string, comment: string) {
-    console.log(comment);
     const commentData = {
       comment
     };
     this.http.post<{ message: string, post: Post }>(`${API_DOMAIN}/comment/` + postId, commentData)
       .subscribe((result) => {
-        console.log(result);
         this.postStatusListener.next(true);
         this.redirect(['/post']);
       });
+  }
+
+  /**
+   * Mehthod that handles comment delete
+   * @param commentId id of the comment
+   * @param postId id of the post wich the comment is related to
+   */
+  deleteComment( commentId: string, postId: string) {
+    return this.http.delete(`${API_DOMAIN}/comment/${commentId}/${postId}`)
   }
 
   /**
