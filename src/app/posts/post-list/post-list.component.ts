@@ -5,6 +5,7 @@ import { Post } from '../../models/post.model';
 import { PostsService } from '../posts.service';
 import { PageEvent } from '@angular/material';
 import { AuthService } from '../../auth/auth.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-post-list',
@@ -21,6 +22,8 @@ export class PostListComponent implements OnInit, OnDestroy {
   pageSizeOptions = [1, 3, 5, 10];
   userIsAuth = false;
   userId: string;
+  commentInput = false;
+  form: FormGroup;
 
   private postSub: Subscription;
   private authListenerSub: Subscription;
@@ -28,6 +31,9 @@ export class PostListComponent implements OnInit, OnDestroy {
   constructor(public postsService: PostsService, private authService: AuthService) {}
 
   ngOnInit() {
+    this.form = new FormGroup({
+      comment: new FormControl(null, {validators: [Validators.required, Validators.maxLength(250)]}),
+    });
     this.isLoading = true;
     this.userId = this.authService.getUserId();
     this.postsService.getPosts(this.postsPerPage, this.currentPage);
@@ -62,6 +68,15 @@ export class PostListComponent implements OnInit, OnDestroy {
     }, error => {
       this.isLoading = false;
     });
+  }
+
+  onSaveComment() {
+    if (this.form.invalid) {
+      return;
+    }
+    console.log(this.form.value.comment);
+    this.commentInput = false;
+
   }
 
   ngOnDestroy() {

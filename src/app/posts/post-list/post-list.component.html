@@ -47,13 +47,42 @@
         ><mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-panel-title> Commentaires </mat-panel-title>
-          </mat-expansion-panel-header >
+          </mat-expansion-panel-header>
           <div class="comments_container">
-          <p>This is the primary content of the panel.</p>
-          <mat-card-actions>
-          </mat-card-actions
-        >
-        </div>
+            <p>This is the primary content of the panel.</p>
+            <mat-card-actions>
+              <a
+                *ngIf="userIsAuth && !commentInput"
+                mat-button
+                color="primary"
+                (click)="commentInput = true"
+                >Commenter</a
+              >
+              <form
+                *ngIf="commentInput"
+                [formGroup]="form"
+                (submit)="onSaveComment()"
+              >
+                <mat-form-field>
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="comment"
+                    placeholder="Entrez votre commentaire"
+                  />
+                  <mat-error *ngIf="form.get('comment').invalid"
+                    >Entrez un commentaire</mat-error
+                  >
+                </mat-form-field>
+                <button mat-raised-button color="primary" type="submit">
+                  Poster
+                </button>
+                <button mat-raised-button color="warn" type="submit" (click)="commentInput = false">
+                    annuler
+                </button>
+              </form>
+            </mat-card-actions>
+          </div>
         </mat-expansion-panel>
       </mat-card-footer>
     </mat-card>
