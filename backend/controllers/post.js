@@ -85,22 +85,31 @@ exports.getPosts = (req, res, next) => {
 
 exports.updatePost = async (req, res, next) => {
   let imagePath;
+  console.log(req.body.image);
+
   if (req.file) {
     imagePath = req.file.location;
   } else {
-    imagePath = req.body.image;
+    imagePath = !req.body.image ? null : req.body.image;
   }
+  console.log(imagePath);
+
   const post = new Post({
     _id: req.body.id,
     title: req.body.title,
     content: req.body.content,
     image: imagePath,
+    updatedAt: new Date(),
     creator: req.userData.userId
   });
+  console.log(post);
+
   const result = await Post.updateOne(
-    { _id: req.params.id, creator: req.userData.userId },
+    { _id: req.params.id, creator_id: req.userData.userId },
     post
   );
+  console.log(result);
+
   if (result.n > 0) {
     res.status(200).json(`Update successful ! ${result}`);
   } else {

@@ -11,7 +11,7 @@ const commentSchema  = mongoose.Schema({
 const postSchema = mongoose.Schema({
   title: {type: String, required: true},
   content: {type: String, required: true},
-  image: {type: String},
+  image: {type: String || null},
   createdAt: { type: Date, default: Date.now, required: false },
   updatedAt: { type: Date, default: Date.now, required: false },
   comments: [commentSchema],
