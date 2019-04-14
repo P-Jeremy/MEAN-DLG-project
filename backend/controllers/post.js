@@ -9,10 +9,11 @@ exports.addPost = async (req, res, next) => {
     });
   }
   try {
+    const image = req.file ?req.file.location : null;
     const newPost = new Post({
       title: req.body.title,
       content: req.body.content,
-      image: req.file.location,
+      image: image,
       creator_id: req.userData.userId,
       creator_pseudo: fetchedUser.pseudo
     });
@@ -36,7 +37,6 @@ exports.addPost = async (req, res, next) => {
 };
 
 exports.addComment = async (req, res, next) => {
-
   const fetchedUser = await User.findById({ _id: req.userData.userId });
   const result = await Post.findOneAndUpdate({_id: req.params.id}, {$push: {comments: {
     content: req.body.comment,
@@ -52,22 +52,13 @@ exports.addComment = async (req, res, next) => {
 }
 
 exports.deleteComment = async (req, res, next) => {
-  console.log("coucou");
-
-console.log(req.params.postId);
-console.log(req.params.commentId);
-
-
   const result = await Post.findOneAndUpdate({_id: req.params.postId}, {$pull: {comments: {
     _id: req.params.commentId,
   }}})
-console.log(result);
-
   res.status(200).json({
     message: "Ok",
     post: result
   })
-
 }
 
 exports.getPosts = (req, res, next) => {

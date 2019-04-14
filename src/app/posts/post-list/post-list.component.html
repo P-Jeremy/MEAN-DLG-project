@@ -9,6 +9,7 @@
   >
 </div>
 <div class="post_container" *ngIf="posts.length && !isLoading">
+
   <div class="post_card" *ngFor="let post of posts">
     <mat-card>
       <mat-card-subtitle>
@@ -22,7 +23,7 @@
           <div class="bottom_header">Par: &nbsp;{{ post.creator_pseudo }}</div>
         </div>
       </mat-card-subtitle>
-      <img mat-card-image [src]="post.image" [alt]="post.title" />
+      <img *ngIf="post.image != null" mat-card-image [src]="post.image" [alt]="post.title" />
       <mat-card-content>
         <p>{{ post.content }}</p></mat-card-content
       >
@@ -82,66 +83,23 @@
           </mat-card-actions>
           <div class="comments_container" *ngFor="let comment of post.comments">
             <p><strong>{{comment.creator_pseudo}}</strong></p>
-            <p>{{comment.content}}</p>
-            <button mat-raised-button *ngIf="userId === comment.creator_id" color="warn" (click)="onDeleteComment(comment._id, post.id)">
-                supprimer
-            </button>
+            <p class="comment_content">{{comment.content}}</p>
+            <mat-icon
+            *ngIf="userId === comment.creator_id" color="warn" (click)="onDeleteComment(comment._id, post.id)">
+                cancel</mat-icon>
           </div>
         </mat-expansion-panel>
       </mat-card-footer>
     </mat-card>
   </div>
+  <mat-paginator
+  *ngIf="posts.length > 0 && !isLoading"
+  [length]="totalPosts"
+  [pageSize]="postsPerPage"
+  [pageSizeOptions]="pageSizeOptions"
+  (page)="onChangedPage($event)"
+></mat-paginator>
 </div>
-
-<!-- <div class="post_container">
-  <div class="post">
-    <mat-accordion multi="true" *ngIf="posts.length && !isLoading">
-      <mat-expansion-panel *ngFor="let post of posts">
-        <mat-expansion-panel-header>
-          <div class="header">
-            <div class="top_header">
-              <div>
-                <strong>{{ post.creator_pseudo }} </strong>
-              </div>
-              <div>{{ post.date }}</div>
-            </div>
-            <div class="bottom_header">
-              {{ post.title }}
-            </div>
-          </div>
-        </mat-expansion-panel-header>
-        <div class="post-image">
-          <img [src]="post.image" [alt]="post.title" />
-        </div>
-        <p>{{ post.content }}</p>
-        <mat-action-row>
-          <a
-            *ngIf="userIsAuth && userId == post.creator_id"
-            [routerLink]="['/edit_post', post.id]"
-            mat-button
-            color="primary"
-            >Edit</a
-          >
-          <button
-            *ngIf="userIsAuth && userId == post.creator_id"
-            mat-button
-            color="warn"
-            (click)="onDelete(post.id)"
-          >
-            Delete
-          </button>
-        </mat-action-row>
-      </mat-expansion-panel>
-    </mat-accordion>
-    <mat-paginator
-      *ngIf="posts.length > 0"
-      [length]="totalPosts"
-      [pageSize]="postsPerPage"
-      [pageSizeOptions]="pageSizeOptions"
-      (page)="onChangedPage($event)"
-    ></mat-paginator>
-  </div> -->
-<!-- </div> -->
 <p class="mat-body-1 info-text" *ngIf="!posts.length && !isLoading">
   Nothing posted yet
 </p>
