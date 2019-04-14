@@ -17,6 +17,14 @@ mat-spinner {
   justify-content: space-between;
 }
 
+
+.login {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 10px;
+}
+
 @media only screen and (max-width: 425px)  {
   mat-card {
     width: 80%;
