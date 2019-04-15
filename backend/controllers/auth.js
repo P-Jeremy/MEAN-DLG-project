@@ -60,9 +60,8 @@ exports.signUp = async (req, res, next) => {
 };
 
 exports.getUserProfile = async (req, res, next) => {
-  const userId = req.params.id;
   try {
-  const foudUser = await User.findOne({_id: userId, isActive: true});
+  const foudUser = await User.findOne({_id: req.userData.userId, isActive: true});
   const userPosts = await Post.find({creator_id: foudUser._id});
     return res.status(200).json({
       message: "Utilisateur trouvé",

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
@@ -17,19 +16,18 @@ export class ProfileComponent implements OnInit {
   isNotifications = false;
   userPseudo: string;
 
-  constructor(public route: ActivatedRoute, public authService: AuthService) { }
+  constructor(public authService: AuthService) { }
 
   ngOnInit() {
     this.isLoading = true;
-    this.route.paramMap.subscribe((paramMap: ParamMap) => {
-      this.userId = paramMap.get('userId');
-      this.userData = this.authService.getUserData(this.userId).subscribe((data) => {
-        this.userData = data;
-        this.userPseudo = data.data.pseudo;
-        this.isNotifications = data.data.notifications;
-        this.isLoading = false;
-      });
+
+    this.userData = this.authService.getUserData().subscribe((data) => {
+      this.userData = data;
+      this.userPseudo = data.data.pseudo;
+      this.isNotifications = data.data.notifications;
+      this.isLoading = false;
     });
+
   }
 
   /* Handle the notification status change */

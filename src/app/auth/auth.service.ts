@@ -242,8 +242,8 @@ export class AuthService {
    *
    * @returns an observable
    */
-  getUserData(userId: string) {
-    return this.http.get<{message: string, data: any, posts: number}>( `${API_DOMAIN}/user/` + userId);
+  getUserData() {
+    return this.http.get<{message: string, data: any, posts: number}>( `${API_DOMAIN}/user`);
   }
 
   /**

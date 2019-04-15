@@ -13,7 +13,7 @@ const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'newpassword/:token', component: NewPasswordComponent },
   { path: 'login/resetpassword', component: ForgottenPasswordComponent },
-  { path: 'profile/:userId', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
 ];
 @NgModule({
   imports: [

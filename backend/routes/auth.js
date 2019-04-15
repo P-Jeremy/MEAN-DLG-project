@@ -6,7 +6,7 @@ const authController = require("../controllers/auth");
 const router = express.Router();
 
 /* Get a single user infos */
-router.get("/user/:id", authController.getUserProfile);
+router.get("/user", checkAuth, authController.getUserProfile);
 
 /* Update notifications status of a user */
 router.put("/user", checkAuth, authController.updateNotifStatus);
