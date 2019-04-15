@@ -8,6 +8,7 @@ import { LoginComponent } from './login/login.component';
 import { NewPasswordComponent } from './newPassword/newPassword.component';
 import { SignupComponent } from './signup/signup.component';
 import { AuthRoutingModule } from './auth-routing.module';
+import { ProfileComponent } from './profile/profile.component';
 
 
 @NgModule({
@@ -16,6 +17,7 @@ import { AuthRoutingModule } from './auth-routing.module';
     LoginComponent,
     NewPasswordComponent,
     SignupComponent,
+    ProfileComponent,
   ],
   imports: [
     CommonModule,

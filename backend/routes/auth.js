@@ -5,6 +5,9 @@ const authController = require("../controllers/auth");
 
 const router = express.Router();
 
+/* Get a single user infos */
+router.get("/user/:id", authController.getUserProfile);
+
 /* Add a user in DB */
 router.post("/signup", authController.signUp);
 
