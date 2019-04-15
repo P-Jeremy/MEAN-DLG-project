@@ -29,7 +29,7 @@ export class AuthService {
     content: null
   };
 
-  private userProfile: {};
+  private userProfile;
   private isAdmin = false;
   private isAuthenticated = false;
   private tokenTimer: NodeJS.Timer;
@@ -282,12 +282,8 @@ export class AuthService {
     localStorage.removeItem('userId');
   }
 
-  private getUserData(userId: string) {
-    this.http.get( `${API_DOMAIN}/user/` + userId)
-    .subscribe((result) => {
-      console.log(result);
-      this.userProfile = result;
-    });
+  getUserData(userId: string) {
+    return this.http.get<{message: string, data: any}>( `${API_DOMAIN}/user/` + userId)
   }
 
   /**
