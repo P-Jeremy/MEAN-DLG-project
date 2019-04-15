@@ -3,9 +3,9 @@ div {
   text-align: center;
 }
 
-div,
+div
 img {
-  width: 70%;
+  width: 35%;
   height: auto;
   margin: 0 auto;
   -webkit-animation: rotation 6s infinite linear;
@@ -21,7 +21,7 @@ img {
 }
 
 @media only screen and (max-width: 750px)  {
-  div,
+  div
   img {
     width: 95%;
   }
