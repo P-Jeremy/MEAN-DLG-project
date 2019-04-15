@@ -35,7 +35,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onLogout() {
-    this.authService.logout();
+    if (confirm('Êtes vous sûr de vouloir vous déconnecter ?')) {
+      this.authService.logout();
+    } else {
+      return;
+    }
   }
 
 }
