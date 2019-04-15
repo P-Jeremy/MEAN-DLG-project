@@ -58,6 +58,21 @@ exports.signUp = async (req, res, next) => {
   }
 };
 
+exports.getUserProfile = async (req, res, next) => {
+  const userId = req.params.id;
+  try {
+  const foudUser = await User.findOne({_id: userId, isActive: true});
+    return res.status(200).json({
+      message: "Utilisateur trouvé",
+      data: foudUser
+    })
+  } catch (error) {
+    res.status(403).json({
+      message: "Aucun utilisateur actif présent en base de données"
+    })
+  }
+}
+
 exports.confirmation = (req, res, next) => {
   const { token } = req.params;
   const decode = jwt.verify(token, secretJwt);
