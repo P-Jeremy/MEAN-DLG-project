@@ -11,6 +11,9 @@ router.get("/user", checkAuth, authController.getUserProfile);
 /* Update notifications status of a user */
 router.put("/user", checkAuth, authController.updateNotifStatus);
 
+/* Change the user's pseudo */
+router.put("/user/pseudo", checkAuth, authController.updatePseudo);
+
 /* Add a user in DB */
 router.post("/signup", authController.signUp);
 
