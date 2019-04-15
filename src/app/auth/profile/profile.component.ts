@@ -14,6 +14,8 @@ export class ProfileComponent implements OnInit {
   private userId: string;
   userData: {};
   isLoading = false;
+  isNotifications = false;
+  userPseudo: string;
 
   constructor(public route: ActivatedRoute, public authService: AuthService) { }
 
@@ -22,9 +24,17 @@ export class ProfileComponent implements OnInit {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       this.userId = paramMap.get('userId');
       this.userData = this.authService.getUserData(this.userId).subscribe((data) => {
-        this.userData = data.data;
+        this.userData = data;
+        this.userPseudo = data.data.pseudo;
+        this.isNotifications = data.data.notifications;
         this.isLoading = false;
       });
+    });
+  }
+
+  /* Handle the notification status change */
+  onToggleNotif(ev: any) {
+    this.authService.changeNotifStatus(ev.checked).subscribe((result) => {
     });
   }
 }

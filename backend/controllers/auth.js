@@ -10,6 +10,7 @@ const apiDomain = process.env.API_DOMAIN;
 const clientDomain = process.env.CLIENT_DOMAIN;
 
 const User = require("../models/user");
+const Post = require("../models/post");
 
 exports.signUp = async (req, res, next) => {
   const { key } = req.query;
@@ -62,9 +63,11 @@ exports.getUserProfile = async (req, res, next) => {
   const userId = req.params.id;
   try {
   const foudUser = await User.findOne({_id: userId, isActive: true});
+  const userPosts = await Post.find({creator_id: foudUser._id});
     return res.status(200).json({
       message: "Utilisateur trouvé",
-      data: foudUser
+      data: foudUser,
+      posts: userPosts.length
     })
   } catch (error) {
     res.status(403).json({
@@ -128,6 +131,21 @@ exports.newPasswordAsk = async (req, res) => {
     });
   }
 };
+
+exports.updateNotifStatus = async (req, res, next) => {
+  const status = req.body.newStatus
+  try {
+  await User.findOneAndUpdate({ _id: req.userData.userId}, {$set:{notifications: status }});
+  return res.status(200).json({
+    message: "Modifié",
+    status: status
+  })
+  } catch (error) {
+    res.status(401).json({
+      message: error.message
+    })
+  }
+}
 
 exports.newPasswordSet = async (req, res, next) => {
   const { password, passwordBis } = req.body;

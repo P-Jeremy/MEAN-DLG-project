@@ -236,6 +236,26 @@ export class AuthService {
     this.redirect(['/']);
   }
 
+  /**
+   * Allows to retrieve all user's Info
+   * @param userId Id of the user
+   *
+   * @returns an observable
+   */
+  getUserData(userId: string) {
+    return this.http.get<{message: string, data: any, posts: number}>( `${API_DOMAIN}/user/` + userId);
+  }
+
+  /**
+   * Allows a user to modify his notification status
+   * @param event true/false
+   */
+  changeNotifStatus(event: boolean) {
+    const status = {
+      newStatus: event
+    };
+    return this.http.put<{message: string, status: boolean}>( `${API_DOMAIN}/user/`, status  );
+  }
   /** Return to home page */
   redirect(to: any[]) {
     this.router.navigate(to);
@@ -282,9 +302,6 @@ export class AuthService {
     localStorage.removeItem('userId');
   }
 
-  getUserData(userId: string) {
-    return this.http.get<{message: string, data: any}>( `${API_DOMAIN}/user/` + userId)
-  }
 
   /**
    * Get the auth info from local storage

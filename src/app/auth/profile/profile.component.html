@@ -1,7 +1,13 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
-<p>
-  profile works!
-</p>
 <mat-card>
-  <p>{{userData.pseudo}}</p>
+  <h1>{{ userPseudo }}</h1>
+  <p>Vous avez actuellement {{userData.posts}} message(s) dans la taverne</p>
+  <div>
+    <span>Recevoir les notifiactions: &nbsp;</span>
+    <mat-checkbox
+      (change)="onToggleNotif($event)"
+      [checked]="isNotifications"
+      [disabled]="false"
+    ></mat-checkbox>
+  </div>
 </mat-card>

@@ -14,7 +14,6 @@ const routes: Routes = [
   { path: 'newpassword/:token', component: NewPasswordComponent },
   { path: 'login/resetpassword', component: ForgottenPasswordComponent },
   { path: 'profile/:userId', component: ProfileComponent, canActivate: [AuthGuard] },
-
 ];
 @NgModule({
   imports: [
