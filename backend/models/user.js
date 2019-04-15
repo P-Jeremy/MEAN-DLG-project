@@ -7,7 +7,8 @@ const userSchema = mongoose.Schema({
   password: { type: String, required: true },
   isActive: { type: Boolean, required: true, default: false },
   isAdmin: { type: Boolean, required: true, default: false },
-  notifications: {type: Boolean, required: true,  default: false}
+  notifications: {type: Boolean, default: false},
+  avatar: {type: String || null}
 });
 
 userSchema.set("timestamps", true);

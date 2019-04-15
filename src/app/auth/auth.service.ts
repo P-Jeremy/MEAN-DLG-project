@@ -210,8 +210,8 @@ export class AuthService {
     return this.http.put( API_DOMAIN + `newpassword`, authData)
     .subscribe((result) => {
 
-      this.message.content = 'Nouveau mot de passe crée avec succès';
       this.token = null;
+      this.message.content = 'Nouveau mot de passe crée avec succès';
       this.dialog.open(AppMessagesComponent, {data: this.message});
       this.redirect(['/auth/login']);
     }, error => {
@@ -236,6 +236,29 @@ export class AuthService {
     this.redirect(['/']);
   }
 
+  /**
+   * Allows to retrieve all user's Info
+   * @param userId Id of the user
+   *
+   * @returns an observable
+   */
+  getUserData() {
+    return this.http.get<{message: string, data: any, posts: number}>( `${API_DOMAIN}/user`);
+  }
+
+  /**
+   * Allows a user to modify his notification status
+   * @param event true/false
+   */
+  changeNotifStatus(event: boolean) {
+    const status = {
+      newStatus: event
+    };
+    return this.http.put<{message: string, status: boolean}>( `${API_DOMAIN}/user/`, status).subscribe(() => {
+      this.message.content = 'Votre demande à bien été prise en compte';
+      this.dialog.open(AppMessagesComponent, {data: this.message});
+    });
+  }
   /** Return to home page */
   redirect(to: any[]) {
     this.router.navigate(to);
@@ -282,9 +305,6 @@ export class AuthService {
     localStorage.removeItem('userId');
   }
 
-  getUserData(userId: string) {
-    return this.http.get<{message: string, data: any}>( `${API_DOMAIN}/user/` + userId)
-  }
 
   /**
    * Get the auth info from local storage
