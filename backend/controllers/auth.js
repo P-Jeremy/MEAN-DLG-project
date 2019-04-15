@@ -75,6 +75,26 @@ exports.getUserProfile = async (req, res, next) => {
   }
 }
 
+exports.updatePseudo = async (req, res, next) => {
+  const isPseudoAvailable = await User.find({pseudo: req.body.data});
+  if (!isPseudoAvailable) {
+    return res.status(401).json({
+      message: "Ce pseudo n'est pas disponnible"
+    })
+  }
+  try {
+    const result = await User.findOneAndUpdate({_id: req.userData.userId}, {pseudo: req.body.pseudo});
+    return res.status(200).json({
+      message: "Nouveau pseudo crée avec succès",
+      data: result
+    })
+  } catch (error) {
+    res.status(403).json({
+      message: "Aucun utilisateur actif présent en base de données"
+    })
+  }
+}
+
 exports.confirmation = (req, res, next) => {
   const { token } = req.params;
   const decode = jwt.verify(token, secretJwt);

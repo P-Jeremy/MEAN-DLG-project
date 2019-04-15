@@ -29,7 +29,6 @@ export class AuthService {
     content: null
   };
 
-  private userProfile;
   private isAdmin = false;
   private isAuthenticated = false;
   private tokenTimer: NodeJS.Timer;
@@ -244,6 +243,18 @@ export class AuthService {
    */
   getUserData() {
     return this.http.get<{message: string, data: any, posts: number}>( `${API_DOMAIN}/user`);
+  }
+
+  /**
+   * Allows a user to change his pseudo
+   *
+   * @param pseudo new pseudo of the user
+   */
+  setNewPseudo(pseudo: string) {
+    const data = {
+      pseudo
+    };
+    return this.http.put<{message: string, data: any}>(`${API_DOMAIN}/user/pseudo`, data);
   }
 
   /**
