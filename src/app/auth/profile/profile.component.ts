@@ -33,8 +33,7 @@ export class ProfileComponent implements OnInit {
   }
 
   /* Handle the notification status change */
-  onToggleNotif(ev: any) {
-    this.authService.changeNotifStatus(ev.checked).subscribe((result) => {
-    });
+  onCheckBoxChange(ev: boolean) {
+    this.authService.changeNotifStatus(ev);
   }
 }

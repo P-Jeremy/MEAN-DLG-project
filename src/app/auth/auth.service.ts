@@ -210,8 +210,8 @@ export class AuthService {
     return this.http.put( API_DOMAIN + `newpassword`, authData)
     .subscribe((result) => {
 
-      this.message.content = 'Nouveau mot de passe crée avec succès';
       this.token = null;
+      this.message.content = 'Nouveau mot de passe crée avec succès';
       this.dialog.open(AppMessagesComponent, {data: this.message});
       this.redirect(['/auth/login']);
     }, error => {
@@ -254,7 +254,10 @@ export class AuthService {
     const status = {
       newStatus: event
     };
-    return this.http.put<{message: string, status: boolean}>( `${API_DOMAIN}/user/`, status  );
+    return this.http.put<{message: string, status: boolean}>( `${API_DOMAIN}/user/`, status).subscribe(() => {
+      this.message.content = 'Votre demande à bien été prise en compte';
+      this.dialog.open(AppMessagesComponent, {data: this.message});
+    });
   }
   /** Return to home page */
   redirect(to: any[]) {

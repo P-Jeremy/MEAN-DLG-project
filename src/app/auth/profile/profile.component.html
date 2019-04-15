@@ -1,11 +1,11 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
 <mat-card>
   <h1>{{ userPseudo }}</h1>
-  <p>Vous avez actuellement {{userData.posts}} message(s) dans la taverne</p>
+  <p>Vous avez actuellement {{userData.posts}} post(s) dans la taverne</p>
   <div>
-    <span>Recevoir les notifiactions: &nbsp;</span>
+    <span>Recevoir les notifications: &nbsp;</span>
     <mat-checkbox
-      (change)="onToggleNotif($event)"
+      (change)="onCheckBoxChange($event.checked)"
       [checked]="isNotifications"
       [disabled]="false"
     ></mat-checkbox>
