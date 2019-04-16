@@ -55,8 +55,8 @@ export class ProfileComponent implements OnInit {
 
   onDelete() {
     this.isLoading = true;
-    if (confirm("Etes vous psur de vouloir supprimer votre profile ?")) {
-      this.authService.deleteProfile()
+    if (confirm('Etes vous psur de vouloir supprimer votre profile ?')) {
+      this.authService.deleteProfile();
     }
   }
 }
