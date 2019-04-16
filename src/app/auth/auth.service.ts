@@ -209,8 +209,8 @@ export class AuthService {
     return this.http.put( API_DOMAIN + `newpassword`, authData)
     .subscribe((result) => {
 
-      this.message.content = 'Nouveau mot de passe crée avec succès';
       this.token = null;
+      this.message.content = 'Nouveau mot de passe crée avec succès';
       this.dialog.open(AppMessagesComponent, {data: this.message});
       this.redirect(['/auth/login']);
     }, error => {
@@ -233,6 +233,48 @@ export class AuthService {
     clearTimeout(this.tokenTimer);
     this.clearAuthData();
     this.redirect(['/']);
+  }
+
+  /**
+   * Allows to retrieve all user's Info
+   * @param userId Id of the user
+   *
+   * @returns an observable
+   */
+  getUserData() {
+    return this.http.get<{message: string, data: any, posts: number}>( `${API_DOMAIN}/user`);
+  }
+
+  /**
+   * Allows a user to change his pseudo
+   *
+   * @param pseudo new pseudo of the user
+   */
+  setNewPseudo(pseudo: string) {
+    const data = {
+      pseudo
+    };
+    return this.http.put<{message: string, data: any}>(`${API_DOMAIN}/user/pseudo`, data);
+  }
+
+  /**
+   * Allows a user to modify his notification status
+   * @param event true/false
+   */
+  changeNotifStatus(event: boolean) {
+    const status = {
+      newStatus: event
+    };
+    return this.http.put<{message: string, status: boolean}>( `${API_DOMAIN}/user/notifications`, status).subscribe(() => {
+      this.message.content = 'Votre demande à bien été prise en compte';
+      this.dialog.open(AppMessagesComponent, {data: this.message});
+    });
+  }
+
+  deleteProfile() {
+    this.http.delete(`${API_DOMAIN}user/profile`).subscribe((sucess)=> {
+      this.logout();
+    });
   }
 
   /** Return to home page */
@@ -280,6 +322,7 @@ export class AuthService {
     localStorage.removeItem('isAdmin');
     localStorage.removeItem('userId');
   }
+
 
   /**
    * Get the auth info from local storage

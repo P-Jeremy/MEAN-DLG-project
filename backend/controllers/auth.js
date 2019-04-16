@@ -10,6 +10,7 @@ const apiDomain = process.env.API_DOMAIN;
 const clientDomain = process.env.CLIENT_DOMAIN;
 
 const User = require("../models/user");
+const Post = require("../models/post");
 
 exports.signUp = async (req, res, next) => {
   const { key } = req.query;
@@ -54,6 +55,48 @@ exports.signUp = async (req, res, next) => {
   } catch (error) {
     return res.status(500).json({
       message: "Inscription impossible..."
+    });
+  }
+};
+
+exports.getUserProfile = async (req, res, next) => {
+  try {
+    const foudUser = await User.findOne({
+      _id: req.userData.userId,
+      isActive: true
+    });
+    const userPosts = await Post.find({ creator_id: foudUser._id });
+    return res.status(200).json({
+      message: "Utilisateur trouvé",
+      data: foudUser,
+      posts: userPosts.length
+    });
+  } catch (error) {
+    res.status(403).json({
+      message: "Aucun utilisateur actif présent en base de données"
+    });
+  }
+};
+
+exports.updatePseudo = async (req, res, next) => {
+  const isPseudoAvailable = await User.find({ pseudo: req.body.data });
+  if (!isPseudoAvailable) {
+    return res.status(401).json({
+      message: "Ce pseudo n'est pas disponnible"
+    });
+  }
+  try {
+    const result = await User.findOneAndUpdate(
+      { _id: req.userData.userId },
+      { pseudo: req.body.pseudo }
+    );
+    return res.status(200).json({
+      message: "Nouveau pseudo crée avec succès",
+      data: result
+    });
+  } catch (error) {
+    res.status(403).json({
+      message: "Aucun utilisateur actif présent en base de données"
     });
   }
 };
@@ -114,6 +157,41 @@ exports.newPasswordAsk = async (req, res) => {
   }
 };
 
+exports.updateNotifStatus = async (req, res, next) => {
+  const status = req.body.newStatus;
+  try {
+    await User.findOneAndUpdate(
+      { _id: req.userData.userId },
+      { $set: { notifications: status } }
+    );
+    return res.status(200).json({
+      message: "Modifié",
+      status: status
+    });
+  } catch (error) {
+    res.status(401).json({
+      message: error.message
+    });
+  }
+};
+
+exports.deleteUser = async (req, res, next) => {
+  try {
+    const deletedUser = await User.findOneAndUpdate(
+      { _id: req.userData.userId },
+      { $set: { isAdmin: false, isActive: false, isDeleted: true } }
+    );
+    return res.status(200).json({
+      message: "Modifié",
+      status: deletedUser.isDeleted
+    });
+  } catch (error) {
+    res.status(401).json({
+      message: error.message
+    });
+  }
+};
+
 exports.newPasswordSet = async (req, res, next) => {
   const { password, passwordBis } = req.body;
   const { email } = req.userData;
@@ -139,9 +217,14 @@ exports.newPasswordSet = async (req, res, next) => {
 
 exports.signIn = async (req, res, next) => {
   const fetchedUser = await User.findOne({ email: req.body.email });
-  if (fetchedUser.isActive === false) {
-    return res.status(403).json({
-      message: "Compte utilisateur non activé..."
+  if (!fetchedUser.isActive) {
+    if (fetchedUser.isDeleted) {
+      return res.status(403).json({
+        message: "Ce compte à été supprimé par l'utilisateur..."
+      });
+    }
+    return res.status(401).json({
+      message: "Vous n'avez pas encore activé votre compte..."
     });
   }
   try {

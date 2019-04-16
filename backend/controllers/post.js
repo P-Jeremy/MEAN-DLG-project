@@ -1,5 +1,7 @@
 const Post = require("../models/post");
 const User = require("../models/user");
+const sendEmail = require("../helpers/email/sendMail");
+const commentNotif = require('../helpers/email/templates/commentsNotif');
 
 exports.addPost = async (req, res, next) => {
   const fetchedUser = await User.findById({ _id: req.userData.userId });
@@ -43,6 +45,12 @@ exports.addComment = async (req, res, next) => {
     creator_id: fetchedUser._id,
     creator_pseudo: fetchedUser.pseudo
   }}})
+
+  const userWantsNotification = await User.findOne({_id: result.creator_id, notifications: true});
+
+  if (userWantsNotification) {
+    sendEmail(commentNotif(userWantsNotification.email, result.title, fetchedUser.pseudo));
+  }
 
   res.status(200).json({
     message: "Ok",
