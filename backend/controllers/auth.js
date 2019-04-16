@@ -21,40 +21,39 @@ exports.signUp = async (req, res, next) => {
       const existingUser = await User.findOne({ pseudo: pseudo });
       if (existingUser) {
         return res.status(403).json({
-          message: `Un utilisateur ${pseudo} existe déjà...`,
-          result
+          message: `Un utilisateur ${pseudo} existe déjà...`
         });
       }
+
       const hash = await bcrypt.hash(password, 10);
+
       const user = new User({
         email: email,
         pseudo: pseudo,
-        password: hash,
-        isActive: false,
-        isAdmin: false
+        password: hash
       });
+
       const result = await user.save();
       const tokenInfo = {
         id: result._id,
         expiresIn: "1d",
         key: key
       };
-      const token = jwt.sign(tokenInfo, secretJwt);
+      const token = await jwt.sign(tokenInfo, secretJwt);
 
-      sendEmail(tokenSignUp(email, `${apiDomain}/auth/confirmation/${token}`));
+      const mailSent = await sendEmail(tokenSignUp(email, `${apiDomain}/auth/confirmation/${token}`));
       return res.status(201).json({
         message: "Veuillez verifier votre boite mail",
-        result
+        result: mailSent
       });
     } else {
       return res.status(403).json({
-        message: "Veuillez entrer une clé valide...",
-        result
+        message: "Veuillez entrer une clé valide..."
       });
     }
   } catch (error) {
     return res.status(500).json({
-      message: "Inscription impossible..."
+      message: `Inscription impossible...${error.message}`
     });
   }
 };

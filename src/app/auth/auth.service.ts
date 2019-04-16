@@ -105,8 +105,10 @@ export class AuthService {
       this.authStatusListener.next(false);
       return this.dialog.open(AppMessagesComponent, {data: this.message});
     }
-    return this.http.post(API_DOMAIN + `signup?key=${apiKey}`, authData)
-      .subscribe(() => {
+    return this.http.post<{message: string}>(API_DOMAIN + `signup?key=${apiKey}`, authData)
+      .subscribe((result) => {
+        this.message.content = result.message;
+        this.dialog.open(AppMessagesComponent, {data: this.message});
         this.redirect(['/auth/login']);
       }, error => {
         this.authStatusListener.next(false);
