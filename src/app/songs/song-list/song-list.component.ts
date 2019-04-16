@@ -51,7 +51,8 @@ export class SongListComponent implements OnInit, OnDestroy {
         this.isLoading = true;
         setTimeout(() => {
           this.onShuffle();
-        }, 140);
+          this.isLoading = false;
+        }, 150);
       }
     });
   }
@@ -75,9 +76,8 @@ export class SongListComponent implements OnInit, OnDestroy {
   }
 
   onShuffle() {
-    // tslint:disable-next-line: no-bitwise
+    this.isLoading = true;
     this.songsService.getRandomSong();
-    this.isLoading = false;
   }
 
   /**

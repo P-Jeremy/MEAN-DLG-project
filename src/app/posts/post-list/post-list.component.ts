@@ -86,13 +86,18 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   /* Callback to handle comment deleting in the DB */
   onDeleteComment(commentId: string, postId: string) {
-    this.isLoading = true;
-    this.postsService.deleteComment(commentId, postId)
-      .subscribe(() => {
-        this.postsService.getPosts(this.postsPerPage, this.currentPage);
-      }, error => {
-        this.isLoading = false;
-      });
+    if (confirm('Voullez vous supprimer ce commentaire ?')) {
+      this.isLoading = true;
+      this.postsService.deleteComment(commentId, postId)
+        .subscribe(() => {
+          this.postsService.getPosts(this.postsPerPage, this.currentPage);
+        }, error => {
+          this.isLoading = false;
+        });
+    } else {
+      return;
+    }
+
   }
 
   ngOnDestroy() {

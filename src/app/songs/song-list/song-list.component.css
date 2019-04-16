@@ -1,4 +1,6 @@
-
+.main_container {
+  margin-top: 60px;
+}
 .info-text {
   text-align: center;
 }

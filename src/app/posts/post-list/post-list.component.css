@@ -1,4 +1,6 @@
-
+.main_container {
+  margin-top: 60px;
+}
 
 .info-text {
   text-align: center;
@@ -9,7 +11,8 @@
 }
 
 .post-image img {
-  width: 100%;
+  margin: 0 auto;
+  width: 60%;
   box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
 }
 
