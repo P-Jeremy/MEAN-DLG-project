@@ -36,7 +36,7 @@ export class PostCreateComponent implements OnInit, OnDestroy {
     this.form = new FormGroup({
       title: new FormControl(null, {validators: [Validators.required, Validators.minLength(3)]}),
       content: new FormControl(null, {validators: [Validators.required]}),
-      image: new FormControl(null, {validators: [Validators.required], asyncValidators : [mimeType]})
+      image: new FormControl(null, {asyncValidators : [mimeType]})
     });
 
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
@@ -52,7 +52,8 @@ export class PostCreateComponent implements OnInit, OnDestroy {
                 title: postData.title,
                 content: postData.content,
                 image: postData.image,
-                creator: postData.creator
+                creator_id: postData.creator_id,
+                creator_pseudo: postData.creator_pseudo
               };
               this.form.setValue({
                 title: this.post.title,
@@ -75,7 +76,7 @@ export class PostCreateComponent implements OnInit, OnDestroy {
       id: null,
       title: this.form.value.title,
       content: this.form.value.content,
-      creator: null
+      creator_id: null
     };
     this.isLoading = true;
     if (this.mode === 'create') {

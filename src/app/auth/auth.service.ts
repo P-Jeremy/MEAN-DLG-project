@@ -148,6 +148,7 @@ export class AuthService {
         },
         error => {
           this.authStatusListener.next(false);
+          this.redirect(['/song']);
         });
   }
 
@@ -184,9 +185,10 @@ export class AuthService {
     return this.http.post( API_DOMAIN + `newpassword`, userEmail)
     .subscribe(() => {
       this.message.content = 'Veillez vérifier votre boîte mail';
-      this.dialog.open(AppMessagesComponent, {data: {message: this.message}});
-      this.redirect(['/login']);
+      this.dialog.open(AppMessagesComponent, {data: this.message});
+      this.redirect(['/auth/login']);
     }, error => {
+      this.redirect(['/auth/login']);
       this.authStatusListener.next(false);
     });
   }
@@ -198,23 +200,21 @@ export class AuthService {
    * @param token token received in the link
    */
   updatePassword(password: string, passwordBis: string, token: string) {
-    if (password !== passwordBis) {
-      this.message.title = 'Oh hell no...';
-      this.message.content = 'Veuillez entrer deux mots de passes identiques';
-      return this.dialog.open(AppMessagesComponent, {data: this.message});
-    }
     this.clearAuthData();
     const authData: AuthData = {
-      password
+      password,
+      passwordBis
     };
     this.token = token ;
     return this.http.put( API_DOMAIN + `newpassword`, authData)
-    .subscribe(() => {
+    .subscribe((result) => {
+
       this.message.content = 'Nouveau mot de passe crée avec succès';
       this.token = null;
-      this.dialog.open(AppMessagesComponent, {data: {message: this.message}});
+      this.dialog.open(AppMessagesComponent, {data: this.message});
       this.redirect(['/auth/login']);
     }, error => {
+      this.redirect(['/auth/login']);
       this.authStatusListener.next(false);
     });
   }

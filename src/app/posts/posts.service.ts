@@ -40,13 +40,16 @@ export class PostsService {
       .pipe(map((postData) => {
         return {
           posts: postData.posts.map(post => {
+            const postDate = new Date(post.updatedAt).toLocaleDateString();
             return {
               title: post.title,
               content: post.content,
               id: post._id,
               image: post.image,
               creator_id: post.creator_id,
-              creator_pseudo: post.creator_pseudo
+              creator_pseudo: post.creator_pseudo,
+              date: postDate,
+              comments: post.comments
             };
           }),
           maxPosts: postData.maxPosts
@@ -81,6 +84,7 @@ export class PostsService {
       image: string,
       creator_id: string,
       creator_pseudo: string
+      date: Date
     }>(API_DOMAIN + id);
   }
 
@@ -101,12 +105,32 @@ export class PostsService {
     this.http.post<{ message: string, post: Post }>(API_DOMAIN, postData)
       .subscribe(() => {
         this.postStatusListener.next(true);
-        this.goHome();
+        this.redirect(['/post']);
       },
         error => {
           this.postStatusListener.next(false);
-          this.goHome();
+          this.redirect(['/post']);
         });
+  }
+
+  addComment( postId: string, comment: string) {
+    const commentData = {
+      comment
+    };
+    return this.http.post<{ message: string, post: Post }>(`${API_DOMAIN}/comment/` + postId, commentData)
+      .subscribe((result) => {
+        this.postStatusListener.next(true);
+        this.redirect(['/post']);
+      });
+  }
+
+  /**
+   * Mehthod that handles comment delete
+   * @param commentId id of the comment
+   * @param postId id of the post wich the comment is related to
+   */
+  deleteComment( commentId: string, postId: string) {
+    return this.http.delete(`${API_DOMAIN}/comment/${commentId}/${postId}`)
   }
 
   /**
@@ -138,18 +162,20 @@ export class PostsService {
         title,
         content,
         image,
-        creator: null
+        creator_id: null,
+        creator_pseudo: null,
+        date: null
       };
     }
     this.http.put(API_DOMAIN + id, postData)
       .subscribe(() => {
-        this.goHome();
+        this.redirect(['/post']);
       });
   }
 
   /** Return to home page */
-  goHome() {
-    this.router.navigate(['/']);
+  redirect(to: any[]) {
+    this.router.navigate(to);
   }
 
   /**

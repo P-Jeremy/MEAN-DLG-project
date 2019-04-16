@@ -37,6 +37,14 @@
         >
           Login
         </button>
+        <button
+        *ngIf="!isLoading"
+        mat-raised-button
+        color="warn"
+        [routerLink]="['/']"
+      >
+        annuler
+      </button>
       </div>
       <div>
         <a [routerLink]="['resetpassword']">mot de passe oublié ?</a>

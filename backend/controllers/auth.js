@@ -66,8 +66,8 @@ exports.confirmation = (req, res, next) => {
     const { id, key } = decode;
     const update =
       key === adminApiKey
-        ? { isActive: 'true', isAdmin: 'true' }
-        : { isActive: 'true', isAdmin: 'false' };
+        ? { isActive: "true", isAdmin: "true" }
+        : { isActive: "true", isAdmin: "false" };
 
     User.updateOne({ _id: id }, update, (err, raw) => {
       if (err) {
@@ -99,10 +99,11 @@ exports.newPasswordAsk = async (req, res) => {
     const tokenInfo = {
       userId: result._id,
       email,
+      hash: result.password,
       expiresIn: "1h"
     };
     const token = jwt.sign(tokenInfo, secretJwt);
-    sendEmail(newPassword(email, `${clientDomain}/newpassword/${token}`));
+    sendEmail(newPassword(email, `${clientDomain}/auth/newpassword/${token}`));
     return res.status(200).json({
       message: "Email envoyé"
     });
@@ -119,18 +120,18 @@ exports.newPasswordSet = async (req, res, next) => {
 
   if (password !== passwordBis) {
     return res.status(403).json({
-      message: "Les mots de passe ne sont pas identiques..."
+      message: `Les mots de passe ne sont pas identiques...${password}${passwordBis}`
     });
   }
   try {
     const result = await User.findOne({ email: email });
     if (result.email === email && result.isActive === true) {
       const hash = await bcrypt.hash(password, 10);
-      await User.updateOne({ _id: result._id, password: hash });
+      await User.findByIdAndUpdate({ _id: result._id, password: hash });
+      return res.status(200).json({
+        message: "Nouveau mot de passe crée"
+      });
     }
-    return res.status(200).json({
-      message: "Nouveau mot de passe crée"
-    });
   } catch (error) {
     return res.status(400);
   }

@@ -1,7 +1,4 @@
-:host {
-  display: block;
-  margin-top: 1rem;
-}
+
 
 .info-text {
   text-align: center;
@@ -21,6 +18,28 @@
   text-align: center;
 }
 
+.header {
+  width: 100%
+}
+
+.top_header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.top_header div {
+  width: 50%
+}
+
+.top_header :nth-child(2) {
+  text-align: end
+}
+
+.bottom_header {
+  display: flex;
+  justify-content: flex-end
+}
+
 mat-paginator {
   margin-top: 1rem;
 }
@@ -29,8 +48,10 @@ mat-spinner {
   margin: auto;
 }
 
+
 .post_container {
-  width: 100%;
+  margin: 0 auto;
+  width: 60%;
 }
 
 .post {
@@ -38,8 +59,29 @@ mat-spinner {
   margin: 0 auto;
 }
 
-@media only screen and (max-width: 425px)  {
-  .post {
-    width: 90%;
+.spacer {
+  flex: 1 1 auto;
+}
+
+.post_card {
+  margin: 30px 0 30px 0
+}
+
+.comment_content {
+  word-wrap: break-word;
+}
+
+.comments_container {
+  width: 100%;
+  border-top: 1px solid lightgray;
+}
+
+@media only screen and (max-width: 750px)  {
+  .post_container {
+    width: 100%;
+  }
+  mat-card-content {
+    max-height: 80px;
+    overflow-y: auto ;
   }
 }

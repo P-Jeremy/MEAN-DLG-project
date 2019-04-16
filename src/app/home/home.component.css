@@ -1,0 +1,29 @@
+div {
+  width: 100%;
+  text-align: center;
+}
+
+div,
+img {
+  width: 70%;
+  height: auto;
+  margin: 0 auto;
+  -webkit-animation: rotation 6s infinite linear;
+}
+
+@-webkit-keyframes rotation {
+		from {
+				-webkit-transform: rotate(0deg);
+		}
+		to {
+				-webkit-transform: rotate(359deg);
+		}
+}
+
+@media only screen and (max-width: 750px)  {
+  div,
+  img {
+    width: 95%;
+  }
+}
+

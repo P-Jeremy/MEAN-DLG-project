@@ -1,4 +1,12 @@
 main {
   width: 80%;
-  margin: 1rem auto;
+  margin: 4rem auto;
+  padding-top: 60px;
+}
+
+app-header {
+  position: fixed;
+  z-index: 1;
+  top:0;
+  width: 100%;
 }
