@@ -58,11 +58,12 @@ exports.addComment = async (req, res, next) => {
     notifications: true
   });
 
-  if (userWantsNotification) {
+  if (userWantsNotification && (req.userData.userId != userWantsNotification._id)) {
     sendEmail(
       commentNotif(
         userWantsNotification.email,
         result.title,
+        req.body.comment,
         fetchedUser.pseudo
       )
     );
