@@ -177,13 +177,13 @@ exports.updateNotifStatus = async (req, res, next) => {
 
 exports.deleteUser = async (req, res, next) => {
   try {
-    await User.findOneAndUpdate(
+    const deletedUser = await User.findOneAndUpdate(
       { _id: req.userData.userId },
       { $set: { isAdmin: false, isActive: false, isDeleted: true } }
     );
     return res.status(200).json({
       message: "Modifié",
-      status: status
+      status: deletedUser.isDeleted
     });
   } catch (error) {
     res.status(401).json({

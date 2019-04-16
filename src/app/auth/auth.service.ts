@@ -272,7 +272,7 @@ export class AuthService {
   }
 
   deleteProfile() {
-    this.http.delete(`${API_DOMAIN}/user/profile`).subscribe((sucess)=> {
+    this.http.delete(`${API_DOMAIN}user/profile`).subscribe((sucess)=> {
       this.logout();
     });
   }
