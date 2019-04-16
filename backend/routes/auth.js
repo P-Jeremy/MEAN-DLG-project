@@ -9,7 +9,10 @@ const router = express.Router();
 router.get("/user", checkAuth, authController.getUserProfile);
 
 /* Update notifications status of a user */
-router.put("/user", checkAuth, authController.updateNotifStatus);
+router.put("/user/notifications", checkAuth, authController.updateNotifStatus);
+
+/* Update isActive & isAdmin to false and isDeleted to true for a user */
+router.put("/user/profile", checkAuth, authController.deleteUser);
 
 /* Change the user's pseudo */
 router.put("/user/pseudo", checkAuth, authController.updatePseudo);
