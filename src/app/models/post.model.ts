@@ -7,4 +7,6 @@ export interface Post {
   creator_pseudo?: string;
   date?: Date;
   comments?: [];
+  updatedAt?: Date;
+  createdAt?: Date;
 }

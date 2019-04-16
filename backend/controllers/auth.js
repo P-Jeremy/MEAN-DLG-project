@@ -12,6 +12,7 @@ const clientDomain = process.env.CLIENT_DOMAIN;
 const User = require("../models/user");
 const Post = require("../models/post");
 
+/* Allows a new user to register */
 exports.signUp = async (req, res, next) => {
   const { key } = req.query;
   const { email, pseudo, password } = req.body;
