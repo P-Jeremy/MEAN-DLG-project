@@ -41,6 +41,11 @@ export class PostListComponent implements OnInit, OnDestroy {
       .subscribe((postData: { posts: Post[], postCount: number }) => {
         this.totalPosts = postData.postCount;
         this.posts = postData.posts;
+        this.posts.sort((a, b) => {
+          return a.updatedAt === b.updatedAt ? 0 : a.updatedAt > b.updatedAt ? -1 : 1;
+        });
+        console.log(this.posts);
+
         this.isLoading = false;
       });
     this.userIsAuth = this.authService.getIsAuth();
