@@ -58,5 +58,6 @@ export class ProfileComponent implements OnInit {
     if (confirm('Etes vous psur de vouloir supprimer votre profile ?')) {
       this.authService.deleteProfile();
     }
+    this.isLoading = false;
   }
 }

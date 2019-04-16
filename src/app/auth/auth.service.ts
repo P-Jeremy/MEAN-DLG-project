@@ -20,7 +20,7 @@ const API_DOMAIN = environment.apiDomain + '/auth/';
 * Makes the service available at all 'root' levels of the application.
 * Wich means everywhere on the SPA
 */
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
 
 
@@ -38,7 +38,7 @@ export class AuthService {
   private adminStatusListener = new Subject<boolean>();
 
 
-  constructor(private http: HttpClient, private router: Router, private dialog: MatDialog) {}
+  constructor(private http: HttpClient, private router: Router, private dialog: MatDialog) { }
 
   /** Returns the token */
   getToken() {
@@ -103,13 +103,13 @@ export class AuthService {
       this.message.title = 'Oh hell no...';
       this.message.content = 'Veuillez entrer deux mots de passes identiques';
       this.authStatusListener.next(false);
-      return this.dialog.open(AppMessagesComponent, {data: this.message});
+      return this.dialog.open(AppMessagesComponent, { data: this.message });
     }
-    return this.http.post(API_DOMAIN + `signup?key=${apiKey}`, authData)
-      .subscribe(() => {
+    return this.http.post<{ message: string }>(API_DOMAIN + `signup?key=${apiKey}`, authData)
+      .subscribe((result) => {
+        this.message.content = result.message;
+        this.dialog.open(AppMessagesComponent, { data: this.message });
         this.redirect(['/auth/login']);
-      }, error => {
-        this.authStatusListener.next(false);
       });
   }
 
@@ -126,26 +126,26 @@ export class AuthService {
       email,
       password,
     };
-    this.http.post<{token: string, expiresIn: number, userId: string, isAdmin: boolean}>( API_DOMAIN + `login`, authData)
-        .subscribe(response => {
-          const token = response.token;
-          this.token = token;
-          if (token) {
-            this.isAdmin = response.isAdmin;
-            this.adminStatusListener.next(response.isAdmin);
-            this.message.content = 'Vous êtes connectés';
-            this.userId = response.userId;
-            const expiresInDuration = response.expiresIn;
-            this.setAuthTimer(expiresInDuration);
-            this.isAuthenticated = true;
-            this.authStatusListener.next(true);
-            const now = new Date ();
-            const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
-            this.saveAuthData(token, expirationDate, this.userId, this.isAdmin);
-            this.dialog.open(AppMessagesComponent, {data: this.message});
-            this.redirect(['/song']);
-          }
-        },
+    this.http.post<{ token: string, expiresIn: number, userId: string, isAdmin: boolean }>(API_DOMAIN + `login`, authData)
+      .subscribe(response => {
+        const token = response.token;
+        this.token = token;
+        if (token) {
+          this.isAdmin = response.isAdmin;
+          this.adminStatusListener.next(response.isAdmin);
+          this.message.content = 'Vous êtes connectés';
+          this.userId = response.userId;
+          const expiresInDuration = response.expiresIn;
+          this.setAuthTimer(expiresInDuration);
+          this.isAuthenticated = true;
+          this.authStatusListener.next(true);
+          const now = new Date();
+          const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
+          this.saveAuthData(token, expirationDate, this.userId, this.isAdmin);
+          this.dialog.open(AppMessagesComponent, { data: this.message });
+          this.redirect(['/song']);
+        }
+      },
         error => {
           this.authStatusListener.next(false);
           this.redirect(['/song']);
@@ -182,15 +182,15 @@ export class AuthService {
     const userEmail = {
       email
     };
-    return this.http.post( API_DOMAIN + `newpassword`, userEmail)
-    .subscribe(() => {
-      this.message.content = 'Veillez vérifier votre boîte mail';
-      this.dialog.open(AppMessagesComponent, {data: this.message});
-      this.redirect(['/auth/login']);
-    }, error => {
-      this.redirect(['/auth/login']);
-      this.authStatusListener.next(false);
-    });
+    return this.http.post(API_DOMAIN + `newpassword`, userEmail)
+      .subscribe(() => {
+        this.message.content = 'Veillez vérifier votre boîte mail';
+        this.dialog.open(AppMessagesComponent, { data: this.message });
+        this.redirect(['/auth/login']);
+      }, error => {
+        this.redirect(['/auth/login']);
+        this.authStatusListener.next(false);
+      });
   }
 
   /**
@@ -205,18 +205,17 @@ export class AuthService {
       password,
       passwordBis
     };
-    this.token = token ;
-    return this.http.put( API_DOMAIN + `newpassword`, authData)
-    .subscribe((result) => {
-
-      this.token = null;
-      this.message.content = 'Nouveau mot de passe crée avec succès';
-      this.dialog.open(AppMessagesComponent, {data: this.message});
-      this.redirect(['/auth/login']);
-    }, error => {
-      this.redirect(['/auth/login']);
-      this.authStatusListener.next(false);
-    });
+    this.token = token;
+    return this.http.put(API_DOMAIN + `newpassword`, authData)
+      .subscribe((result) => {
+        this.token = null;
+        this.message.content = 'Nouveau mot de passe crée avec succès';
+        this.dialog.open(AppMessagesComponent, { data: this.message });
+        this.redirect(['/auth/login']);
+      }, error => {
+        this.redirect(['/auth/login']);
+        this.authStatusListener.next(false);
+      });
   }
 
   /**
@@ -242,7 +241,7 @@ export class AuthService {
    * @returns an observable
    */
   getUserData() {
-    return this.http.get<{message: string, data: any, posts: number}>( `${API_DOMAIN}/user`);
+    return this.http.get<{ message: string, data: any, posts: number }>(`${API_DOMAIN}/user`);
   }
 
   /**
@@ -254,7 +253,7 @@ export class AuthService {
     const data = {
       pseudo
     };
-    return this.http.put<{message: string, data: any}>(`${API_DOMAIN}/user/pseudo`, data);
+    return this.http.put<{ message: string, data: any }>(`${API_DOMAIN}/user/pseudo`, data);
   }
 
   /**
@@ -265,14 +264,14 @@ export class AuthService {
     const status = {
       newStatus: event
     };
-    return this.http.put<{message: string, status: boolean}>( `${API_DOMAIN}/user/notifications`, status).subscribe(() => {
+    return this.http.put<{ message: string, status: boolean }>(`${API_DOMAIN}/user/notifications`, status).subscribe(() => {
       this.message.content = 'Votre demande à bien été prise en compte';
-      this.dialog.open(AppMessagesComponent, {data: this.message});
+      this.dialog.open(AppMessagesComponent, { data: this.message });
     });
   }
 
   deleteProfile() {
-    this.http.delete(`${API_DOMAIN}/user/profile`).subscribe((sucess)=> {
+    this.http.delete(`${API_DOMAIN}user/profile`).subscribe((sucess) => {
       this.logout();
     });
   }

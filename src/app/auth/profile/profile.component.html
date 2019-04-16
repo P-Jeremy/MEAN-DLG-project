@@ -2,7 +2,7 @@
 <mat-card>
   <mat-card-title>
     <h1 *ngIf="!isEdit">{{ userPseudo }}</h1>
-    <mat-card-action>
+    <mat-card-actions>
       <form [formGroup]="form" (submit)="onSaveProfile()">
         <mat-form-field *ngIf="isEdit">
           <input
@@ -16,19 +16,28 @@
             >Veuillez saisir un pseudo de 4 charactères minimum</mat-error
           >
         </mat-form-field>
-        <button *ngIf="isEdit" mat-raised-button color="primary" type="submit">
-          Valider
-        </button>
-        <button
-          *ngIf="isEdit"
-          mat-raised-button
-          color="warn"
-          (click)="onEdit()"
-        >
-          Annuler
-        </button>
+        <div>
+          <button
+            *ngIf="isEdit"
+            mat-raised-button
+            color="primary"
+            type="submit"
+          >
+            Valider
+          </button>
+          <span class="spacer"></span>
+
+          <button
+            *ngIf="isEdit"
+            mat-raised-button
+            color="warn"
+            (click)="onEdit()"
+          >
+            Annuler
+          </button>
+        </div>
       </form>
-    </mat-card-action>
+    </mat-card-actions>
   </mat-card-title>
 
   <p>Vous avez actuellement {{ userData.posts }} post(s) dans la taverne</p>
@@ -49,6 +58,7 @@
     >
       Editer
     </button>
+    <span class="spacer"></span>
     <button *ngIf="!isEdit" mat-raised-button color="warn" (click)="onDelete()">
       supprimer profile
     </button>
