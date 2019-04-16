@@ -1,7 +1,7 @@
 const Post = require("../models/post");
 const User = require("../models/user");
 const sendEmail = require("../helpers/email/sendMail");
-const commentNotif = require('../helpers/email/templates/commentsNotif');
+const commentNotif = require("../helpers/email/templates/commentsNotif");
 
 exports.addPost = async (req, res, next) => {
   const fetchedUser = await User.findById({ _id: req.userData.userId });
@@ -11,7 +11,7 @@ exports.addPost = async (req, res, next) => {
     });
   }
   try {
-    const image = req.file ?req.file.location : null;
+    const image = req.file ? req.file.location : null;
     const newPost = new Post({
       title: req.body.title,
       content: req.body.content,
@@ -40,39 +40,61 @@ exports.addPost = async (req, res, next) => {
 
 exports.addComment = async (req, res, next) => {
   const fetchedUser = await User.findById({ _id: req.userData.userId });
-  const result = await Post.findOneAndUpdate({_id: req.params.id}, {$push: {comments: {
-    content: req.body.comment,
-    creator_id: fetchedUser._id,
-    creator_pseudo: fetchedUser.pseudo
-  }}})
+  const result = await Post.findOneAndUpdate(
+    { _id: req.params.id },
+    {
+      $push: {
+        comments: {
+          content: req.body.comment,
+          creator_id: fetchedUser._id,
+          creator_pseudo: fetchedUser.pseudo
+        }
+      }
+    }
+  );
 
-  const userWantsNotification = await User.findOne({_id: result.creator_id, notifications: true});
+  const userWantsNotification = await User.findOne({
+    _id: result.creator_id,
+    notifications: true
+  });
 
   if (userWantsNotification) {
-    sendEmail(commentNotif(userWantsNotification.email, result.title, fetchedUser.pseudo));
+    sendEmail(
+      commentNotif(
+        userWantsNotification.email,
+        result.title,
+        fetchedUser.pseudo
+      )
+    );
   }
 
   res.status(200).json({
     message: "Ok",
     post: result
-  })
-
-}
+  });
+};
 
 exports.deleteComment = async (req, res, next) => {
-  const result = await Post.findOneAndUpdate({_id: req.params.postId}, {$pull: {comments: {
-    _id: req.params.commentId,
-  }}})
+  const result = await Post.findOneAndUpdate(
+    { _id: req.params.postId },
+    {
+      $pull: {
+        comments: {
+          _id: req.params.commentId
+        }
+      }
+    }
+  );
   res.status(200).json({
     message: "Ok",
     post: result
-  })
-}
+  });
+};
 
 exports.getPosts = (req, res, next) => {
   const pageSize = +req.query.pageSize; // The '+' allows to use the query as a number instead of a string
   const currentPage = +req.query.page;
-  const postQuery = Post.find();
+  const postQuery = Post.find({ isActive: true });
   let fetchedPost;
   if (pageSize && currentPage) {
     postQuery.skip(pageSize * (currentPage - 1)).limit(pageSize);
@@ -134,20 +156,26 @@ exports.getSinglePost = (req, res, next) => {
     });
 };
 
-exports.deletePost = (req, res, next) => {
-  Post.deleteOne({ _id: req.params.id, creator_id: req.userData.userId })
-    .then(result => {
-      if (result.n > 0) {
-        res.status(200).json(`Deletion successful ! ${result}`);
-      } else {
-        res
-          .status(401)
-          .json({ message: `Vous n'êtes pas authorisé à modifier ce post` });
-      }
-    })
-    .catch(error => {
-      res.status(500).json({
-        message: "La suppression du post à échoué..."
-      });
+exports.deletePost = async (req, res, next) => {
+  const fetchedPost = await Post.findOne({
+    _id: req.params.id,
+    creator_id: req.userData.userId
+  });
+
+  if (!fetchedPost) {
+    return res.status(403).json({
+      message: "Vous n'êtes pas authorisé a supprimer ce post"
     });
+  }
+
+  try {
+    await Post.findOneAndUpdate({ _id: fetchedPost._id }, { isActive: false });
+    res.status(200).json({
+      message: "Le message à bien été supprimé"
+    });
+  } catch {
+    res.status(500).json({
+      message: "La suppression du post à échoué..."
+    });
+  }
 };
