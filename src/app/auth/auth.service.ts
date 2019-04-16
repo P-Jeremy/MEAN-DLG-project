@@ -265,11 +265,18 @@ export class AuthService {
     const status = {
       newStatus: event
     };
-    return this.http.put<{message: string, status: boolean}>( `${API_DOMAIN}/user/`, status).subscribe(() => {
+    return this.http.put<{message: string, status: boolean}>( `${API_DOMAIN}/user/notifications`, status).subscribe(() => {
       this.message.content = 'Votre demande à bien été prise en compte';
       this.dialog.open(AppMessagesComponent, {data: this.message});
     });
   }
+
+  deleteProfile() {
+    this.http.delete(`${API_DOMAIN}/user/profile`).subscribe((sucess)=> {
+      this.logout();
+    });
+  }
+
   /** Return to home page */
   redirect(to: any[]) {
     this.router.navigate(to);

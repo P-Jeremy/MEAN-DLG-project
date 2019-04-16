@@ -44,12 +44,19 @@ export class ProfileComponent implements OnInit {
 
   onSaveProfile() {
     this.isLoading = true;
-    this.authService.setNewPseudo(this.form.value.pseudo).subscribe((result) => {
-      this.isEdit = false;
+    this.authService.setNewPseudo(this.form.value.pseudo).subscribe(() => {
       this.authService.getUserData().subscribe((res) => {
         this.userPseudo = res.data.pseudo;
+        this.isEdit = false;
         this.isLoading = false;
       });
     });
+  }
+
+  onDelete() {
+    this.isLoading = true;
+    if (confirm("Etes vous psur de vouloir supprimer votre profile ?")) {
+      this.authService.deleteProfile()
+    }
   }
 }
