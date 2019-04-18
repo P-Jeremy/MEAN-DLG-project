@@ -13,7 +13,7 @@
         email
       />
       <mat-error *ngIf="emailInput.invalid"
-        >Please enter a valid email</mat-error
+        >Cet email n'est pas valide</mat-error
       >
     </mat-form-field>
     <mat-form-field>
@@ -25,7 +25,7 @@
         placeholder="Password"
         #passwordInput="ngModel"
       />
-      <mat-error *ngIf="passwordInput">Please enter a valid password</mat-error>
+      <mat-error *ngIf="passwordInput">Entrez un mot de passe valide</mat-error>
     </mat-form-field>
     <div class="connection">
       <div class="login">
@@ -35,7 +35,7 @@
           color="primary"
           type="submit"
         >
-          Login
+          Connexion
         </button>
         <button
         *ngIf="!isLoading"

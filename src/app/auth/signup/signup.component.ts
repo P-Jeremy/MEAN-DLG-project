@@ -30,6 +30,7 @@ export class SignupComponent implements OnInit, OnDestroy {
     }
     this.isLoading = true;
     this.authService.createUser(form.value.email, form.value.pseudo, form.value.password, form.value.passwordBis, form.value.apiKey);
+    this.isLoading = false;
   }
 
   ngOnDestroy() {
