@@ -76,9 +76,14 @@ export class SongListComponent implements OnInit, OnDestroy {
   }
 
   onShuffle() {
-    this.isLoading = true;
-    this.songsService.getRandomSong()
-    this.isLoading = false;
+    if (this.songs.length > 0) {
+      this.isLoading = true;
+      this.songsService.getRandomSong()
+      this.isLoading = false;
+    } else {
+      this.isLoading = false;
+      return;
+    }
   }
 
   /**

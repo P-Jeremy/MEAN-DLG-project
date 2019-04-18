@@ -1,5 +1,5 @@
-<mat-spinner *ngIf="isLoading"></mat-spinner>
 <mat-card *ngIf="!isLoading">
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
   <form [formGroup]="form" (submit)="onSaveSong()">
     <mat-form-field>
       <input matInput type="text" formControlName="title" placeholder="Titre" />
@@ -18,24 +18,34 @@
         >Veuillez saisir l'interprète</mat-error
       >
     </mat-form-field>
-    <div fxLayout="row"fxLayout.xs="column" class="buttons_container">
-      <div class="upload_container" fxFlex="50%" >
-        <button [ngClass]="{'green': form.get('lyrics').valid}" (click)="lyricsPicker.click()" mat-stroked-button type="button">
+    <div fxLayout="row" fxLayout.xs="column" class="buttons_container">
+      <div class="upload_container" fxFlex="50%">
+        <button
+          [ngClass]="{ green: form.get('lyrics').valid }"
+          (click)="lyricsPicker.click()"
+          mat-stroked-button
+          type="button"
+        >
           Paroles
         </button>
         <input type="file" #lyricsPicker (change)="onLyricsPicked($event)" />
         <mat-error *ngIf="lyrics && form.get('lyrics').invalid"
-        >Pdf seulement...</mat-error
-      >
+          >Pdf seulement...</mat-error
+        >
       </div>
-      <div class="upload_container" fxFlex="50%" >
-        <button [ngClass]="{'green': form.get('tab').valid}" (click)="tabPicker.click()" mat-stroked-button type="button">
+      <div class="upload_container" fxFlex="50%">
+        <button
+          [ngClass]="{ green: form.get('tab').valid }"
+          (click)="tabPicker.click()"
+          mat-stroked-button
+          type="button"
+        >
           Tablatures
         </button>
         <input type="file" #tabPicker (change)="onTabPicked($event)" />
         <mat-error *ngIf="tab && form.get('tab').invalid"
-        >Pdf seulement...</mat-error
-      >
+          >Pdf seulement...</mat-error
+        >
       </div>
     </div>
     <button mat-raised-button color="primary" type="submit">
