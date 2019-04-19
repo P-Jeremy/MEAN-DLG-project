@@ -1,6 +1,9 @@
+:host {
+  margin-top: 60px;
+}
 
 mat-card {
-  width: 50%;
+  width: 40%;
   margin: 0 auto;
 }
 

@@ -9,6 +9,7 @@ import { NewPasswordComponent } from './newPassword/newPassword.component';
 import { SignupComponent } from './signup/signup.component';
 import { AuthRoutingModule } from './auth-routing.module';
 import { ProfileComponent } from './profile/profile.component';
+import { StaticModule } from '../static/static.module';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { ProfileComponent } from './profile/profile.component';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    AuthRoutingModule
+    AuthRoutingModule,
+    StaticModule
   ]
 })
 

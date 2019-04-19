@@ -1,15 +1,11 @@
-<mat-spinner *ngIf="isLoading"></mat-spinner>
 <div class="main_container">
-  <div class="shuffle_button_container">
-    <a
-      class="shuffle"
-      mat-stroked-button
-      *ngIf="isShuffle"
-      (click)="onShuffle()"
+  <app-spinner *ngIf="isLoading"></app-spinner>
+  <div *ngIf="isShuffle && songs.length > 0" class="shuffle_button_container">
+    <a class="shuffle" mat-stroked-button (click)="onShuffle()"
       ><mat-icon> swap_calls</mat-icon></a
     >
   </div>
-  <div *ngIf="!isShuffle" class="search_bar_container">
+  <div *ngIf="!isShuffle && !isLoading" class="search_bar_container">
     <div class="search_bar">
       <input
         type="text"
@@ -34,7 +30,7 @@
       </div>
     </div>
   </div>
-  <div class="list_container">
+  <div *ngIf="!isLoading" class="list_container">
     <div class="list">
       <mat-accordion
         multi="true"
@@ -56,7 +52,7 @@
             >Paroles</a
           >
           <a mat-button color="primary" [href]="song.tab" download>Tablature</a>
-          <mat-action-row>
+          <mat-action-row *ngIf="userIsAdmin">
             <a
               *ngIf="userIsAdmin"
               [routerLink]="['/edit_song', song.id]"
@@ -94,12 +90,20 @@
   </div>
   <div class="list_container">
     <div class="list">
-      <div class="shuffle_accordion" *ngIf="isShuffle">
-        <mat-accordion multi="true" *ngIf="songs.length && !isLoading">
+      <div class="shuffle_accordion">
+        <mat-accordion
+          multi="true"
+          *ngIf="isShuffle && songs.length > 0 && !isLoading"
+        >
           <mat-expansion-panel *ngFor="let song of songs">
             <mat-expansion-panel-header>
-              {{ song.title }} <br />
-              {{ song.author }}
+              <div>
+                <strong>{{ song.title }}</strong>
+              </div>
+              <span class="spacer"></span>
+              <div>
+                {{ song.author }}
+              </div>
             </mat-expansion-panel-header>
             <a mat-button color="primary" [href]="song.lyrics" download
               >Paroles</a
