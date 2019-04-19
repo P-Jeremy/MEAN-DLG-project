@@ -1,10 +1,21 @@
 
+mat-card {
+  width: 40%;
+  margin: 60px auto;
+}
+
 mat-form-field, textarea {
   width: 100%;
 }
 
-mat-spinner {
+.image {
+  margin-bottom: 10px;
+}
+
+.buttons_container {
   margin: auto;
+  display: flex;
+  justify-content: space-around
 }
 
 input[type="file"] {
@@ -18,4 +29,15 @@ input[type="file"] {
 
 .image-preview img {
   height: 100%;
+}
+
+mat-card-actions {
+  width: 100%
+}
+
+@media only screen and (max-width: 750px)  {
+
+  mat-card {
+    width: 80%;
+  }
 }

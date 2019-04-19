@@ -21,7 +21,7 @@ import { environment } from '../environments/environment';
     AppComponent,
     HeaderComponent,
     AppMessagesComponent,
-    HomeComponent
+    HomeComponent,
   ],
   imports: [
   BrowserModule,

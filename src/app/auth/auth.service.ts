@@ -148,7 +148,7 @@ export class AuthService {
       },
         error => {
           this.authStatusListener.next(false);
-          this.redirect(['/song']);
+          this.redirect(['/']);
         });
   }
 

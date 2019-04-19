@@ -1,7 +1,12 @@
-<mat-spinner *ngIf="isLoading"></mat-spinner>
-<mat-card>
-  <mat-card-title>
-    <h1 *ngIf="!isEdit">{{ userPseudo }}</h1>
+<div class="container">
+  <app-spinner *ngIf="isLoading"></app-spinner>
+  <mat-card *ngIf="!isLoading">
+    <mat-card-title color="primary">
+      <div class="title">
+        <h3 *ngIf="!isEdit">{{ userPseudo }}</h3>
+      </div>
+    </mat-card-title>
+
     <mat-card-actions>
       <form [formGroup]="form" (submit)="onSaveProfile()">
         <mat-form-field *ngIf="isEdit">
@@ -38,29 +43,37 @@
         </div>
       </form>
     </mat-card-actions>
-  </mat-card-title>
-
-  <p>Vous avez actuellement {{ userData.posts }} post(s) dans la taverne</p>
-  <div>
-    <span>Recevoir les notifications: &nbsp;</span>
-    <mat-checkbox
-      (change)="onCheckBoxChange($event.checked)"
-      [checked]="isNotifications"
-      [disabled]="false"
-    ></mat-checkbox>
-  </div>
-  <mat-card-actions>
-    <button
-      *ngIf="!isEdit"
-      mat-raised-button
-      color="primary"
-      (click)="onEdit()"
-    >
-      Editer
-    </button>
-    <span class="spacer"></span>
-    <button *ngIf="!isEdit" mat-raised-button color="warn" (click)="onDelete()">
-      supprimer profile
-    </button>
-  </mat-card-actions>
-</mat-card>
+    <p>
+      Post(s) dans la taverne:<span class="postCount">{{ userPosts }}</span>
+    </p>
+    <br />
+    <div>
+      <span>Recevoir les notifications: &nbsp;</span>
+      <mat-checkbox
+        (change)="onCheckBoxChange($event.checked)"
+        [checked]="isNotifications"
+        [disabled]="false"
+      ></mat-checkbox>
+    </div>
+    <br />
+    <mat-card-actions>
+      <button
+        *ngIf="!isEdit"
+        mat-raised-button
+        color="primary"
+        (click)="onEdit()"
+      >
+        Editer
+      </button>
+      <span class="spacer"></span>
+      <button
+        *ngIf="!isEdit"
+        mat-raised-button
+        color="warn"
+        (click)="onDelete()"
+      >
+        supprimer profile
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

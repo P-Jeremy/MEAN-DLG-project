@@ -1,5 +1,5 @@
+<app-spinner *ngIf="isLoading"></app-spinner>
 <mat-card>
-  <mat-spinner *ngIf="isLoading"></mat-spinner>
   <form (submit)="onSignup(signupForm)" #signupForm="ngForm" *ngIf="!isLoading">
     <mat-form-field>
       <input
@@ -73,7 +73,7 @@
           color="primary"
           type="submit"
         >
-          Sign up
+          Inscription
         </button>
       </div>
       <div>

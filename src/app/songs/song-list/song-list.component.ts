@@ -32,29 +32,32 @@ export class SongListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.isLoading = true;
-    this.songsService.getSongs(this.songsPerPage, this.currentPage);
-    this.songSub = this.songsService.getSongUpdatedListener()
-      .subscribe((songData: { songs: Song[], songCount: number }) => {
-        this.totalSongs = songData.songCount;
-        this.songs = songData.songs;
+    setTimeout(() => {
+      this.songsService.getSongs(this.songsPerPage, this.currentPage);
+      this.songSub = this.songsService.getSongUpdatedListener()
+        .subscribe((songData: { songs: Song[], songCount: number }) => {
+          this.totalSongs = songData.songCount;
+          this.songs = songData.songs;
+        });
+      this.userIsAdmin = this.authService.getIsAdmin();
+      this.adminListenerSub = this.authService
+        .getAdminStatusListener()
+        .subscribe(isUserAdmin => {
+          this.userIsAdmin = isUserAdmin;
+        });
+      this.route.paramMap.subscribe((paramMap: ParamMap) => {
+        this.isLoading = true;
+        if (paramMap.has('shuffle')) {
+          this.isShuffle = true;
+          setTimeout(() => {
+            this.onShuffle();
+            this.isLoading = false;
+          }, 200);
+        }
+        this.isLoading = false;
       });
-    this.userIsAdmin = this.authService.getIsAdmin();
-    this.adminListenerSub = this.authService
-      .getAdminStatusListener()
-      .subscribe(isUserAdmin => {
-        this.userIsAdmin = isUserAdmin;
-      });
-    this.route.paramMap.subscribe((paramMap: ParamMap) => {
-      this.isLoading = true;
-      if (paramMap.has('shuffle')) {
-        this.isShuffle = true;
-        setTimeout(() => {
-          this.onShuffle();
-          this.isLoading = false;
-        }, 200);
-      }
-      this.isLoading = false;
-    });
+    }, 500);
+
   }
 
   onChangedPage(pageData: PageEvent) {
@@ -76,9 +79,14 @@ export class SongListComponent implements OnInit, OnDestroy {
   }
 
   onShuffle() {
-    this.isLoading = true;
-    this.songsService.getRandomSong()
-    this.isLoading = false;
+    if (this.songs.length > 0) {
+      this.isLoading = true;
+      this.songsService.getRandomSong()
+      this.isLoading = false;
+    } else {
+      this.isLoading = false;
+      return;
+    }
   }
 
   /**

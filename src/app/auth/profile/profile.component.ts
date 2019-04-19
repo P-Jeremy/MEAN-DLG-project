@@ -12,6 +12,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 export class ProfileComponent implements OnInit {
 
   userData: {};
+  userPosts: number;
   isLoading = false;
   isNotifications = false;
   userPseudo: string;
@@ -28,6 +29,7 @@ export class ProfileComponent implements OnInit {
     this.userData = this.authService.getUserData().subscribe((data) => {
       this.userData = data;
       this.userPseudo = data.data.pseudo;
+      this.userPosts = data.posts;
       this.isNotifications = data.data.notifications;
       this.isLoading = false;
     });

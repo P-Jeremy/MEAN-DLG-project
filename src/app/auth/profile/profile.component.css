@@ -1,7 +1,27 @@
-mat-spinner {
-  margin: auto;
+.container {
+  margin-top: 60px;
+}
+
+mat-card {
+  margin: 60px auto;
+  width: 40%
+}
+
+.title {
+  width: 100%;
+  text-align: center;
+}
+
+.postCount {
+  margin-left: 25px;
 }
 
 .spacer {
   flex: 1 1 auto;
+}
+
+@media only screen and (max-width: 425px)  {
+  mat-card {
+    width: 80%;
+  }
 }
