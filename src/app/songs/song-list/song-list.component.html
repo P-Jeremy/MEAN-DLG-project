@@ -1,11 +1,11 @@
 <div class="main_container">
-  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <app-spinner *ngIf="isLoading"></app-spinner>
   <div *ngIf="isShuffle && songs.length > 0" class="shuffle_button_container">
     <a class="shuffle" mat-stroked-button (click)="onShuffle()"
       ><mat-icon> swap_calls</mat-icon></a
     >
   </div>
-  <div *ngIf="!isShuffle" class="search_bar_container">
+  <div *ngIf="!isShuffle && !isLoading" class="search_bar_container">
     <div class="search_bar">
       <input
         type="text"
@@ -30,7 +30,7 @@
       </div>
     </div>
   </div>
-  <div class="list_container">
+  <div *ngIf="!isLoading" class="list_container">
     <div class="list">
       <mat-accordion
         multi="true"
@@ -97,8 +97,13 @@
         >
           <mat-expansion-panel *ngFor="let song of songs">
             <mat-expansion-panel-header>
-              {{ song.title }} <br />
-              {{ song.author }}
+              <div>
+                <strong>{{ song.title }}</strong>
+              </div>
+              <span class="spacer"></span>
+              <div>
+                {{ song.author }}
+              </div>
             </mat-expansion-panel-header>
             <a mat-button color="primary" [href]="song.lyrics" download
               >Paroles</a

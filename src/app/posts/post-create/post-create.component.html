@@ -1,6 +1,6 @@
-<mat-card *ngIf="!isLoading">
-  <mat-spinner *ngIf="isLoading"></mat-spinner>
-  <form [formGroup]="form" (submit)="onSavePost()">
+<mat-card>
+  <app-spinner *ngIf="isLoading"></app-spinner>
+  <form  *ngIf="!isLoading" [formGroup]="form" (submit)="onSavePost()">
     <mat-form-field>
       <input matInput type="text" formControlName="title" placeholder="Titre" />
       <mat-error *ngIf="form.get('title').invalid"

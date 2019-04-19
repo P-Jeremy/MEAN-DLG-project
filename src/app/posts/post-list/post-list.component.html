@@ -1,6 +1,6 @@
-<mat-spinner *ngIf="isLoading"></mat-spinner>
 <div class="main_container">
-  <div class="addPost_button_container">
+  <app-spinner *ngIf="isLoading"></app-spinner>
+  <div  *ngIf="!isLoading"  class="addPost_button_container">
     <a
       class="addPost"
       mat-raised-button

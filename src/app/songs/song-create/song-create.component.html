@@ -1,5 +1,5 @@
 <mat-card *ngIf="!isLoading">
-  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <app-spinner *ngIf="isLoading"></app-spinner>
   <form [formGroup]="form" (submit)="onSaveSong()">
     <mat-form-field>
       <input matInput type="text" formControlName="title" placeholder="Titre" />
