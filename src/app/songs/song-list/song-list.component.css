@@ -23,6 +23,12 @@ mat-spinner {
   margin: auto;
 }
 
+.buttons_container {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
 .shuffle_button_container {
   width: 100%;
   text-align: center;

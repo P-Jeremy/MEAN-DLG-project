@@ -5,7 +5,10 @@
       ><mat-icon> swap_calls</mat-icon></a
     >
   </div>
-  <div *ngIf="!isShuffle && !isLoading && songs.length" class="search_bar_container">
+  <div
+    *ngIf="!isShuffle && !isLoading && songs.length"
+    class="search_bar_container"
+  >
     <a
       class="add_song"
       *ngIf="userIsAdmin && !isShuffle"
@@ -54,10 +57,10 @@
               </div>
             </div>
           </mat-expansion-panel-header>
-          <a mat-button color="primary" [href]="song.lyrics" download
-            >Paroles</a
-          >
-          <a mat-button color="primary" [href]="song.tab" download>Tablature</a>
+          <div class="buttons_container">
+            <a mat-raised-button color="primary" [href]="song.lyrics" download>Paroles</a>
+            <a mat-raised-button color="primary" [href]="song.tab" download>Tablature</a>
+          </div>
           <mat-action-row *ngIf="userIsAdmin && !isShuffle">
             <a
               *ngIf="userIsAdmin && !isShuffle"
@@ -98,12 +101,10 @@
                 </div>
               </div>
             </mat-expansion-panel-header>
-            <a mat-button color="primary" [href]="randomSong.lyrics" download
-              >Paroles</a
-            >
-            <a mat-button color="primary" [href]="randomSong.tab" download
-              >Tablature</a
-            >
+            <div class="buttons_container">
+              <a mat-raised-button color="primary" [href]="randomSong.lyrics" download>Paroles</a>
+              <a mat-raised-button color="primary" [href]="randomSong.tab" download>Tablature</a>
+            </div>
           </mat-expansion-panel>
         </mat-accordion>
       </div>
