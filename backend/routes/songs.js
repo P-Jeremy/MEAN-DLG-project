@@ -13,7 +13,7 @@ router.post('', checkAdmin , upload.fields([{name: "lyrics", maxCount :1}, {name
 router.get('', checkAuth, songController.getSongs);
 
 /* Get a random song from DB */
-router.get('/:shuffle', checkAuth, songController.getShuffleSong);
+router.get('/shuffle', checkAuth, songController.getShuffleSong);
 
 /* Update the song corresponding to the param id passed through URL from client */
 router.put('/:id', checkAdmin, upload.fields([{name: "lyrics", maxCount :1}, {name: "tab", maxCount :1}]), songController.updateSong);
