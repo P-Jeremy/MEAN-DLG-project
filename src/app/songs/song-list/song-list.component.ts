@@ -15,11 +15,8 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 export class SongListComponent implements OnInit, OnDestroy {
 
   songs: Song[] = [];
+  randomSong;
   isLoading = false;
-  totalSongs = 0;
-  songsPerPage = 5;
-  currentPage = 1;
-  pageSizeOptions = [5, 10, 20];
   userIsAdmin = false;
   isTitle = true;
   isAuthor = false;
@@ -31,12 +28,12 @@ export class SongListComponent implements OnInit, OnDestroy {
   constructor(public songsService: SongsService, private authService: AuthService, public route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.isShuffle = false;
     this.isLoading = true;
     setTimeout(() => {
-      this.songsService.getSongs(this.songsPerPage, this.currentPage);
+      this.songsService.getSongs();
       this.songSub = this.songsService.getSongUpdatedListener()
         .subscribe((songData: { songs: Song[], songCount: number }) => {
-          this.totalSongs = songData.songCount;
           this.songs = songData.songs;
         });
       this.userIsAdmin = this.authService.getIsAdmin();
@@ -60,19 +57,12 @@ export class SongListComponent implements OnInit, OnDestroy {
 
   }
 
-  onChangedPage(pageData: PageEvent) {
-    this.isLoading = true;
-    this.currentPage = pageData.pageIndex + 1;
-    this.songsPerPage = pageData.pageSize;
-    this.songsService.getSongs(this.songsPerPage, this.currentPage);
-  }
-
   /* Callback to handle post delete on the DB */
   onDelete(postId: string) {
     this.isLoading = true;
     this.songsService.deleteSong(postId)
       .subscribe(() => {
-        this.songsService.getSongs(this.songsPerPage, this.currentPage);
+        this.songsService.getSongs();
       }, error => {
         this.isLoading = false;
       });
@@ -81,7 +71,9 @@ export class SongListComponent implements OnInit, OnDestroy {
   onShuffle() {
     if (this.songs.length > 0) {
       this.isLoading = true;
-      this.songsService.getRandomSong()
+      this.songsService.getRandomSong().subscribe((res) => {
+      this.randomSong = res.song;
+      });
       this.isLoading = false;
     } else {
       this.isLoading = false;
