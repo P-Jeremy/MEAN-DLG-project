@@ -1,11 +1,11 @@
-<app-spinner *ngIf="isLoading"></app-spinner>
 <div class="main_container">
+  <app-spinner *ngIf="isLoading"></app-spinner>
   <div *ngIf="isShuffle && songs.length > 0" class="shuffle_button_container">
     <a class="shuffle" mat-stroked-button (click)="onShuffle()"
       ><mat-icon> swap_calls</mat-icon></a
     >
   </div>
-  <div *ngIf="!isShuffle" class="search_bar_container">
+  <div *ngIf="!isShuffle && !isLoading" class="search_bar_container">
     <div class="search_bar">
       <input
         type="text"
