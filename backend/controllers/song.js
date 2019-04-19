@@ -26,26 +26,33 @@ exports.addSong = async (req, res, next) => {
   }
 };
 
-exports.getSongs = (req, res, next) => {
-  const pageSize = +req.query.pageSize; // The '+' allows to use the query as a number instead of a string
-  const currentPage = +req.query.page;
-  const songQuery = Song.find();
-  let fetchedSong;
-  if (pageSize && currentPage) {
-    songQuery.skip(pageSize * (currentPage - 1)).limit(pageSize);
-  }
-  songQuery
-    .then(documents => {
-      fetchedSong = documents;
-      return Song.countDocuments();
+exports.getShuffleSong = async (req,res,next) => {
+  const count = await Song.count();
+  const random = await Math.floor(Math.random() * count)
+  try {
+    const randomSong = await Song.find().limit(1).skip(random);
+    return res.status(200).json({
+      song: randomSong[0]
     })
-    .then(count => {
-      res.status(200).json({
-        message: "Songs fetched !",
-        songs: fetchedSong,
-        maxSongs: count
-      });
+  } catch {
+    res.status(500).json({
+      message: "Le shuffle est cassé..."
+    })
+  }
+}
+
+exports.getSongs = async (req, res, next) => {
+  try {
+    const songs = await Song.find();
+    return res.status(200).json({
+      message: "Songs fetched !",
+      songs: songs,
     });
+  } catch (error) {
+    res.status(500).json({
+      message: "Impossible de charger la setlist"
+    })
+  }
 };
 
 exports.updateSong = async (req, res, next) => {
