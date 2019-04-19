@@ -31,17 +31,14 @@ exports.getShuffleSong = async (req,res,next) => {
   const random = await Math.floor(Math.random() * count)
   try {
     const randomSong = await Song.find().limit(1).skip(random);
-
     return res.status(200).json({
       song: randomSong[0]
     })
-
   } catch {
-    res.status(500)
+    res.status(500).json({
+      message: "Le shuffle est cassé..."
+    })
   }
-
-
-
 }
 
 exports.getSongs = async (req, res, next) => {
@@ -52,7 +49,9 @@ exports.getSongs = async (req, res, next) => {
       songs: songs,
     });
   } catch (error) {
-    res.status(500)
+    res.status(500).json({
+      message: "Impossible de charger la setlist"
+    })
   }
 };
 

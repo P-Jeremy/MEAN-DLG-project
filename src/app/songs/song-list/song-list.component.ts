@@ -35,6 +35,7 @@ export class SongListComponent implements OnInit, OnDestroy {
       this.songSub = this.songsService.getSongUpdatedListener()
         .subscribe((songData: { songs: Song[], songCount: number }) => {
           this.songs = songData.songs;
+          this.isLoading = false;
         });
       this.userIsAdmin = this.authService.getIsAdmin();
       this.adminListenerSub = this.authService
@@ -51,10 +52,8 @@ export class SongListComponent implements OnInit, OnDestroy {
             this.isLoading = false;
           }, 200);
         }
-        this.isLoading = false;
       });
     }, 500);
-
   }
 
   /* Callback to handle post delete on the DB */
@@ -69,16 +68,12 @@ export class SongListComponent implements OnInit, OnDestroy {
   }
 
   onShuffle() {
-    if (this.songs.length > 0) {
-      this.isLoading = true;
-      this.songsService.getRandomSong().subscribe((res) => {
+    this.isLoading = true;
+    this.songsService.getRandomSong().subscribe((res) => {
       this.randomSong = res.song;
-      });
-      this.isLoading = false;
-    } else {
-      this.isLoading = false;
-      return;
-    }
+    });
+    this.isLoading = false;
+
   }
 
   /**

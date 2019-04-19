@@ -10,6 +10,11 @@
   text-align: center;
 }
 
+.header {
+  width: 100%;
+  display: flex;
+}
+
 mat-paginator {
   margin-top: 1rem;
 }
@@ -24,7 +29,7 @@ mat-spinner {
 }
 
 .add_song {
-  margin-top: 20px;
+  margin-bottom: 30px;
 }
 
 .selected {
@@ -47,8 +52,9 @@ mat-spinner {
 }
 
 .search_bar_container {
+  text-align: center;
   width: 100%;
-  padding: 30px 0 50px 0;
+  padding: 0 0 50px 0;
 }
 
 .search_bar {
@@ -56,7 +62,6 @@ mat-spinner {
   flex-direction: column;
   width: 250px;
   margin: 0 auto;
-  text-align: center;
   padding-bottom: 8px;
 }
 
@@ -98,6 +103,15 @@ mat-expansion-panel-header :nth-child(3) {
 @media only screen and (max-width: 425px)  {
   .list {
     width: 90%;
+  }
+
+  .spacer {
+    flex:none
+  }
+
+  .header {
+    display: flex;
+    flex-direction: column;
   }
 }
 

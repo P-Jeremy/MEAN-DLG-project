@@ -66,13 +66,13 @@ export class SongsService {
 
   getRandomSong() {
 // tslint:disable-next-line: no-bitwise
-    return this.http.get<{song: any[]}>(API_DOMAIN + 'shuffle');
+    return this.http.get<{song: any[]}>(`${API_DOMAIN}/shuffle`);
   }
 
   /**
    * @param takes the id of the song to edit
    *
-   * @returns the post corresponding to the id
+   * @returns the song corresponding to the id
    */
   getSingleSong(id: string) {
     return this.http.get<{
