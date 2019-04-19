@@ -24,7 +24,7 @@ export class PostCreateComponent implements OnInit, OnDestroy {
   form: FormGroup;
   imagePreview: string;
 
-  constructor( public postsService: PostsService, public route: ActivatedRoute, public auhtService: AuthService) {}
+  constructor(public postsService: PostsService, public route: ActivatedRoute, public auhtService: AuthService) { }
 
   ngOnInit() {
 
@@ -34,10 +34,12 @@ export class PostCreateComponent implements OnInit, OnDestroy {
       }
     );
     this.form = new FormGroup({
-      title: new FormControl(null, {validators: [Validators.required, Validators.minLength(3)]}),
-      content: new FormControl(null, {validators: [Validators.required]}),
-      image: new FormControl(null, {asyncValidators : [mimeType]})
-    });
+      title: new FormControl(null, { validators: [Validators.required, Validators.minLength(3)] }),
+      content: new FormControl(null, { validators: [Validators.required] }),
+      image: new FormControl(null, { validators: null, asyncValidators: [mimeType] })
+    }, {
+        updateOn: 'blur'
+      });
 
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has('postId')) {
@@ -45,22 +47,22 @@ export class PostCreateComponent implements OnInit, OnDestroy {
         this.postId = paramMap.get('postId');
         this.isLoading = true;
         this.postsService.getSinglePost(this.postId)
-            .subscribe(postData => {
-              this.isLoading = false;
-              this.post = {
-                id: postData._id,
-                title: postData.title,
-                content: postData.content,
-                image: postData.image,
-                creator_id: postData.creator_id,
-                creator_pseudo: postData.creator_pseudo
-              };
-              this.form.setValue({
-                title: this.post.title,
-                content: this.post.content,
-                image: this.post.image
-              });
+          .subscribe(postData => {
+            this.isLoading = false;
+            this.post = {
+              id: postData._id,
+              title: postData.title,
+              content: postData.content,
+              image: postData.image,
+              creator_id: postData.creator_id,
+              creator_pseudo: postData.creator_pseudo
+            };
+            this.form.setValue({
+              title: this.post.title,
+              content: this.post.content,
+              image: this.post.image
             });
+          });
       } else {
         this.mode = 'create';
         this.postId = null;

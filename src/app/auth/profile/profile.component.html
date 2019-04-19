@@ -1,0 +1,66 @@
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<mat-card>
+  <mat-card-title>
+    <h1 *ngIf="!isEdit">{{ userPseudo }}</h1>
+    <mat-card-actions>
+      <form [formGroup]="form" (submit)="onSaveProfile()">
+        <mat-form-field *ngIf="isEdit">
+          <input
+            formControlName="pseudo"
+            matInput
+            type="text"
+            placeholder="Pseudo"
+            value="{{ userPseudo }}"
+          />
+          <mat-error *ngIf="form.get('pseudo').invalid"
+            >Veuillez saisir un pseudo de 4 charactères minimum</mat-error
+          >
+        </mat-form-field>
+        <div>
+          <button
+            *ngIf="isEdit"
+            mat-raised-button
+            color="primary"
+            type="submit"
+          >
+            Valider
+          </button>
+          <span class="spacer"></span>
+
+          <button
+            *ngIf="isEdit"
+            mat-raised-button
+            color="warn"
+            (click)="onEdit()"
+          >
+            Annuler
+          </button>
+        </div>
+      </form>
+    </mat-card-actions>
+  </mat-card-title>
+
+  <p>Vous avez actuellement {{ userData.posts }} post(s) dans la taverne</p>
+  <div>
+    <span>Recevoir les notifications: &nbsp;</span>
+    <mat-checkbox
+      (change)="onCheckBoxChange($event.checked)"
+      [checked]="isNotifications"
+      [disabled]="false"
+    ></mat-checkbox>
+  </div>
+  <mat-card-actions>
+    <button
+      *ngIf="!isEdit"
+      mat-raised-button
+      color="primary"
+      (click)="onEdit()"
+    >
+      Editer
+    </button>
+    <span class="spacer"></span>
+    <button *ngIf="!isEdit" mat-raised-button color="warn" (click)="onDelete()">
+      supprimer profile
+    </button>
+  </mat-card-actions>
+</mat-card>

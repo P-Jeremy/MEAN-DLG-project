@@ -31,13 +31,12 @@ export class SongListComponent implements OnInit, OnDestroy {
   constructor(public songsService: SongsService, private authService: AuthService, public route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.songsService.getSongs(this.songsPerPage, this.currentPage);
     this.isLoading = true;
+    this.songsService.getSongs(this.songsPerPage, this.currentPage);
     this.songSub = this.songsService.getSongUpdatedListener()
       .subscribe((songData: { songs: Song[], songCount: number }) => {
         this.totalSongs = songData.songCount;
         this.songs = songData.songs;
-        this.isLoading = false;
       });
     this.userIsAdmin = this.authService.getIsAdmin();
     this.adminListenerSub = this.authService
@@ -46,13 +45,15 @@ export class SongListComponent implements OnInit, OnDestroy {
         this.userIsAdmin = isUserAdmin;
       });
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
+      this.isLoading = true;
       if (paramMap.has('shuffle')) {
         this.isShuffle = true;
-        this.isLoading = true;
         setTimeout(() => {
           this.onShuffle();
-        }, 140);
+          this.isLoading = false;
+        }, 200);
       }
+      this.isLoading = false;
     });
   }
 
@@ -75,8 +76,8 @@ export class SongListComponent implements OnInit, OnDestroy {
   }
 
   onShuffle() {
-    // tslint:disable-next-line: no-bitwise
-    this.songsService.getRandomSong();
+    this.isLoading = true;
+    this.songsService.getRandomSong()
     this.isLoading = false;
   }
 
