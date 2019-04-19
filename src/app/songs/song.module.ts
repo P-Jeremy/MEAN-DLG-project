@@ -6,6 +6,7 @@ import { AngularMaterialModule } from '../angular-material.module';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FilterTitlePipe } from './filter-title.pipe';
+import { StaticModule } from '../static/static.module';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { FilterTitlePipe } from './filter-title.pipe';
     FormsModule,
     ReactiveFormsModule,
     AngularMaterialModule,
-    RouterModule
+    RouterModule,
+    StaticModule,
   ]
 })
 
