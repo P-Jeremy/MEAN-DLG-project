@@ -19,7 +19,7 @@ const API_DOMAIN = environment.apiDomain + '/songs/';
 @Injectable({providedIn: 'root'})
 export class SongsService {
   private songs: Song[] = [];
-  private songUpdated = new Subject<{songs: Song[], songCount: number}>();
+  private songUpdated = new Subject<{songs: Song[]}>();
   private songStatusListener = new Subject<boolean>();
 
 
@@ -34,9 +34,8 @@ export class SongsService {
    *
    * @returns all the songs of DB through the songUpdated observable
    */
-  getSongs(songsPerPage: number, currentPage: number) {
-    const queryPaginationParams = `?pageSize=${songsPerPage}&page=${currentPage}`;
-    this.http.get<{message: string, songs: any, maxSongs: number}>(API_DOMAIN + queryPaginationParams)
+  getSongs() {
+    this.http.get<{message: string, songs: any}>(API_DOMAIN)
         .pipe(map((songData) => {
           return {
             songs: songData.songs.map(song => {
@@ -48,13 +47,12 @@ export class SongsService {
                 tab: song.tab
               };
             }),
-            maxSongs: songData.maxSongs};
+            };
         }))
         .subscribe((transformedSongData) => {
           this.songs = transformedSongData.songs;
           this.songUpdated.next({
-            songs: [...this.songs],
-            songCount: transformedSongData.maxSongs
+            songs: [...this.songs]
           });
         });
   }
@@ -68,8 +66,7 @@ export class SongsService {
 
   getRandomSong() {
 // tslint:disable-next-line: no-bitwise
-    const randomSong = this.songs[this.songs.length * Math.random() | 0];
-    return this.songUpdated.next({songs : [randomSong], songCount: 1});
+    return this.http.get<{song: any[]}>(API_DOMAIN + 'shuffle');
   }
 
   /**

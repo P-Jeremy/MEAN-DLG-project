@@ -30,11 +30,11 @@
       </div>
     </div>
   </div>
-  <div *ngIf="!isLoading" class="list_container">
+  <div *ngIf="!isLoading && !isShuffle" class="list_container">
     <div class="list">
       <mat-accordion
         multi="true"
-        *ngIf="songs.length && !isLoading && !isShuffle"
+        *ngIf="songs.length && !isShuffle"
       >
         <mat-expansion-panel
           *ngFor="let song of (songs | filterTitle: term:isTitle)"
@@ -79,36 +79,28 @@
         routerLink="/create_song"
         >Ajouter</a
       >
-      <mat-paginator
-        *ngIf="songs.length > 0 && !isShuffle"
-        [length]="totalSongs"
-        [pageSize]="songsPerPage"
-        [pageSizeOptions]="pageSizeOptions"
-        (page)="onChangedPage($event)"
-      ></mat-paginator>
     </div>
   </div>
   <div class="list_container">
     <div class="list">
-      <div class="shuffle_accordion">
+      <div *ngIf="isShuffle && randomSong && !isLoading" class="shuffle_accordion">
         <mat-accordion
           multi="true"
-          *ngIf="isShuffle && songs.length > 0 && !isLoading"
         >
-          <mat-expansion-panel *ngFor="let song of songs">
+          <mat-expansion-panel>
             <mat-expansion-panel-header>
               <div>
-                <strong>{{ song.title }}</strong>
+                <strong>{{ randomSong.title }}</strong>
               </div>
               <span class="spacer"></span>
               <div>
-                {{ song.author }}
+                {{ randomSong.author }}
               </div>
             </mat-expansion-panel-header>
-            <a mat-button color="primary" [href]="song.lyrics" download
+            <a mat-button color="primary" [href]="randomSong.lyrics" download
               >Paroles</a
             >
-            <a mat-button color="primary" [href]="song.tab" download
+            <a mat-button color="primary" [href]="randomSong.tab" download
               >Tablature</a
             >
           </mat-expansion-panel>
