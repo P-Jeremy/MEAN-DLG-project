@@ -1,6 +1,6 @@
 <div class="main_container">
-  <app-spinner *ngIf="isLoading && !songs.length"></app-spinner>
-  <div *ngIf="isShuffle && songs.length > 0" class="shuffle_button_container">
+  <app-spinner *ngIf="isLoading"></app-spinner>
+  <div *ngIf="isShuffle && !isLoading" class="shuffle_button_container">
     <a class="shuffle" mat-raised-button color="primary" (click)="onShuffle()"
       ><mat-icon> swap_calls</mat-icon></a
     >
@@ -110,7 +110,7 @@
       </div>
     </div>
   </div>
-  <p class="mat-body-1 info-text" *ngIf="!songs.length && !isLoading">
+  <p class="mat-body-1 info-text" *ngIf="!songs.length && !isLoading && !isShuffle">
     Pas de titres dans la setlist...
   </p>
 </div>

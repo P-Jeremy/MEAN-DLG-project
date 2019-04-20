@@ -42,7 +42,9 @@ exports.signUp = async (req, res, next) => {
       };
       const token = await jwt.sign(tokenInfo, secretJwt);
 
-      const mailSent = await sendEmail(tokenSignUp(email, `${apiDomain}/auth/confirmation/${token}`));
+      const mailSent = await sendEmail(
+        tokenSignUp(email, `${apiDomain}/auth/confirmation/${token}`)
+      );
       return res.status(201).json({
         message: "Veuillez verifier votre boite mail",
         result: mailSent
@@ -161,26 +163,26 @@ exports.updateNotifStatus = async (req, res, next) => {
   const status = req.body.newStatus;
   const type = req.body.type;
   let updatedUser;
+  let newStatus;
   switch (type) {
-    case 'title':
-      newStatus = {titleNotif: status};
+    case "title":
+      newStatus = { $set: { titleNotif: status } };
       break;
-    case 'post':
-      newStatus = {postNotif: status};
+    case "post":
+      newStatus = { $set: { postNotif: status } };
       break;
-    case 'comment':
-      newStatus = {commentNotif: status}
+    case "comment":
+      newStatus = { $set: { commentNotif: status } };
       break;
     default:
       break;
   }
   try {
-    console.log(newStatus);
-     updatedUser = await User.findOneAndUpdate(
+    updatedUser = await User.findOneAndUpdate(
       { _id: req.userData.userId },
-      { $set: {newStatus}}
+      newStatus,
+      { new: true }
     );
-    console.log(updatedUser);
 
     return res.status(200).json({
       message: "Modifié",

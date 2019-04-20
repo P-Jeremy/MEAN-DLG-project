@@ -4,6 +4,6 @@ module.exports = (to, title) => {
     to: to, // list of receivers
     subject: "Nouveau titre dans la playlist", // Subject line
     html: `<p>${title} à été ajouté à la playlist.</p><br>
-    <p>Si vous ne souhaitez pas recevoir de notification, pensez à désactiver cette option dans votre profile</p>`
+    <p>Si vous ne souhaitez pas recevoir de notification, pensez à désactiver cette option dans votre profil</p>`
   };
 };

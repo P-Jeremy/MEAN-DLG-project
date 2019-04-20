@@ -10,14 +10,19 @@
   text-align: center;
 }
 
-.post-image {
+.post_image {
   width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
+  margin-bottom: 30px;
 }
 
-.post-image img {
-  margin: 0 auto;
-  width: 60%;
-  box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+img {
+  width: 70%;
+  margin: auto;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
 }
 
 .addPost_button_container {
@@ -26,7 +31,7 @@
 }
 
 .header {
-  width: 100%
+  width: 100%;
 }
 
 .top_header {
@@ -35,16 +40,16 @@
 }
 
 .top_header div {
-  width: 50%
+  width: 50%;
 }
 
 .top_header :nth-child(2) {
-  text-align: end
+  text-align: end;
 }
 
 .bottom_header {
   display: flex;
-  justify-content: flex-end
+  justify-content: flex-end;
 }
 
 mat-paginator {
@@ -55,10 +60,9 @@ mat-spinner {
   margin: auto;
 }
 
-
 .post_container {
   margin: 0 auto;
-  width: 40%;
+  width: 60%;
 }
 
 .post {
@@ -71,7 +75,7 @@ mat-spinner {
 }
 
 .post_card {
-  margin: 30px 0 30px 0
+  margin: 30px 0 30px 0;
 }
 
 .comment_content {
@@ -83,12 +87,24 @@ mat-spinner {
   border-top: 1px solid lightgray;
 }
 
-@media only screen and (max-width: 750px)  {
+@media only screen and (max-width: 1024px) {
   .post_container {
+    width: 90%;
+  }
+
+  .post-image,
+  img {
     width: 80%;
   }
-  mat-card-content {
-    max-height: 80px;
-    overflow-y: auto ;
+}
+
+@media only screen and (max-width: 750px) {
+  .post_container {
+    width: 95%;
+  }
+
+  .post-image,
+  img {
+    width: 100%;
   }
 }
