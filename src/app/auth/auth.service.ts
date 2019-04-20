@@ -133,7 +133,7 @@ export class AuthService {
         if (token) {
           this.isAdmin = response.isAdmin;
           this.adminStatusListener.next(response.isAdmin);
-          this.message.content = 'Vous êtes connectés';
+          this.message.content = 'Vous êtes connecté';
           this.userId = response.userId;
           const expiresInDuration = response.expiresIn;
           this.setAuthTimer(expiresInDuration);
@@ -242,7 +242,7 @@ export class AuthService {
    * @returns an observable
    */
   getUserData() {
-    return this.http.get<{ message: string, data: any, posts: number }>(`${API_DOMAIN}/user`);
+    return this.http.get<{ message: string, data: any, posts: number }>(`${API_DOMAIN}user`);
   }
 
   /**
@@ -254,18 +254,19 @@ export class AuthService {
     const data = {
       pseudo
     };
-    return this.http.put<{ message: string, data: any }>(`${API_DOMAIN}/user/pseudo`, data);
+    return this.http.put<{ message: string, data: any }>(`${API_DOMAIN}user/pseudo`, data);
   }
 
   /**
    * Allows a user to modify his notification status
    * @param event true/false
    */
-  changeNotifStatus(event: boolean) {
+  changeNotifStatus(event: boolean, src: string) {
     const status = {
+      type: src,
       newStatus: event
     };
-    return this.http.put<{ message: string, status: boolean }>(`${API_DOMAIN}/user/notifications`, status).subscribe(() => {
+    return this.http.put<{ message: string, status: boolean }>(`${API_DOMAIN}user/notifications`, status).subscribe(() => {
       this.message.content = 'Votre demande à bien été prise en compte';
       this.dialog.open(AppMessagesComponent, { data: this.message });
     });

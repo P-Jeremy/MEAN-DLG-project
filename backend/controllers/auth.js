@@ -159,14 +159,32 @@ exports.newPasswordAsk = async (req, res) => {
 
 exports.updateNotifStatus = async (req, res, next) => {
   const status = req.body.newStatus;
+  const type = req.body.type;
+  let updatedUser;
+  switch (type) {
+    case 'title':
+      newStatus = {titleNotif: status};
+      break;
+    case 'post':
+      newStatus = {postNotif: status};
+      break;
+    case 'comment':
+      newStatus = {commentNotif: status}
+      break;
+    default:
+      break;
+  }
   try {
-    await User.findOneAndUpdate(
+    console.log(newStatus);
+     updatedUser = await User.findOneAndUpdate(
       { _id: req.userData.userId },
-      { $set: { notifications: status } }
+      { $set: {newStatus}}
     );
+    console.log(updatedUser);
+
     return res.status(200).json({
       message: "Modifié",
-      status: status
+      status: updatedUser
     });
   } catch (error) {
     res.status(401).json({

@@ -43,17 +43,39 @@
         </div>
       </form>
     </mat-card-actions>
+    <h3>Activité</h3>
     <p>
-      Post(s) dans la taverne:<span class="postCount">{{ userPosts }}</span>
+      Post(s) dans la taverne :<span class="postCount">{{ userPosts }}</span>
     </p>
     <br />
-    <div>
-      <span>Recevoir les notifications: &nbsp;</span>
-      <mat-checkbox
-        (change)="onCheckBoxChange($event.checked)"
-        [checked]="isNotifications"
-        [disabled]="false"
-      ></mat-checkbox>
+    <div class="notifications">
+      <h3>Notifications</h3>
+      <div>
+        <span>Commentaires : &nbsp;</span>
+        <mat-checkbox
+          (change)="onCheckBoxChange($event.checked, 'comment')"
+          [checked]="commentNotif"
+          [disabled]="false"
+        ></mat-checkbox>
+      </div>
+      <br />
+      <div>
+        <span>Posts : &nbsp;</span>
+        <mat-checkbox
+          (change)="onCheckBoxChange($event.checked, 'post')"
+          [checked]="postNotif"
+          [disabled]="false"
+        ></mat-checkbox>
+      </div>
+      <br />
+      <div>
+        <span>Ajouts à la playlist : &nbsp;</span>
+        <mat-checkbox
+          (change)="onCheckBoxChange($event.checked, 'title')"
+          [checked]="titleNotif"
+          [disabled]="false"
+        ></mat-checkbox>
+      </div>
     </div>
     <br />
     <mat-card-actions>
@@ -72,7 +94,7 @@
         color="warn"
         (click)="onDelete()"
       >
-        supprimer profile
+        supprimer le profil
       </button>
     </mat-card-actions>
   </mat-card>
