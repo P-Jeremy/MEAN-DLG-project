@@ -8,7 +8,9 @@ const userSchema = mongoose.Schema({
   isActive: { type: Boolean, required: false, default: false },
   isAdmin: { type: Boolean, required: false, default: false },
   isDeleted: { type: Boolean, required: false, default: false },
-  notifications: { type: Boolean, default: false },
+  postNotif:{type: Boolean, required:true, default: true },
+  commentNotif: {type: Boolean, required:true, default: true },
+  titleNotif:{type: Boolean, required:true, default: true },
   avatar: { type: String || null }
 });
 

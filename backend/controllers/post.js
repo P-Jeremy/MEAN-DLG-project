@@ -21,7 +21,7 @@ exports.addPost = async (req, res, next) => {
       creator_pseudo: fetchedUser.pseudo
     });
     const result = await newPost.save();
-    const users = await User.find({ notifications: true });
+    const users = await User.find({ postNotif: true });
     await users
       .filter(notAuthor => notAuthor.pseudo !== fetchedUser.pseudo)
       .map(user => {
@@ -62,9 +62,8 @@ exports.addComment = async (req, res, next) => {
 
   const userWantsNotification = await User.findOne({
     _id: result.creator_id,
-    notifications: true
+    commentNotif: true
   });
-
   if (
     userWantsNotification &&
     req.userData.userId != userWantsNotification._id
