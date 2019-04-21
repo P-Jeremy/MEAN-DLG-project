@@ -25,7 +25,7 @@ exports.addPost = async (req, res, next) => {
     await users
       .filter(notAuthor => notAuthor.pseudo !== fetchedUser.pseudo)
       .map(user => {
-        sendEmail(postNotif(user.email, result.creator_pseudo));
+        sendEmail(postNotif(user.email, result.creator_pseudo, result.title));
       });
     return res.status(201).json({
       message: "Post crée avec succès",

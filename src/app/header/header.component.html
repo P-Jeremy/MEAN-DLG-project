@@ -3,7 +3,7 @@
 
   <span class="fill-remaining-space"></span>
 
-  <div fxLayout="row" fxHide fxShow.gt-sm>
+  <div fxLayout="row" fxHide fxShow.gt-md>
     <ul>
       <li *ngIf="userIsAuth">
         <a mat-button  [mat-menu-trigger-for]="subMenuSet"><h4>Playlist</h4></a>
@@ -33,7 +33,7 @@
       </li>
     </ul>
   </div>
-  <button mat-button [mat-menu-trigger-for]="menu" fxShow fxHide.gt-sm>
+  <button mat-button [mat-menu-trigger-for]="menu" fxShow fxHide.gt-md>
     <mat-icon>menu</mat-icon>
   </button>
 </mat-toolbar>
