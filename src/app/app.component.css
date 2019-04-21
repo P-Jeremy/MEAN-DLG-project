@@ -7,11 +7,12 @@ main {
   width: 100%;
   margin: 0 auto;
   padding-top: 60px;
+  padding-bottom: 60px;
 }
 
 app-header {
   position: fixed;
-  z-index: 1;
+  z-index: 3;
   top:0;
   width: 100%;
 }
