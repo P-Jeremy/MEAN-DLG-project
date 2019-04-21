@@ -130,12 +130,15 @@ exports.updatePost = async (req, res, next) => {
   } else {
     imagePath = !req.body.image ? null : req.body.image;
   }
+
+  const originalPost = await Post.findById({_id: req.body.id});
+
   const post = new Post({
     _id: req.body.id,
     title: req.body.title,
     content: req.body.content,
     image: imagePath,
-    updatedAt: new Date(),
+    comments : originalPost.comments,
     creator: req.userData.userId
   });
   const result = await Post.updateOne(
