@@ -1,3 +1,22 @@
+# DLG
+( PWA fullstack project )
+
+## V2 released !
+http://dlg-front.s3-website-us-east-1.amazonaws.com/
+
+This project is a request of friends of mine who wanted a simple web site to store lyrics and chords sheets for their band. So this ended with an MEAN pwa. A mini private social network is also included so they can talk and exchange about their new songs or gigs.
+
+
+|         | Stack           | status  |
+| ------- |:-------------:| -------:|
+| Back    | NodeJs / ExpressJS / MongoDb / JWT / AWS S3 | Done   |
+| Front   | Angular /Material | Done   |
+
+***
+
+![image](https://drive.google.com/uc?export=view&id=1913oZeBZPBNiUuk8gu3ZSbLBA2l_VQtG)
+
+
 # Mean-DLG-project
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.0.
