@@ -9,7 +9,7 @@ This project is a request of friends of mine who wanted a simple web site to sto
 
 |         | Stack           | status  |
 | ------- |:-------------:| -------:|
-| Back    | NodeJs / ExpressJS / MongoDb / JWT / AWS S3 | Done   |
+| Back    | NodeJs / ExpressJS / MongoDb / bcrypt / JWT / AWS S3 | Done   |
 | Front   | Angular /Material | Done   |
 
 ***
