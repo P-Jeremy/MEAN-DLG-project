@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { SongsService } from '../songs.service';
-import { PageEvent } from '@angular/material';
 import { AuthService } from '../../auth/auth.service';
 import { Song } from '../../models/song.model';
 import { ActivatedRoute, ParamMap } from '@angular/router';
@@ -31,6 +30,14 @@ export class SongListComponent implements OnInit, OnDestroy {
     this.isShuffle = false;
     this.isLoading = true;
     setTimeout(() => {
+      this.route.paramMap.subscribe((paramMap: ParamMap) => {
+        if (paramMap.has('shuffle')) {
+          this.isShuffle = true;
+          this.songsService.getRandomSong().subscribe((res) => {
+            this.randomSong = res.song;
+          });
+        }
+      });
       this.songsService.getSongs();
       this.songSub = this.songsService.getSongUpdatedListener()
         .subscribe((songData: { songs: Song[], songCount: number }) => {
@@ -43,16 +50,6 @@ export class SongListComponent implements OnInit, OnDestroy {
         .subscribe(isUserAdmin => {
           this.userIsAdmin = isUserAdmin;
         });
-      this.route.paramMap.subscribe((paramMap: ParamMap) => {
-        this.isLoading = true;
-        if (paramMap.has('shuffle')) {
-          this.isShuffle = true;
-          setTimeout(() => {
-            this.onShuffle();
-            this.isLoading = false;
-          }, 200);
-        }
-      });
     }, 500);
   }
 
@@ -72,8 +69,9 @@ export class SongListComponent implements OnInit, OnDestroy {
     this.songsService.getRandomSong().subscribe((res) => {
       this.randomSong = res.song;
     });
-    this.isLoading = false;
-
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 500);
   }
 
   /**

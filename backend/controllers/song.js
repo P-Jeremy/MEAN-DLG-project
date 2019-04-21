@@ -1,4 +1,7 @@
 const Song = require("../models/song");
+const User = require('../models/user');
+const sendMail = require('../helpers/email/sendMail');
+const titleNotif = require('../helpers/email/templates/titleNotif');
 
 exports.addSong = async (req, res, next) => {
   try {
@@ -9,6 +12,11 @@ exports.addSong = async (req, res, next) => {
       tab: req.files.tab[0].location
     });
     const result = await newSong.save();
+    const users = await User.find({ titleNotif: true });
+    await users
+      .map(user => {
+        sendMail(titleNotif(user.email, result.title));
+      });
     return res.status(201).json({
       message: "Chanson crée avec succès",
       song: {

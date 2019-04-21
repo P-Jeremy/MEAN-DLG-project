@@ -42,7 +42,9 @@ exports.signUp = async (req, res, next) => {
       };
       const token = await jwt.sign(tokenInfo, secretJwt);
 
-      const mailSent = await sendEmail(tokenSignUp(email, `${apiDomain}/auth/confirmation/${token}`));
+      const mailSent = await sendEmail(
+        tokenSignUp(email, `${apiDomain}/auth/confirmation/${token}`)
+      );
       return res.status(201).json({
         message: "Veuillez verifier votre boite mail",
         result: mailSent
@@ -159,14 +161,32 @@ exports.newPasswordAsk = async (req, res) => {
 
 exports.updateNotifStatus = async (req, res, next) => {
   const status = req.body.newStatus;
+  const type = req.body.type;
+  let updatedUser;
+  let newStatus;
+  switch (type) {
+    case "title":
+      newStatus = { $set: { titleNotif: status } };
+      break;
+    case "post":
+      newStatus = { $set: { postNotif: status } };
+      break;
+    case "comment":
+      newStatus = { $set: { commentNotif: status } };
+      break;
+    default:
+      break;
+  }
   try {
-    await User.findOneAndUpdate(
+    updatedUser = await User.findOneAndUpdate(
       { _id: req.userData.userId },
-      { $set: { notifications: status } }
+      newStatus,
+      { new: true }
     );
+
     return res.status(200).json({
       message: "Modifié",
-      status: status
+      status: updatedUser
     });
   } catch (error) {
     res.status(401).json({
@@ -217,6 +237,11 @@ exports.newPasswordSet = async (req, res, next) => {
 
 exports.signIn = async (req, res, next) => {
   const fetchedUser = await User.findOne({ email: req.body.email });
+  if (!fetchedUser) {
+    return res.status(403).json({
+      message: "Ce compte n'existe pas"
+    });
+  }
   if (!fetchedUser.isActive) {
     if (fetchedUser.isDeleted) {
       return res.status(403).json({
