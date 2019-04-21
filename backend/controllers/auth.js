@@ -237,8 +237,11 @@ exports.newPasswordSet = async (req, res, next) => {
 
 exports.signIn = async (req, res, next) => {
   const fetchedUser = await User.findOne({ email: req.body.email });
-  console.log(fetchedUser.isActive);
-
+  if (!fetchedUser) {
+    return res.status(403).json({
+      message: "Ce compte n'existe pas"
+    });
+  }
   if (!fetchedUser.isActive) {
     if (fetchedUser.isDeleted) {
       return res.status(403).json({
