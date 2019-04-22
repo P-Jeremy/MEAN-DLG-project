@@ -2,6 +2,7 @@ const Post = require("../models/post");
 const User = require("../models/user");
 const sendEmail = require("../helpers/email/sendMail");
 const commentNotif = require("../helpers/email/templates/commentsNotif");
+const postNotif = require("../helpers/email/templates/postNotif");
 
 exports.addPost = async (req, res, next) => {
   const fetchedUser = await User.findById({ _id: req.userData.userId });
@@ -20,6 +21,12 @@ exports.addPost = async (req, res, next) => {
       creator_pseudo: fetchedUser.pseudo
     });
     const result = await newPost.save();
+    const users = await User.find({ postNotif: true });
+    await users
+      .filter(notAuthor => notAuthor.pseudo !== fetchedUser.pseudo)
+      .map(user => {
+        sendEmail(postNotif(user.email, result.creator_pseudo, result.title));
+      });
     return res.status(201).json({
       message: "Post crée avec succès",
       post: {
@@ -55,10 +62,12 @@ exports.addComment = async (req, res, next) => {
 
   const userWantsNotification = await User.findOne({
     _id: result.creator_id,
-    notifications: true
+    commentNotif: true
   });
-
-  if (userWantsNotification && (req.userData.userId != userWantsNotification._id)) {
+  if (
+    userWantsNotification &&
+    req.userData.userId != userWantsNotification._id
+  ) {
     sendEmail(
       commentNotif(
         userWantsNotification.email,
@@ -121,12 +130,15 @@ exports.updatePost = async (req, res, next) => {
   } else {
     imagePath = !req.body.image ? null : req.body.image;
   }
+
+  const originalPost = await Post.findById({_id: req.body.id});
+
   const post = new Post({
     _id: req.body.id,
     title: req.body.title,
     content: req.body.content,
     image: imagePath,
-    updatedAt: new Date(),
+    comments : originalPost.comments,
     creator: req.userData.userId
   });
   const result = await Post.updateOne(

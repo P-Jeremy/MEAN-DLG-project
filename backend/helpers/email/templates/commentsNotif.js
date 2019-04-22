@@ -4,6 +4,6 @@ module.exports = (to, post, comment, user) => {
     to: to, // list of receivers
     subject: "Nouveau commentaire", // Subject line
     html: `<p>${user} à repondu: "${comment}"<br> à votre post: "${post}" </p><br>
-    <p>Si vous ne souhaitez pas recevoir de notification, pensez à désactiver cette option dans votre profile</p>`
+    <p>Si vous ne souhaitez pas recevoir de notification, pensez à désactiver cette option dans votre profil</p>`
   };
 };

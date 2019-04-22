@@ -3,7 +3,7 @@
 
   <span class="fill-remaining-space"></span>
 
-  <div fxLayout="row" fxHide fxShow.gt-sm>
+  <div fxLayout="row" fxHide fxShow.gt-md>
     <ul>
       <li *ngIf="userIsAuth">
         <a mat-button  [mat-menu-trigger-for]="subMenuSet"><h4>Playlist</h4></a>
@@ -15,7 +15,7 @@
       </li>
       <li *ngIf="userIsAuth">
         <a mat-button routerLink="auth/profile" routerLinkActive="router_link"
-          ><h4>Profile</h4></a
+          ><h4>Profil</h4></a
         >
       </li>
       <li *ngIf="!userIsAuth">
@@ -33,7 +33,7 @@
       </li>
     </ul>
   </div>
-  <button mat-button [mat-menu-trigger-for]="menu" fxShow fxHide.gt-sm>
+  <button mat-button [mat-menu-trigger-for]="menu" fxShow fxHide.gt-md>
     <mat-icon>menu</mat-icon>
   </button>
 </mat-toolbar>
@@ -44,7 +44,7 @@
 <mat-menu x-position="before" #menu>
   <button *ngIf="userIsAuth" mat-menu-item [mat-menu-trigger-for]="subMenuSet">Playlist</button>
   <button *ngIf="userIsAuth" mat-menu-item routerLink="/post" routerLinkActive="router_link">Taverne</button>
-  <button *ngIf="userIsAuth" mat-menu-item routerLink="auth/profile" routerLinkActive="router_link">Profile</button>
+  <button *ngIf="userIsAuth" mat-menu-item routerLink="auth/profile" routerLinkActive="router_link">Profil</button>
   <button *ngIf="!userIsAuth" mat-menu-item routerLink="auth/login" routerLinkActive="router_link">Connexion</button>
   <button *ngIf="!userIsAuth" mat-menu-item routerLink="auth/signup" routerLinkActive="router_link">Inscription</button>
   <button *ngIf="userIsAuth" mat-menu-item (click)="onLogout()"><mat-icon color="warn">power_settings_new</mat-icon></button>

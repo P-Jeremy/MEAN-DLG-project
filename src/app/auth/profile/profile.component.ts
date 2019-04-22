@@ -14,7 +14,9 @@ export class ProfileComponent implements OnInit {
   userData: {};
   userPosts: number;
   isLoading = false;
-  isNotifications = false;
+  commentNotif = false;
+  titleNotif = false;
+  postNotif = false;
   userPseudo: string;
   isEdit = false;
   form: FormGroup;
@@ -30,14 +32,16 @@ export class ProfileComponent implements OnInit {
       this.userData = data;
       this.userPseudo = data.data.pseudo;
       this.userPosts = data.posts;
-      this.isNotifications = data.data.notifications;
+      this.titleNotif = data.data.titleNotif;
+      this.commentNotif = data.data.commentNotif;
+      this.postNotif = data.data.postNotif;
       this.isLoading = false;
     });
   }
 
   /* Handle the notification status change */
-  onCheckBoxChange(ev: boolean) {
-    this.authService.changeNotifStatus(ev);
+  onCheckBoxChange(ev: boolean, src: string ) {
+    this.authService.changeNotifStatus(ev, src);
   }
 
   onEdit() {

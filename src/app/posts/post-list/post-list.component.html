@@ -1,6 +1,6 @@
 <div class="main_container">
   <app-spinner *ngIf="isLoading"></app-spinner>
-  <div  *ngIf="!isLoading"  class="addPost_button_container">
+  <div *ngIf="!isLoading" class="addPost_button_container">
     <a
       class="addPost"
       mat-raised-button
@@ -23,12 +23,13 @@
             <div class="bottom_header">{{ post.date }}</div>
           </div>
         </mat-card-subtitle>
-        <img
-          *ngIf="post.image != null"
-          mat-card-image
-          [src]="post.image"
-          [alt]="post.title"
-        />
+        <div class="post_image">
+          <img
+            *ngIf="post.image != null"
+            [src]="post.image"
+            [alt]="post.title"
+          />
+        </div>
         <mat-card-content>
           <p>{{ post.content }}</p></mat-card-content
         >
