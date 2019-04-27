@@ -42,7 +42,7 @@
   </div>
   <div *ngIf="!isLoading && !isShuffle" class="list_container">
     <div class="list">
-      <mat-accordion multi="true" *ngIf="songs.length && !isShuffle">
+      <mat-accordion multi="false" *ngIf="songs.length && !isShuffle">
         <mat-expansion-panel
           *ngFor="let song of (songs | filterTitle: term:isTitle)"
         >
