@@ -61,12 +61,12 @@
             <mat-card-actions>
               <a
                 *ngIf="userIsAuth && !commentInput"
-                mat-button
-                color="primary"
+                mat-raised-button
                 (click)="commentInput = true"
                 >Commenter</a
               >
               <form
+                class="comments"
                 *ngIf="commentInput"
                 [formGroup]="form"
                 (submit)="onSaveComment(post.id)"
@@ -82,17 +82,19 @@
                     >Entrez un commentaire</mat-error
                   >
                 </mat-form-field>
-                <button mat-raised-button color="primary" type="submit">
-                  Poster
-                </button>
-                <button
-                  mat-raised-button
-                  color="warn"
-                  type="submit"
-                  (click)="commentInput = false"
-                >
-                  annuler
-                </button>
+                <div class="comments_buttons">
+                  <button mat-raised-button color="primary" type="submit">
+                    Poster
+                  </button>
+                  <button
+                    mat-raised-button
+                    color="warn"
+                    type="submit"
+                    (click)="commentInput = false"
+                  >
+                    annuler
+                  </button>
+                </div>
               </form>
             </mat-card-actions>
             <div
