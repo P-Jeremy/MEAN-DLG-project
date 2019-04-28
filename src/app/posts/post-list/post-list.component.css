@@ -30,6 +30,11 @@ img {
   text-align: center;
 }
 
+.comments {
+  width: 100%;
+  display: flex;
+}
+
 .header {
   width: 100%;
 }
@@ -106,5 +111,22 @@ mat-spinner {
   .post-image,
   img {
     width: 100%;
+  }
+
+  .comments {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .comments_buttons {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+
+  }
+
+  .comments button {
+    width: 40%;
+    margin-bottom: 10px;
   }
 }
