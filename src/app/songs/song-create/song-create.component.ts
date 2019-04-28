@@ -1,10 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
+import { takeUntil } from 'rxjs/operators';
+
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { mimeType } from './mime-type.validator';
 import { Song } from '../../models/song.model';
 import { SongsService } from '../songs.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-song-create',
@@ -21,6 +24,8 @@ export class SongCreateComponent implements OnInit, OnDestroy {
   tab = false;
   isLoading = false;
   form: FormGroup;
+
+  destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor( public songService: SongsService, public route: ActivatedRoute) {}
 
@@ -39,6 +44,7 @@ export class SongCreateComponent implements OnInit, OnDestroy {
         this.songId = paramMap.get('songId');
         this.isLoading = true;
         this.songService.getSingleSong(this.songId)
+            .pipe(takeUntil(this.destroy$))
             .subscribe(SongData => {
               this.isLoading = false;
               this.song = {
@@ -101,5 +107,6 @@ export class SongCreateComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.destroy$.next(true);
   }
 }
