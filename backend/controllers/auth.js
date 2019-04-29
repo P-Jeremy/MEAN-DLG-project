@@ -75,7 +75,7 @@ exports.getUserProfile = async (req, res, next) => {
     });
   } catch (error) {
     res.status(403).json({
-      message: "Aucun utilisateur actif présent en base de données"
+      message: "Aucun utilisateur actif correspondant"
     });
   }
 };
@@ -98,7 +98,7 @@ exports.updatePseudo = async (req, res, next) => {
     });
   } catch (error) {
     res.status(403).json({
-      message: "Aucun utilisateur actif présent en base de données"
+      message: "Aucun utilisateur actif correspondant"
     });
   }
 };
@@ -275,7 +275,7 @@ exports.signIn = async (req, res, next) => {
       });
     } else {
       return res.status(403).json({
-        message: "Authentification impossible... Mot de passe incorrect"
+        message: "Authentification impossible... Mot de passe ou identifiant incorrect"
       });
     }
   } catch {
