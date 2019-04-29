@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { Post } from '../../models/post.model';
 import { PostsService } from '../posts.service';
@@ -28,6 +29,9 @@ export class PostListComponent implements OnInit, OnDestroy {
   private postSub: Subscription;
   private authListenerSub: Subscription;
 
+  destroy$: Subject<boolean> = new Subject<boolean>();
+
+
   constructor(public postsService: PostsService, private authService: AuthService) { }
 
   ngOnInit() {
@@ -37,7 +41,9 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.userId = this.authService.getUserId();
     this.postsService.getPosts(this.postsPerPage, this.currentPage);
-    this.postSub = this.postsService.getPostUpdatedListener()
+    this.postSub = this.postsService.getPostUpdatedListener().pipe(
+        takeUntil(this.destroy$)
+    )
       .subscribe((postData: { posts: Post[], postCount: number }) => {
         this.totalPosts = postData.postCount;
         this.posts = postData.posts;
@@ -46,6 +52,7 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.userIsAuth = this.authService.getIsAuth();
     this.authListenerSub = this.authService
       .getAuthStatusListener()
+      .pipe(takeUntil(this.destroy$))
       .subscribe(isUserAuth => {
         this.userIsAuth = isUserAuth;
         this.userId = this.authService.getUserId();
@@ -63,6 +70,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   onDelete(postId: string) {
     this.isLoading = true;
     this.postsService.deletePost(postId)
+      .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.postsService.getPosts(this.postsPerPage, this.currentPage);
       }, error => {
@@ -89,6 +97,7 @@ export class PostListComponent implements OnInit, OnDestroy {
     if (confirm('Voullez vous supprimer ce commentaire ?')) {
       this.isLoading = true;
       this.postsService.deleteComment(commentId, postId)
+        .pipe(takeUntil(this.destroy$))
         .subscribe(() => {
           this.postsService.getPosts(this.postsPerPage, this.currentPage);
         }, error => {
@@ -103,5 +112,6 @@ export class PostListComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.postSub.unsubscribe();
     this.authListenerSub.unsubscribe();
+    this.destroy$.next(true);
   }
 }

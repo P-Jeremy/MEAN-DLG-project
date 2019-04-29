@@ -5,7 +5,8 @@ import { Post } from '../../models/post.model';
 import { PostsService } from '../posts.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { mimeType } from './mime-type.validator';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
@@ -23,6 +24,8 @@ export class PostCreateComponent implements OnInit, OnDestroy {
   isLoading = false;
   form: FormGroup;
   imagePreview: string;
+
+  destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(public postsService: PostsService, public route: ActivatedRoute, public auhtService: AuthService) { }
 
@@ -47,6 +50,7 @@ export class PostCreateComponent implements OnInit, OnDestroy {
         this.postId = paramMap.get('postId');
         this.isLoading = true;
         this.postsService.getSinglePost(this.postId)
+          .pipe(takeUntil(this.destroy$))
           .subscribe(postData => {
             this.isLoading = false;
             this.post = {
@@ -104,5 +108,6 @@ export class PostCreateComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.authStatusSub.unsubscribe();
+    this.destroy$.next(true);
   }
 }

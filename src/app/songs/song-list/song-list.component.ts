@@ -1,5 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 
 import { SongsService } from '../songs.service';
 import { AuthService } from '../../auth/auth.service';
@@ -23,6 +25,8 @@ export class SongListComponent implements OnInit, OnDestroy {
 
   private songSub: Subscription;
   private adminListenerSub: Subscription;
+  destroy$: Subject<boolean> = new Subject<boolean>();
+
 
   constructor(public songsService: SongsService, private authService: AuthService, public route: ActivatedRoute) { }
 
@@ -33,13 +37,16 @@ export class SongListComponent implements OnInit, OnDestroy {
       this.route.paramMap.subscribe((paramMap: ParamMap) => {
         if (paramMap.has('shuffle')) {
           this.isShuffle = true;
-          this.songsService.getRandomSong().subscribe((res) => {
+          this.songsService.getRandomSong()
+          .pipe(takeUntil(this.destroy$))
+          .subscribe((res) => {
             this.randomSong = res.song;
           });
         }
       });
       this.songsService.getSongs();
       this.songSub = this.songsService.getSongUpdatedListener()
+        .pipe(takeUntil(this.destroy$))
         .subscribe((songData: { songs: Song[], songCount: number }) => {
           this.songs = songData.songs;
           this.isLoading = false;
@@ -47,6 +54,7 @@ export class SongListComponent implements OnInit, OnDestroy {
       this.userIsAdmin = this.authService.getIsAdmin();
       this.adminListenerSub = this.authService
         .getAdminStatusListener()
+        .pipe(takeUntil(this.destroy$))
         .subscribe(isUserAdmin => {
           this.userIsAdmin = isUserAdmin;
         });
@@ -57,6 +65,7 @@ export class SongListComponent implements OnInit, OnDestroy {
   onDelete(postId: string) {
     this.isLoading = true;
     this.songsService.deleteSong(postId)
+      .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.songsService.getSongs();
       }, error => {
@@ -66,7 +75,9 @@ export class SongListComponent implements OnInit, OnDestroy {
 
   onShuffle() {
     this.isLoading = true;
-    this.songsService.getRandomSong().subscribe((res) => {
+    this.songsService.getRandomSong()
+    .pipe(takeUntil(this.destroy$))
+    .subscribe((res) => {
       this.randomSong = res.song;
     });
     setTimeout(() => {
@@ -92,5 +103,6 @@ export class SongListComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.songSub.unsubscribe();
     this.adminListenerSub.unsubscribe();
+    this.destroy$.next(true);
   }
 }
