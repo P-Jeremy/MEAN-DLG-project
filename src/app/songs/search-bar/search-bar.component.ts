@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { SearchBarService } from './search-bar.service';
 
 @Component({
@@ -6,22 +6,18 @@ import { SearchBarService } from './search-bar.service';
   templateUrl: './search-bar.component.html',
   styleUrls: ['./search-bar.component.css']
 })
-export class SearchBarComponent implements OnInit {
+export class SearchBarComponent {
 
   isTitle = true;
-  term: string;
 
   constructor(private searchBarService: SearchBarService) { }
 
-  ngOnInit() {
-  }
-
   onBoxChecked(ev: boolean) {
+    this.isTitle = !this.isTitle;
     this.searchBarService.isTitleChange(ev);
   }
 
   onChange(ev: string) {
-    this.term = ev;
-    this.searchBarService.getNewTerm(this.term);
+    this.searchBarService.getNewTerm(ev);
   }
 }
