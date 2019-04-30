@@ -9,6 +9,7 @@ import { SearchBarService } from './search-bar.service';
 export class SearchBarComponent implements OnInit {
 
   isTitle = true;
+  term: string;
 
   constructor(private searchBarService: SearchBarService) { }
 
@@ -20,6 +21,7 @@ export class SearchBarComponent implements OnInit {
   }
 
   onChange(ev: string) {
-    this.searchBarService.getNewTerm(ev);
+    this.term = ev;
+    this.searchBarService.getNewTerm(this.term);
   }
 }
