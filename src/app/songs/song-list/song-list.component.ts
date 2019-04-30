@@ -62,9 +62,9 @@ export class SongListComponent implements OnInit, OnDestroy {
   }
 
   /* Callback to handle post delete on the DB */
-  onDelete(postId: string) {
+  onDelete(songId: string) {
     this.isLoading = true;
-    this.songsService.deleteSong(postId)
+    this.songsService.deleteSong(songId)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.songsService.getSongs();

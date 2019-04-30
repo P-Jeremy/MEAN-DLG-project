@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FilterTitlePipe } from './filter-title.pipe';
 import { StaticModule } from '../static/static.module';
+import { SongComponent } from './song/song.component';
 
 
 @NgModule({
@@ -14,6 +15,7 @@ import { StaticModule } from '../static/static.module';
     FilterTitlePipe,
     SongListComponent,
     SongCreateComponent,
+    SongComponent,
   ],
   imports: [
     CommonModule,

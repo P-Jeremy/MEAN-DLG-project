@@ -1,0 +1,45 @@
+.buttons_container {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.list_container {
+  width: 100%;
+}
+
+.list {
+  width: 60%;
+  margin: 0 auto;
+}
+
+.shuffle_accordion {
+  margin-top: 15px;
+}
+
+.header {
+  width: 100%;
+  display: flex;
+}
+
+
+
+mat-expansion-panel-header :nth-child(3) {
+  margin-right: 15px
+}
+
+@media only screen and (max-width: 1024px)  {
+  .list {
+    width: 90%;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  .spacer {
+    flex:none
+  }
+}
