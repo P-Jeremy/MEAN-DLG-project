@@ -1,22 +1,24 @@
-<div class="search_bar">
-  <input
-    (keyup)="onChange($event.target.value)"
-    type="text"
-    placeholder="Rechercher"
-  />
-</div>
-<div class="toggle">
-  <div>
-    <mat-icon [ngClass]="{ selected: !isTitle }">perm_identity</mat-icon>
+<div class="search_bar_container">
+  <div class="search_bar">
+    <input
+      (input)="onChange($event.target.value)"
+      type="text"
+      placeholder="Rechercher"
+    />
   </div>
-  <mat-slide-toggle
-    (change)="onBoxChecked($event.checked)"
-    [checked]="isTitle"
-    [disabled]="false"
-  >
-  </mat-slide-toggle>
+  <div class="toggle">
+    <div>
+      <mat-icon [ngClass]="{ selected: !isTitle }">perm_identity</mat-icon>
+    </div>
+    <mat-slide-toggle
+      (change)="onBoxChecked($event.checked)"
+      [checked]="isTitle"
+      [disabled]="false"
+    >
+    </mat-slide-toggle>
 
-  <div>
-    <mat-icon [ngClass]="{ selected: isTitle }">audiotrack</mat-icon>
+    <div>
+      <mat-icon [ngClass]="{ selected: isTitle }">audiotrack</mat-icon>
+    </div>
   </div>
 </div>
