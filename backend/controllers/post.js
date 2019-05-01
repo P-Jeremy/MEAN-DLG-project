@@ -60,25 +60,19 @@ exports.addComment = async (req, res, next) => {
     }
   );
 
-  const userWantsNotification = await User.findOne({
-    _id: result.creator_id,
-    commentNotif: true
-  });
-  if (
-    userWantsNotification &&
-    req.userData.userId != userWantsNotification._id
-  ) {
-    sendEmail(
-      commentNotif(
-        userWantsNotification.email,
-        result.title,
-        req.body.comment,
-        fetchedUser.pseudo
-      )
-    );
-  }
+  const users = await User.find({ commentNotif: true });
+    await users
+      .filter(notAuthor => notAuthor.pseudo !== fetchedUser.pseudo)
+      .map(user => {
+        sendEmail(commentNotif(
+          user.email,
+          result.title,
+          req.body.comment,
+          fetchedUser.pseudo
+        ));
+      });
 
-  res.status(200).json({
+  return res.status(200).json({
     message: "Ok",
     post: result
   });
