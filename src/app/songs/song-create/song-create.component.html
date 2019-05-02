@@ -14,25 +14,24 @@
         formControlName="author"
         placeholder="Interprète"
       />
+
       <mat-error *ngIf="form.get('author').invalid"
-        >Veuillez saisir l'interprète</mat-error
+        >Veuillez saisir un intereprète</mat-error
+      >
+    </mat-form-field>
+    <mat-form-field>
+      <textarea
+        class="lyrics"
+        matInput
+        type="text"
+        formControlName="lyrics"
+        placeholder="Paroles"
+      ></textarea>
+      <mat-error *ngIf="form.get('lyrics').invalid"
+        >Veuillez saisir des paroles</mat-error
       >
     </mat-form-field>
     <div fxLayout="row" fxLayout.xs="column" class="buttons_container">
-      <div class="upload_container" fxFlex="50%">
-        <button
-          [ngClass]="{ green: form.get('lyrics').valid }"
-          (click)="lyricsPicker.click()"
-          mat-stroked-button
-          type="button"
-        >
-          Paroles
-        </button>
-        <input type="file" #lyricsPicker (change)="onLyricsPicked($event)" />
-        <mat-error *ngIf="lyrics && form.get('lyrics').invalid"
-          >Pdf seulement...</mat-error
-        >
-      </div>
       <div class="upload_container" fxFlex="50%">
         <button
           [ngClass]="{ green: form.get('tab').valid }"
