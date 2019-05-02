@@ -2,7 +2,7 @@
   width: 100%;
   display: flex;
   justify-content: space-around;
-  margin-bottom: 20px;
+  margin-bottom: 50px;
 }
 
 .spacer {
@@ -13,7 +13,11 @@
   width: 100%;
 }
 
-.lyrics pre {
+.lyrics {
+  margin-bottom: 30px;
+}
+
+.lyrics .text {
   font-size: 1.2em;
 }
 
@@ -45,14 +49,22 @@ mat-expansion-panel-header :nth-child(3) {
   }
 }
 
-@media only screen and (max-width: 450px) {
+@media only screen and (max-width: 768px)  {
+  .list {
+    width: 95%;
+  }
+
+  .lyrics .text {
+    font-size: 1.2em;
+    line-height: 1.6;
+  }
+}
+
+@media only screen and (max-width: 425px) {
   .spacer {
     flex:none
   }
 
-  .lyrics pre {
-    font-size: 3.6vw;
-  }
 
   .header {
     display: flex;

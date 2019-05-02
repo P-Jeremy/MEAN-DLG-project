@@ -49,6 +49,10 @@ export class SongComponent implements OnInit, OnDestroy {
         this.tab = !this.tab;
         this.lyrics = false;
         break;
+      case 'both':
+        this.tab = false;
+        this.lyrics = false;
+        break;
       default:
         break;
     }
