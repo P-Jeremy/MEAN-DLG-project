@@ -16,12 +16,20 @@
           </div>
         </mat-expansion-panel-header>
         <div class="buttons_container">
-          <a mat-raised-button color="primary" [href]="song.lyrics" download
+          <a mat-raised-button color="primary" (click)="onViewChange('lyrics')"
             >Paroles</a
           >
-          <a mat-raised-button color="primary" [href]="song.tab" download
+          <a mat-raised-button color="primary" (click)="onViewChange('tab')"
             >Tablature</a
           >
+        </div>
+        <div class="song_content">
+          <div *ngIf="lyrics && !tab" class="lyrics">
+            <pre>{{ song.lyrics }}</pre>
+          </div>
+          <div *ngIf="!lyrics && tab" class="tab">
+            <img src="{{ song.tab }}" alt="tab" />
+          </div>
         </div>
         <mat-action-row *ngIf="userIsAdmin && !isShuffle">
           <a

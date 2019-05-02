@@ -39,6 +39,10 @@ input[type="file"] {
   text-align: center;
 }
 
+.lyrics {
+  height: 100px;
+}
+
 .green {
   background-color: rgb(116, 199, 116);
 }

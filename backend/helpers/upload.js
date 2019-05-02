@@ -10,7 +10,6 @@ const MIME_TYPE_MAP = {
   "image/png": "png",
   "image/jpg": "jpg",
   "image/jpeg": "jpg",
-  "application/pdf" : "pdf"
 };
 
 aws.config.update({

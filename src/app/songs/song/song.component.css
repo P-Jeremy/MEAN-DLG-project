@@ -2,6 +2,7 @@
   width: 100%;
   display: flex;
   justify-content: space-around;
+  margin-bottom: 20px;
 }
 
 .spacer {
@@ -12,9 +13,17 @@
   width: 100%;
 }
 
+.lyrics pre {
+  font-size: 1.2em;
+}
+
 .list {
   width: 60%;
   margin: 0 auto;
+}
+
+.tab img {
+  width: 100%
 }
 
 .shuffle_accordion {
@@ -39,6 +48,10 @@ mat-expansion-panel-header :nth-child(3) {
 @media only screen and (max-width: 450px) {
   .spacer {
     flex:none
+  }
+
+  .lyrics pre {
+    font-size: 3.6vw;
   }
 
   .header {

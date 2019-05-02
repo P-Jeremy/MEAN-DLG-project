@@ -5,12 +5,15 @@ const titleNotif = require('../helpers/email/templates/titleNotif');
 
 exports.addSong = async (req, res, next) => {
   try {
+    const tab = req.file ? req.file.location : null;
+
     const newSong = new Song({
       title: req.body.title,
       author: req.body.author,
-      lyrics: req.files.lyrics[0].location,
-      tab: req.files.tab[0].location
+      lyrics: req.body.lyrics,
+      tab: tab
     });
+
     const result = await newSong.save();
     const users = await User.find({ titleNotif: true });
     await users
@@ -70,15 +73,22 @@ exports.updateSong = async (req, res, next) => {
       message: 'Vous n\'êtes pas authorisé'
     })
   }
-  const lyricsPath = req.body.lyrics  ? req.body.lyrics : req.files.lyrics[0].location;
-  const tabPath = req.body.tab  ? req.body.tab : req.files.tab[0].location;
+
+  let tabPath;
+  if (req.file) {
+    tabPath = req.file.location;
+  } else {
+    tabPath = !req.body.tab ? null : req.body.tab;
+  }
+
   const song = new Song({
     _id: req.body.id,
     title: req.body.title,
     author: req.body.author,
-    lyrics: lyricsPath,
+    lyrics: req.body.lyrics,
     tab: tabPath
   });
+
   const result = await Song.updateOne(
     { _id: req.params.id},
     song
