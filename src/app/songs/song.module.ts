@@ -7,6 +7,9 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FilterTitlePipe } from './filter-title.pipe';
 import { StaticModule } from '../static/static.module';
+import { SongComponent } from './song/song.component';
+import { SearchBarComponent } from './search-bar/search-bar.component';
+import { SearchBarService } from './search-bar/search-bar.service';
 
 
 @NgModule({
@@ -14,6 +17,8 @@ import { StaticModule } from '../static/static.module';
     FilterTitlePipe,
     SongListComponent,
     SongCreateComponent,
+    SongComponent,
+    SearchBarComponent,
   ],
   imports: [
     CommonModule,
@@ -22,7 +27,8 @@ import { StaticModule } from '../static/static.module';
     AngularMaterialModule,
     RouterModule,
     StaticModule,
-  ]
+  ],
+  providers: [SearchBarService]
 })
 
 export class SongModule {}

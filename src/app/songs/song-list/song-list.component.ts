@@ -19,8 +19,6 @@ export class SongListComponent implements OnInit, OnDestroy {
   randomSong;
   isLoading = false;
   userIsAdmin = false;
-  isTitle = true;
-  isAuthor = false;
   isShuffle = false;
 
   private songSub: Subscription;
@@ -62,9 +60,9 @@ export class SongListComponent implements OnInit, OnDestroy {
   }
 
   /* Callback to handle post delete on the DB */
-  onDelete(postId: string) {
+  onDelete(songId: string) {
     this.isLoading = true;
-    this.songsService.deleteSong(postId)
+    this.songsService.deleteSong(songId)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.songsService.getSongs();
@@ -83,21 +81,6 @@ export class SongListComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.isLoading = false;
     }, 500);
-  }
-
-  /**
-   * Handle switch between 2 filter modes
-   * @param ev box check status
-   * @param src of the box checked
-   */
-  onBoxChecked(ev: any, src: string) {
-    switch (src) {
-      case 'title':
-        this.isTitle = ev.checked;
-        break;
-      default:
-        this.isTitle = false;
-    }
   }
 
   ngOnDestroy() {
