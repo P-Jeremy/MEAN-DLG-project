@@ -19,18 +19,17 @@
         >Veuillez saisir un intereprète</mat-error
       >
     </mat-form-field>
-    <mat-form-field>
-      <textarea
+      <!-- <textarea
         class="lyrics"
         matInput
         type="text"
         formControlName="lyrics"
         placeholder="Paroles"
-      ></textarea>
+      ></textarea> -->
+      <angular-editor formControlName="lyrics" [config]="editorConfig"></angular-editor>
       <mat-error *ngIf="form.get('lyrics').invalid"
         >Veuillez saisir des paroles</mat-error
       >
-    </mat-form-field>
     <div>
       <div class="upload_item_container">
         <button

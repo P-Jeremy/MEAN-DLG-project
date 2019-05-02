@@ -26,7 +26,7 @@
         </div>
         <div class="song_content">
           <div *ngIf="lyrics && !tab" class="lyrics">
-            <pre>{{ song.lyrics }}</pre>
+            <div class="text" font [innerHTML]="song.lyrics"></div>
             <a mat-raised-button color="warn" (click)="onViewChange('lyrics')"
               >Fermer</a
             >

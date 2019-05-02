@@ -17,7 +17,7 @@
   margin-bottom: 30px;
 }
 
-.lyrics pre {
+.lyrics .text {
   font-size: 1.2em;
 }
 
@@ -54,7 +54,7 @@ mat-expansion-panel-header :nth-child(3) {
     width: 95%;
   }
 
-  .lyrics pre {
+  .lyrics .text {
     font-size: 1.2em;
     line-height: 1.6;
   }
@@ -65,10 +65,6 @@ mat-expansion-panel-header :nth-child(3) {
     flex:none
   }
 
-  .lyrics pre {
-    font-size: 0.7em;
-    line-height: 2;
-  }
 
   .header {
     display: flex;

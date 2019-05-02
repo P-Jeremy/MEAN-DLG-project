@@ -9,6 +9,9 @@ import { Song } from '../../models/song.model';
 import { SongsService } from '../songs.service';
 import { Subject } from 'rxjs';
 
+import { AngularEditorConfig } from '@kolkov/angular-editor';
+
+
 @Component({
   selector: 'app-song-create',
   templateUrl: './song-create.component.html',
@@ -26,6 +29,31 @@ export class SongCreateComponent implements OnInit, OnDestroy {
   form: FormGroup;
 
   destroy$: Subject<boolean> = new Subject<boolean>();
+
+  editorConfig: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    height: '25rem',
+    minHeight: '5rem',
+    placeholder: 'Enter text here...',
+    translate: 'no',
+    uploadUrl: 'v1/images', // if needed
+    customClasses: [ // optional
+      {
+        name: "quote",
+        class: "quote",
+      },
+      {
+        name: 'redText',
+        class: 'redText'
+      },
+      {
+        name: "titleText",
+        class: "titleText",
+        tag: "h1",
+      },
+    ]
+  };
 
   constructor( public songService: SongsService, public route: ActivatedRoute) {}
 
