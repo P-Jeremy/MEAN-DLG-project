@@ -2,7 +2,7 @@
   width: 100%;
   display: flex;
   justify-content: space-around;
-  margin-bottom: 20px;
+  margin-bottom: 50px;
 }
 
 .spacer {
@@ -45,9 +45,19 @@ mat-expansion-panel-header :nth-child(3) {
   }
 }
 
+@media only screen and (max-width: 769px)  {
+  .list {
+    width: 95%;
+  }
+}
+
 @media only screen and (max-width: 450px) {
   .spacer {
     flex:none
+  }
+
+  .list {
+    width: 98%;
   }
 
   .lyrics pre {

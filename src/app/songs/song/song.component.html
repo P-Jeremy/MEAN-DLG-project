@@ -4,7 +4,7 @@
       <mat-expansion-panel
         *ngFor="let song of songs | filterTitle: term:isTitle"
       >
-        <mat-expansion-panel-header>
+        <mat-expansion-panel-header (click)="onViewChange('both')">
           <div class="header">
             <div>
               <strong>{{ song.title }}</strong>

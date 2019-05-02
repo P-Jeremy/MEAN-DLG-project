@@ -31,8 +31,8 @@
         >Veuillez saisir des paroles</mat-error
       >
     </mat-form-field>
-    <div fxLayout="row" fxLayout.xs="column" class="buttons_container">
-      <div class="upload_container" fxFlex="50%">
+    <div>
+      <div class="upload_item_container">
         <button
           [ngClass]="{ green: form.get('tab').valid }"
           (click)="tabPicker.click()"
@@ -41,10 +41,13 @@
         >
           Tablatures
         </button>
-        <input type="file" #tabPicker (change)="onTabPicked($event)" />
+      </div>
+      <input type="file" #tabPicker (change)="onTabPicked($event)" />
+      <div class="upload_item_container">
         <mat-error *ngIf="tab && form.get('tab').invalid"
-          >Pdf seulement...</mat-error
+          >Jpeg ou png uniquement</mat-error
         >
+        <br />
       </div>
     </div>
     <div class="buttons_container">

@@ -1,10 +1,6 @@
-:host {
-  margin-top: 60px;
-}
-
 mat-card {
   width: 40%;
-  margin: 0 auto;
+  margin: 60px auto;
 }
 
 mat-form-field, textarea {
@@ -30,12 +26,8 @@ input[type="file"] {
   width: 80%;
 }
 
-.upload_container {
-  margin: 0 auto;
-}
-
-.upload_container, button {
-  width: 100px;
+.upload_item_container {
+  width: 100%;
   text-align: center;
 }
 
@@ -47,13 +39,8 @@ input[type="file"] {
   background-color: rgb(116, 199, 116);
 }
 
-mat-card {
-  width: 40%;
-  margin-top: 30px;
-}
-
-@media only screen and (max-width: 425px)  {
-  mat-card, form {
-    width: 90%;
+@media only screen and (max-width: 1024px)  {
+  mat-card {
+    width: 80%;
   }
 }
