@@ -2,6 +2,7 @@
   <div class="list">
     <mat-accordion multi="false" *ngIf="songs.length && !isShuffle">
       <mat-expansion-panel
+        class="song"
         *ngFor="let song of songs | filterTitle: term:isTitle"
       >
         <mat-expansion-panel-header (click)="onViewChange('both')">
@@ -26,6 +27,9 @@
         <div class="song_content">
           <div *ngIf="lyrics && !tab" class="lyrics">
             <pre>{{ song.lyrics }}</pre>
+            <a mat-raised-button color="warn" (click)="onViewChange('lyrics')"
+              >Fermer</a
+            >
           </div>
           <div *ngIf="!lyrics && tab" class="tab">
             <img src="{{ song.tab }}" alt="tab" />
