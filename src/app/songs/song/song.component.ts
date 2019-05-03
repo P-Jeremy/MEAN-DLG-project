@@ -43,11 +43,9 @@ export class SongComponent implements OnInit, OnDestroy {
     switch (ev) {
       case 'lyrics':
         this.lyrics = !this.lyrics;
-        this.tab = false;
         break;
       case 'tab':
         this.tab = !this.tab;
-        this.lyrics = false;
         break;
       case 'both':
         this.tab = false;

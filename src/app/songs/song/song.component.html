@@ -25,15 +25,19 @@
           >
         </div>
         <div class="song_content">
-          <div *ngIf="lyrics && !tab" class="lyrics">
-            <div class="text" [innerHTML]="song.lyrics"></div>
-            <a mat-raised-button color="warn" (click)="onViewChange('lyrics')"
-              >Fermer</a
-            >
-          </div>
-          <div *ngIf="!lyrics && tab" class="tab">
+          <div *ngIf="tab" class="tab">
             <img src="{{ song.tab }}" alt="tab" />
           </div>
+          <div *ngIf="lyrics" class="lyrics">
+            <div class="text" [innerHTML]="song.lyrics"></div>
+          </div>
+          <a
+            *ngIf="tab || lyrics"
+            mat-raised-button
+            color="warn"
+            (click)="onViewChange('both')"
+            >Fermer</a
+          >
         </div>
         <mat-action-row *ngIf="userIsAdmin && !isShuffle">
           <a
@@ -56,7 +60,7 @@
     </mat-accordion>
     <mat-accordion *ngIf="isShuffle && randomSong" multi="false">
       <mat-expansion-panel>
-        <mat-expansion-panel-header>
+        <mat-expansion-panel-header (click)="onViewChange('both')">
           <div class="header">
             <div>
               <strong>{{ randomSong.title }}</strong>
@@ -76,12 +80,19 @@
           >
         </div>
         <div class="song_content">
-          <div *ngIf="lyrics && !tab" class="lyrics">
-              <div class="text" [innerHTML]="randomSong.lyrics"></div>
-          </div>
-          <div *ngIf="!lyrics && tab" class="tab">
+          <div *ngIf="tab" class="tab">
             <img src="{{ randomSong.tab }}" alt="tab" />
           </div>
+          <div *ngIf="lyrics" class="lyrics">
+            <div class="text" [innerHTML]="randomSong.lyrics"></div>
+          </div>
+          <a
+            *ngIf="tab || lyrics"
+            mat-raised-button
+            color="warn"
+            (click)="onViewChange('both')"
+            >Fermer</a
+          >
         </div>
       </mat-expansion-panel>
     </mat-accordion>
