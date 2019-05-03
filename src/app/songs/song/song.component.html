@@ -77,7 +77,7 @@
         </div>
         <div class="song_content">
           <div *ngIf="lyrics && !tab" class="lyrics">
-            <pre>{{ randomSong.lyrics }}</pre>
+              <div class="text" [innerHTML]="randomSong.lyrics"></div>
           </div>
           <div *ngIf="!lyrics && tab" class="tab">
             <img src="{{ randomSong.tab }}" alt="tab" />
