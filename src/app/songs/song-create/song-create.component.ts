@@ -24,36 +24,12 @@ export class SongCreateComponent implements OnInit, OnDestroy {
   private songId: string;
   song: Song;
   lyrics = false;
+  help = false;
   tab = false;
   isLoading = false;
   form: FormGroup;
 
   destroy$: Subject<boolean> = new Subject<boolean>();
-
-  editorConfig: AngularEditorConfig = {
-    editable: true,
-    spellcheck: true,
-    height: '25rem',
-    minHeight: '5rem',
-    placeholder: 'Enter text here...',
-    translate: 'no',
-    uploadUrl: 'v1/images', // if needed
-    customClasses: [ // optional
-      {
-        name: "quote",
-        class: "quote",
-      },
-      {
-        name: 'redText',
-        class: 'redText'
-      },
-      {
-        name: "titleText",
-        class: "titleText",
-        tag: "h1",
-      },
-    ]
-  };
 
   constructor( public songService: SongsService, public route: ActivatedRoute) {}
 
@@ -63,7 +39,6 @@ export class SongCreateComponent implements OnInit, OnDestroy {
       author: new FormControl(null, {validators: [Validators.required]}),
       lyrics: new FormControl(null, {validators: [Validators.required]}),
       tab: new FormControl(null, {validators: [Validators.required], asyncValidators : [mimeType]})
-
     });
 
     this.route.paramMap.subscribe((paramMap: ParamMap) => {

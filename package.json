@@ -25,7 +25,6 @@
     "@angular/pwa": "^0.12.4",
     "@angular/router": "~7.2.0",
     "@angular/service-worker": "~7.2.0",
-    "@kolkov/angular-editor": "^0.13.1",
     "aws-sdk": "^2.427.0",
     "bcrypt": "^3.0.5",
     "bcryptjs": "^2.4.3",

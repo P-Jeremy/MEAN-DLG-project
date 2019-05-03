@@ -15,10 +15,8 @@
 
 .lyrics {
   margin-bottom: 30px;
-}
-
-.lyrics .text {
-  font-size: 1.2em;
+  font-size: 1.7em;
+  line-height: 1.8;
 }
 
 .list {
@@ -39,6 +37,10 @@
   display: flex;
 }
 
+.text > .refrain {
+  font-weight: bold;
+}
+
 mat-expansion-panel-header :nth-child(3) {
   margin-right: 15px
 }
@@ -55,7 +57,7 @@ mat-expansion-panel-header :nth-child(3) {
   }
 
   .lyrics .text {
-    font-size: 1.2em;
+    font-size: 1em;
     line-height: 1.6;
   }
 }
@@ -65,6 +67,10 @@ mat-expansion-panel-header :nth-child(3) {
     flex:none
   }
 
+  .lyrics .text {
+    font-size: 0.5em;
+    line-height: 1.2;
+  }
 
   .header {
     display: flex;

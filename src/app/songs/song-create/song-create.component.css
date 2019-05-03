@@ -7,10 +7,6 @@ mat-form-field, textarea {
   width: 100%;
 }
 
-mat-spinner {
-  margin: auto;
-}
-
 .buttons_container {
   margin: auto;
   display: flex;
@@ -31,8 +27,13 @@ input[type="file"] {
   text-align: center;
 }
 
+.question_mark {
+  position: absolute;
+  right: 0;
+}
+
 .lyrics {
-  height: 100px;
+  height: 150px;
 }
 
 .green {
