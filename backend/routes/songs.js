@@ -7,7 +7,7 @@ const upload = require('../helpers/upload');
 
 
 /* Add a song in DB */
-router.post('', checkAdmin , upload.fields([{name: "lyrics", maxCount :1}, {name: "tab", maxCount :1}]), songController.addSong);
+router.post('', checkAdmin , upload.single('tab'), songController.addSong);
 
 /* Get all the songs from DB */
 router.get('', checkAuth, songController.getSongs);
@@ -16,7 +16,7 @@ router.get('', checkAuth, songController.getSongs);
 router.get('/shuffle', checkAuth, songController.getShuffleSong);
 
 /* Update the song corresponding to the param id passed through URL from client */
-router.put('/:id', checkAdmin, upload.fields([{name: "lyrics", maxCount :1}, {name: "tab", maxCount :1}]), songController.updateSong);
+router.put('/:id', checkAdmin, upload.single('tab'), songController.updateSong);
 
 /* Get a song corresponding to the param id from client */
 router.get('/:id', songController.getSingleSong);

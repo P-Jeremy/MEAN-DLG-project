@@ -1,116 +1,33 @@
 <div class="main_container">
   <app-spinner *ngIf="isLoading"></app-spinner>
-  <div *ngIf="isShuffle && !isLoading" class="shuffle_button_container">
+
+  <div *ngIf="isShuffle && !isLoading" class="button_container">
     <a class="shuffle" mat-raised-button color="primary" (click)="onShuffle()"
       ><mat-icon> swap_calls</mat-icon></a
     >
   </div>
-  <div
-    *ngIf="!isShuffle && !isLoading && songs.length"
-    class="search_bar_container"
-  >
-    <a
-      class="add_song"
-      *ngIf="userIsAdmin && !isShuffle"
-      mat-raised-button
-      routerLink="/create_song"
-      >Ajouter</a
-    >
-    <div class="search_bar">
-      <input
-        type="text"
-        placeholder="Rechercher"
-        [(ngModel)]="term"
-        [ngModelOptions]="{ standalone: true }"
-      />
-    </div>
-    <div class="toggle">
-      <div>
-        <mat-icon [ngClass]="{ selected: !isTitle }">perm_identity</mat-icon>
-      </div>
-      <mat-slide-toggle
-        (change)="onBoxChecked($event, 'title')"
-        [checked]="isTitle"
-        [disabled]="false"
-      >
-      </mat-slide-toggle>
 
-      <div>
-        <mat-icon [ngClass]="{ selected: isTitle }">audiotrack</mat-icon>
-      </div>
-    </div>
+  <div *ngIf="userIsAdmin && !isShuffle && !isLoading" class="button_container">
+    <a class="add_song" mat-raised-button routerLink="/create_song">Ajouter</a>
   </div>
-  <div *ngIf="!isLoading && !isShuffle" class="list_container">
-    <div class="list">
-      <mat-accordion multi="false" *ngIf="songs.length && !isShuffle">
-        <mat-expansion-panel
-          *ngFor="let song of (songs | filterTitle: term:isTitle)"
-        >
-          <mat-expansion-panel-header>
-            <div class="header">
-              <div>
-                <strong>{{ song.title }}</strong>
-              </div>
-              <span class="spacer"></span>
-              <div>
-                {{ song.author }}
-              </div>
-            </div>
-          </mat-expansion-panel-header>
-          <div class="buttons_container">
-            <a mat-raised-button color="primary" [href]="song.lyrics" download>Paroles</a>
-            <a mat-raised-button color="primary" [href]="song.tab" download>Tablature</a>
-          </div>
-          <mat-action-row *ngIf="userIsAdmin && !isShuffle">
-            <a
-              *ngIf="userIsAdmin && !isShuffle"
-              [routerLink]="['/edit_song', song.id]"
-              mat-button
-              color="primary"
-              >Editer</a
-            >
-            <button
-              *ngIf="userIsAdmin && !isShuffle"
-              mat-button
-              color="warn"
-              (click)="onDelete(song.id)"
-            >
-              Supprimer
-            </button>
-          </mat-action-row>
-        </mat-expansion-panel>
-      </mat-accordion>
-    </div>
-  </div>
-  <div class="list_container">
-    <div class="list">
-      <div
-        *ngIf="isShuffle && randomSong && !isLoading"
-        class="shuffle_accordion"
-      >
-        <mat-accordion multi="true">
-          <mat-expansion-panel>
-            <mat-expansion-panel-header>
-              <div class="header">
-                <div>
-                  <strong>{{ randomSong.title }}</strong>
-                </div>
-                <span class="spacer"></span>
-                <div>
-                  {{ randomSong.author }}
-                </div>
-              </div>
-            </mat-expansion-panel-header>
-            <div class="buttons_container">
-              <a mat-raised-button color="primary" [href]="randomSong.lyrics" download>Paroles</a>
-              <a mat-raised-button color="primary" [href]="randomSong.tab" download>Tablature</a>
-            </div>
-          </mat-expansion-panel>
-        </mat-accordion>
-      </div>
-    </div>
-  </div>
-  <p class="mat-body-1 info-text" *ngIf="!songs.length && !isLoading && !isShuffle">
+
+  <app-search-bar
+    *ngIf="!isShuffle && !isLoading && songs.length"
+  ></app-search-bar>
+
+  <app-song
+    *ngIf="!isLoading"
+    [songs]="songs"
+    [userIsAdmin]="userIsAdmin"
+    [randomSong]="randomSong"
+    [isShuffle]="isShuffle"
+    (emitSongIdToParent)="onDelete($event)"
+  ></app-song>
+
+  <p
+    class="mat-body-1 info-text"
+    *ngIf="!songs.length && !isLoading && !isShuffle"
+  >
     Pas de titres dans la setlist...
   </p>
 </div>

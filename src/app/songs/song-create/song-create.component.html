@@ -1,4 +1,4 @@
-<mat-card *ngIf="!isLoading">
+<mat-card *ngIf="!isLoading && !help">
   <app-spinner *ngIf="isLoading"></app-spinner>
   <form [formGroup]="form" (submit)="onSaveSong()">
     <mat-form-field>
@@ -14,26 +14,28 @@
         formControlName="author"
         placeholder="Interprète"
       />
+
       <mat-error *ngIf="form.get('author').invalid"
-        >Veuillez saisir l'interprète</mat-error
+        >Veuillez saisir un intereprète</mat-error
       >
     </mat-form-field>
-    <div fxLayout="row" fxLayout.xs="column" class="buttons_container">
-      <div class="upload_container" fxFlex="50%">
-        <button
-          [ngClass]="{ green: form.get('lyrics').valid }"
-          (click)="lyricsPicker.click()"
-          mat-stroked-button
-          type="button"
-        >
-          Paroles
-        </button>
-        <input type="file" #lyricsPicker (change)="onLyricsPicked($event)" />
-        <mat-error *ngIf="lyrics && form.get('lyrics').invalid"
-          >Pdf seulement...</mat-error
-        >
-      </div>
-      <div class="upload_container" fxFlex="50%">
+    <mat-form-field>
+      <a class="question_mark" (click)="help = true"
+        ><mat-icon>help_outline</mat-icon></a
+      >
+      <textarea
+        class="lyrics"
+        matInput
+        type="text"
+        formControlName="lyrics"
+        placeholder="Paroles"
+      ></textarea>
+      <mat-error *ngIf="form.get('lyrics').invalid"
+        >Veuillez saisir des paroles</mat-error
+      >
+    </mat-form-field>
+    <div>
+      <div class="upload_item_container">
         <button
           [ngClass]="{ green: form.get('tab').valid }"
           (click)="tabPicker.click()"
@@ -42,19 +44,61 @@
         >
           Tablatures
         </button>
-        <input type="file" #tabPicker (change)="onTabPicked($event)" />
+      </div>
+      <input type="file" #tabPicker (change)="onTabPicked($event)" />
+      <div class="upload_item_container">
         <mat-error *ngIf="tab && form.get('tab').invalid"
-          >Pdf seulement...</mat-error
+          >Jpeg ou png uniquement</mat-error
         >
+        <br />
       </div>
     </div>
     <div class="buttons_container">
       <button mat-raised-button color="primary" type="submit">
         Poster
       </button>
-      <button mat-raised-button color="warn" routerLink="/post">
+      <button mat-raised-button color="warn" routerLink="/song">
         annuler
       </button>
     </div>
   </form>
 </mat-card>
+<div *ngIf="help" class="help">
+  <mat-card>
+    <p>
+      L'éditeur de texte des paroles utilise les balises HTML pour le formatage (gras, saut de ligne etc etc).
+      <br>
+      Cliquez sur le bouton pour en savoir plus:
+      <br>
+      <br>
+      <a
+        mat-raised-button
+        color="primary"
+        href="http://formation-html.weebly.com/texte-html.html"
+        (clique)="help = false"
+      >
+        Balises html</a
+      >
+    </p>
+    <br>
+    <br>
+    <p>
+        Pour convertir un text au format HTML.
+        <br>
+        Cliquez sur le bouton suivant:
+        <br>
+        <br>
+        <a
+          mat-raised-button
+          color="primary"
+          href="http://www.unit-conversion.info/texttools/text-to-html/"
+          (clique)="help = false"
+        >
+          Convertir</a
+        >
+      </p>
+      <br>
+      <br>
+    <a mat-raised-button color="warn" (click)="help = false">Fermer</a>
+  </mat-card>
+</div>

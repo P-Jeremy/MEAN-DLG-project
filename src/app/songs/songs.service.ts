@@ -96,12 +96,12 @@ export class SongsService {
    *
    * @returns the response through the postUpdated observable
    */
-  addSongs(title: string, author: string, lyrics: File, tab: File) {
+  addSongs(title: string, author: string, lyrics: string, tab: File) {
 
     const songData = new FormData();
     songData.append('title', title);
     songData.append('author', author);
-    songData.append('lyrics', lyrics, title);
+    songData.append('lyrics', lyrics);
     songData.append('tab', tab, title);
 
     this.http.post<{message: string, song: Song}>(API_DOMAIN, songData)
@@ -130,27 +130,18 @@ export class SongsService {
    *
    * @returns the response through the postUpdated observable
    */
-  updateSong(id: string, title: string, author: string, lyrics: File | string, tab: File | string) {
+  updateSong(id: string, title: string, author: string, lyrics: string, tab: File | string) {
     let songData: Song | FormData;
-    /* If updated post has a new image as a file */
-    if (typeof(lyrics) === 'object') {
-      songData = new FormData();
-      songData.append('id', id);
-      songData.append('title', title);
-      songData.append('author', author);
-      songData.append('lyrics', lyrics, title);
-      songData.append('tab', tab);
 
-
-    /* Else, image === url as a string */
-    } else if (typeof(tab) === 'object') {
+    /* If updated song has a new tab image as a file */
+    if (typeof(tab) === 'object') {
         songData = new FormData();
         songData.append('id', id);
         songData.append('title', title);
         songData.append('content', author);
         songData.append('tab', tab, title);
-        songData.append('lyrics', lyrics)
-      /* Else, image === url as a string */
+        songData.append('lyrics', lyrics);
+      /* Else, tab image === url as a string */
     } else {
         songData = {
           id,
