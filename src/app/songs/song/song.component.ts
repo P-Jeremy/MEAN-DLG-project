@@ -1,5 +1,5 @@
 
-import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 
 
 import { Song } from '../../models/song.model';
@@ -19,6 +19,7 @@ export class SongComponent implements OnInit, OnDestroy {
   @Input() userIsAdmin: boolean;
   @Input() isShuffle: boolean;
   @Output() emitSongIdToParent: EventEmitter<string> = new EventEmitter();
+  @ViewChild('onClose') onCloseRef: ElementRef;
 
   isTitle: boolean;
   term: string;
@@ -39,7 +40,7 @@ export class SongComponent implements OnInit, OnDestroy {
     this.emitSongIdToParent.next(songId);
   }
 
-  onViewChange(ev: string) {
+  onViewChange(ev: string, anchor?: string) {
     switch (ev) {
       case 'lyrics':
         this.lyrics = !this.lyrics;
@@ -48,6 +49,9 @@ export class SongComponent implements OnInit, OnDestroy {
         this.tab = !this.tab;
         break;
       case 'both':
+        if (anchor) {
+          this.onCloseRef.nativeElement.scrollIntoView(false, { behavior: 'smooth', block: 'start', inline: 'nearest' });
+        }
         this.tab = false;
         this.lyrics = false;
         break;
