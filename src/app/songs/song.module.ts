@@ -10,8 +10,6 @@ import { StaticModule } from '../static/static.module';
 import { SongComponent } from './song/song.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { SearchBarService } from './search-bar/search-bar.service';
-import { AngularEditorModule } from '@kolkov/angular-editor';
-
 
 
 @NgModule({
@@ -29,7 +27,6 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     AngularMaterialModule,
     RouterModule,
     StaticModule,
-    AngularEditorModule
   ],
   providers: [SearchBarService]
 })
