@@ -1,18 +1,10 @@
-:host {
-  margin-top: 60px;
-}
-
 mat-card {
   width: 40%;
-  margin: 0 auto;
+  margin: 60px auto;
 }
 
 mat-form-field, textarea {
   width: 100%;
-}
-
-mat-spinner {
-  margin: auto;
 }
 
 .buttons_container {
@@ -30,26 +22,26 @@ input[type="file"] {
   width: 80%;
 }
 
-.upload_container {
-  margin: 0 auto;
+.upload_item_container {
+  width: 100%;
+  text-align: center;
 }
 
-.upload_container, button {
-  width: 100px;
-  text-align: center;
+.question_mark {
+  position: absolute;
+  right: 0;
+}
+
+.lyrics {
+  height: 150px;
 }
 
 .green {
   background-color: rgb(116, 199, 116);
 }
 
-mat-card {
-  width: 40%;
-  margin-top: 30px;
-}
-
-@media only screen and (max-width: 425px)  {
-  mat-card, form {
-    width: 90%;
+@media only screen and (max-width: 1024px)  {
+  mat-card {
+    width: 80%;
   }
 }

@@ -22,6 +22,8 @@ export class SongComponent implements OnInit, OnDestroy {
 
   isTitle: boolean;
   term: string;
+  tab = false;
+  lyrics = false;
 
   destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -35,6 +37,23 @@ export class SongComponent implements OnInit, OnDestroy {
   /* Callback to emit song Id to parent */
   onDeleteClick(songId: string) {
     this.emitSongIdToParent.next(songId);
+  }
+
+  onViewChange(ev: string) {
+    switch (ev) {
+      case 'lyrics':
+        this.lyrics = !this.lyrics;
+        break;
+      case 'tab':
+        this.tab = !this.tab;
+        break;
+      case 'both':
+        this.tab = false;
+        this.lyrics = false;
+        break;
+      default:
+        break;
+    }
   }
 
   ngOnDestroy() {

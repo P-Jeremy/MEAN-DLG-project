@@ -31,7 +31,7 @@ import { environment } from '../environments/environment';
     AngularMaterialModule,
     PostModule,
     SongModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},

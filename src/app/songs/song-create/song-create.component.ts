@@ -4,10 +4,13 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { mimeType } from './mime-type.validator';
+import { mimeType } from '../../posts/post-create/mime-type.validator';
 import { Song } from '../../models/song.model';
 import { SongsService } from '../songs.service';
 import { Subject } from 'rxjs';
+
+import { AngularEditorConfig } from '@kolkov/angular-editor';
+
 
 @Component({
   selector: 'app-song-create',
@@ -21,6 +24,7 @@ export class SongCreateComponent implements OnInit, OnDestroy {
   private songId: string;
   song: Song;
   lyrics = false;
+  help = false;
   tab = false;
   isLoading = false;
   form: FormGroup;
@@ -33,9 +37,8 @@ export class SongCreateComponent implements OnInit, OnDestroy {
     this.form = new FormGroup({
       title: new FormControl(null, {validators: [Validators.required]}),
       author: new FormControl(null, {validators: [Validators.required]}),
-      lyrics: new FormControl(null, {validators: [Validators.required], asyncValidators : [mimeType]}),
+      lyrics: new FormControl(null, {validators: [Validators.required]}),
       tab: new FormControl(null, {validators: [Validators.required], asyncValidators : [mimeType]})
-
     });
 
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
