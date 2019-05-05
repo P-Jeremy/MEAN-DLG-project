@@ -50,7 +50,7 @@ export class SongComponent implements OnInit, OnDestroy {
         break;
       case 'both':
         if (anchor) {
-          this.onCloseRef.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+          this.onCloseRef.nativeElement.scrollIntoView(false, { behavior: 'smooth', block: 'start', inline: 'nearest' });
         }
         this.tab = false;
         this.lyrics = false;
