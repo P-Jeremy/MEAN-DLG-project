@@ -9,8 +9,6 @@ import { Song } from '../../models/song.model';
 import { SongsService } from '../songs.service';
 import { Subject } from 'rxjs';
 
-import { AngularEditorConfig } from '@kolkov/angular-editor';
-
 
 @Component({
   selector: 'app-song-create',
