@@ -31,8 +31,10 @@ export class SongComponent implements OnInit, OnDestroy {
   constructor(private searchBarService: SearchBarService) { }
 
   ngOnInit() {
-    this.searchBarService.currentTerm.pipe(takeUntil(this.destroy$)).subscribe(t => this.term = t);
-    this.searchBarService.currentIsTitleState.pipe(takeUntil(this.destroy$)).subscribe(t => this.isTitle = t);
+    this.searchBarService.currentTerm.pipe(takeUntil(this.destroy$))
+      .subscribe(currentTerm => this.term = currentTerm);
+    this.searchBarService.currentIsTitleState.pipe(takeUntil(this.destroy$))
+      .subscribe(currentTitleState => this.isTitle = currentTitleState);
   }
 
   /* Callback to emit song Id to parent */
@@ -50,7 +52,7 @@ export class SongComponent implements OnInit, OnDestroy {
         break;
       case 'both':
         if (anchor) {
-          this.onCloseRef.nativeElement.scrollIntoView(false, { behavior: 'smooth', block: 'start', inline: 'nearest' });
+          this.onCloseRef.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'center' });
         }
         this.tab = false;
         this.lyrics = false;
