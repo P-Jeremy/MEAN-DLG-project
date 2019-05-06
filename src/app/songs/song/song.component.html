@@ -21,7 +21,7 @@
           <a mat-raised-button color="primary" (click)="onViewChange('lyrics')"
             >Paroles</a
           >
-          <a mat-raised-button color="primary" (click)="onViewChange('tab')"
+          <a #onOpen mat-raised-button color="primary" (click)="onViewChange('tab')"
             >Tablature</a
           >
         </div>
@@ -37,7 +37,7 @@
             mat-raised-button
             color="warn"
             (click)="
-              onViewChange('both', 'onClose'); mep.expanded = !mep.expanded
+              onViewChange('both'); mep.expanded = !mep.expanded
             "
             >Fermer</a
           >
@@ -93,7 +93,7 @@
             *ngIf="tab || lyrics"
             mat-raised-button
             color="warn"
-            (click)="onViewChange('both', 'onClose');  mep.expanded = !mep.expanded"
+            (click)="onViewChange('both');  mep.expanded = !mep.expanded"
             >Fermer</a
           >
         </div>

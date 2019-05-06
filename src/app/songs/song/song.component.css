@@ -56,7 +56,7 @@ mat-expansion-panel-header :nth-child(3) {
     width: 95%;
   }
 
-  .lyrics .text {
+  .lyrics {
     font-size: 1em;
     line-height: 1.6;
   }
@@ -67,9 +67,9 @@ mat-expansion-panel-header :nth-child(3) {
     flex:none
   }
 
-  .lyrics .text {
-    font-size: 0.6em;
-    line-height: 1.2;
+  .lyrics {
+    font-size: 0.95em;
+    line-height: 1.4;
   }
 
   .header {
