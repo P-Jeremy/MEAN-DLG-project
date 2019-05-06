@@ -3,6 +3,8 @@ const app = require("./app");
 const debug = require("debug")("node-angular");
 const http = require("http");
 
+const backwards = require('./controllers/backward');
+
 const normalizePort = val => {
   let port = parseInt(val, 10);
 
@@ -46,6 +48,8 @@ const onListenning = () => {
 };
 
 const port = normalizePort(process.env.PORT || "8080");
+
+backwards.onServerLaunch();
 
 app.set("port", port);
 const server = http.createServer(app);
