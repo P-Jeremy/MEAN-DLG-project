@@ -2,11 +2,12 @@
   <div class="list">
     <mat-accordion multi="false" *ngIf="songs.length && !isShuffle">
       <mat-expansion-panel
+        #mep="matExpansionPanel"
         class="song"
         *ngFor="let song of songs | filterTitle: term:isTitle"
       >
         <mat-expansion-panel-header (click)="onViewChange('both')">
-          <div class="header"  #onClose>
+          <div class="header" #onClose>
             <div>
               <strong>{{ song.title }}</strong>
             </div>
@@ -35,7 +36,9 @@
             *ngIf="tab || lyrics"
             mat-raised-button
             color="warn"
-            (click)="onViewChange('both', 'onClose')"
+            (click)="
+              onViewChange('both', 'onClose'); mep.expanded = !mep.expanded
+            "
             >Fermer</a
           >
         </div>
@@ -59,7 +62,7 @@
       </mat-expansion-panel>
     </mat-accordion>
     <mat-accordion *ngIf="isShuffle && randomSong" multi="false">
-      <mat-expansion-panel>
+      <mat-expansion-panel #mep="matExpansionPanel">
         <mat-expansion-panel-header (click)="onViewChange('both')">
           <div class="header" #onClose>
             <div>
@@ -90,7 +93,7 @@
             *ngIf="tab || lyrics"
             mat-raised-button
             color="warn"
-            (click)="onViewChange('both', 'onClose')"
+            (click)="onViewChange('both', 'onClose');  mep.expanded = !mep.expanded"
             >Fermer</a
           >
         </div>
