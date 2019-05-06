@@ -26,11 +26,7 @@ export class SongsService {
   constructor(private http: HttpClient, private router: Router) {}
 
   /**
-   *  Get Song method
-   *
-   * @param songsPerPage allows to handle pagination through a query
-   *
-   * @param currentPage allows to handle pagination through a query
+   *  Get Songs method
    *
    * @returns all the songs of DB through the songUpdated observable
    */
