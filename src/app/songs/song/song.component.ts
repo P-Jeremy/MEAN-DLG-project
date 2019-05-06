@@ -19,7 +19,6 @@ export class SongComponent implements OnInit, OnDestroy {
   @Input() userIsAdmin: boolean;
   @Input() isShuffle: boolean;
   @Output() emitSongIdToParent: EventEmitter<string> = new EventEmitter();
-  @ViewChild('onClose') onCloseRef: ElementRef;
 
   isTitle: boolean;
   term: string;
@@ -51,9 +50,6 @@ export class SongComponent implements OnInit, OnDestroy {
         this.tab = !this.tab;
         break;
       case 'both':
-        if (anchor) {
-          this.onCloseRef.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'center' });
-        }
         this.tab = false;
         this.lyrics = false;
         break;
