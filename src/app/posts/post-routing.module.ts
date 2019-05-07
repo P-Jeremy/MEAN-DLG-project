@@ -7,13 +7,13 @@ import { PostCreateComponent } from './post-create/post-create.component';
 
 
 const routes: Routes = [
-  { path: '', component: PostListComponent },
-  { path: 'create', component: PostCreateComponent },
-  { path: 'edit/:postId', component: PostCreateComponent },
+  { path: '', component: PostListComponent, canActivate: [AuthGuard] },
+  { path: 'post/create', component: PostCreateComponent, canActivate: [AuthGuard] },
+  { path: 'post/edit/:postId', component: PostCreateComponent, canActivate: [AuthGuard] },
 ];
 @NgModule({
   imports: [
-  RouterModule.forChild(routes)
+    RouterModule.forChild(routes)
   ],
   exports: [
     RouterModule
@@ -21,4 +21,4 @@ const routes: Routes = [
   providers: [AuthGuard]
 })
 
-export class PostRoutingModule {}
+export class PostRoutingModule { }
