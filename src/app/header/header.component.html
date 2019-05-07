@@ -38,8 +38,8 @@
   </button>
 </mat-toolbar>
 <mat-menu #subMenuSet>
-  <button *ngIf="userIsAuth" mat-menu-item routerLink="/song" routerLinkActive="router_link">Liste</button>
-  <button *ngIf="userIsAuth" mat-menu-item [routerLink]="['/song', 'shuffle']" routerLinkActive="router_link">Shuffle</button>
+  <button *ngIf="userIsAuth" mat-menu-item routerLink="song" routerLinkActive="router_link">Liste</button>
+  <button *ngIf="userIsAuth" mat-menu-item [routerLink]="['song', 'shuffle']" routerLinkActive="router_link">Shuffle</button>
 </mat-menu>
 <mat-menu x-position="before" #menu>
   <button *ngIf="userIsAuth" mat-menu-item [mat-menu-trigger-for]="subMenuSet">Playlist</button>

@@ -45,7 +45,7 @@
         <mat-action-row *ngIf="userIsAdmin && !isShuffle">
           <a
             *ngIf="userIsAdmin && !isShuffle"
-            [routerLink]="['/edit_song', song.id]"
+            [routerLink]="['edit', song.id]"
             mat-button
             color="primary"
             >Editer</a
