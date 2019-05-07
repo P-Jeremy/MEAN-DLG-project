@@ -17,8 +17,9 @@ export class AdminGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean | Observable<boolean> | Promise<boolean> {
+    const token = localStorage.getItem('token');
     const isAdmin = this.authService.getIsAdmin();
-    if (!isAdmin) {
+    if (!isAdmin || !token) {
       this.authService.redirect(['/']);
     }
     return isAdmin;
