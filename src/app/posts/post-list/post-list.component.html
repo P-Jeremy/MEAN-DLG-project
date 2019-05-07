@@ -5,7 +5,7 @@
       class="addPost"
       mat-raised-button
       *ngIf="userIsAuth"
-      routerLink="/create_post"
+      routerLink="/create"
       ><mat-icon> mail_outline</mat-icon></a
     >
   </div>
@@ -36,7 +36,7 @@
         <mat-card-actions
           ><a
             *ngIf="userIsAuth && userId == post.creator_id"
-            [routerLink]="['/edit_post', post.id]"
+            [routerLink]="['/edit', post.id]"
             mat-button
             color="primary"
             >Editer</a
