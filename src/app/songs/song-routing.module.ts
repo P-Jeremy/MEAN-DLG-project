@@ -11,7 +11,7 @@ import { SongCreateComponent } from './song-create/song-create.component';
 const routes: Routes = [
   { path: '', component: SongListComponent, canActivate: [AuthGuard] },
   { path: 'song/:shuffle', component: SongListComponent, canActivate: [AuthGuard] },
-  { path: 'song/create', component: SongCreateComponent, canActivate: [AdminGuard] },
+  { path: 'create', component: SongCreateComponent, canActivate: [AdminGuard] },
   { path: 'song/edit/:songId', component: SongCreateComponent, canActivate: [AdminGuard] },
 ];
 @NgModule({
