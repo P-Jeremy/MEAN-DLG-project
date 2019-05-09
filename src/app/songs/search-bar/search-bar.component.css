@@ -21,8 +21,9 @@
   height: 25px;
   padding: 0 10px 0 10px;
   outline: none;
-  background: none;
+  background: white;
   border: 3px solid #3E3C40;
+
 }
 
 .toggle {
