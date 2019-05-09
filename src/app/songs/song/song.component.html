@@ -8,7 +8,7 @@
       >
         <mat-expansion-panel-header
           [(ngClass)]="song.title"
-          (click)="onSelect(song.title)"
+          (click)="onSelect(song.title); onSongOptions('close', false)"
         >
           <div class="header">
             <div>
@@ -21,10 +21,16 @@
           </div>
         </mat-expansion-panel-header>
         <div class="buttons_container">
-          <a mat-raised-button color="primary" (click)="onViewChange('lyrics')"
+          <a
+            mat-raised-button
+            color="primary"
+            (click)="onSongOptions('lyrics', !lyrics)"
             >Paroles</a
           >
-          <a mat-raised-button color="primary" (click)="onViewChange('tab')"
+          <a
+            mat-raised-button
+            color="primary"
+            (click)="onSongOptions('tab', !tab)"
             >Tablature</a
           >
         </div>
@@ -39,9 +45,7 @@
             *ngIf="tab || lyrics"
             mat-raised-button
             color="warn"
-            (click)="
-              onViewChange('close', !mep.expanded); mep.expanded = !mep.expanded
-            "
+            (click)="onSongOptions('close', false); mep.expanded = !mep.expanded"
             >Fermer</a
           >
         </div>
@@ -66,7 +70,7 @@
     </mat-accordion>
     <mat-accordion *ngIf="isShuffle && randomSong" multi="false">
       <mat-expansion-panel #mep="matExpansionPanel">
-        <mat-expansion-panel-header>
+        <mat-expansion-panel-header (click)="onSongOptions('close', false)">
           <div class="header">
             <div>
               <strong>{{ randomSong.title }}</strong>
@@ -78,10 +82,16 @@
           </div>
         </mat-expansion-panel-header>
         <div class="buttons_container">
-          <a mat-raised-button color="primary" (click)="onViewChange('lyrics')"
+          <a
+            mat-raised-button
+            color="primary"
+            (click)="onSongOptions('lyrics', !lyrics)"
             >Paroles</a
           >
-          <a mat-raised-button color="primary" (click)="onViewChange('tab')"
+          <a
+            mat-raised-button
+            color="primary"
+            (click)="onSongOptions('tab', !tab)"
             >Tablature</a
           >
         </div>
@@ -96,9 +106,7 @@
             *ngIf="tab || lyrics"
             mat-raised-button
             color="warn"
-            (click)="
-              onViewChange('close', !mep.expanded); mep.expanded = !mep.expanded
-            "
+            (click)="onSongOptions('close', false); mep.expanded = !mep.expanded"
             >Fermer</a
           >
         </div>
