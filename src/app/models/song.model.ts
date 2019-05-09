@@ -4,4 +4,5 @@ export interface Song {
   author: string;
   lyrics?: string;
   tab?: File | string;
+  expanded?: boolean
 }

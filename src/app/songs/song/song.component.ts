@@ -1,5 +1,5 @@
 
-import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, ElementRef } from '@angular/core';
 
 
 import { Song } from '../../models/song.model';
@@ -24,6 +24,8 @@ export class SongComponent implements OnInit, OnDestroy {
   term: string;
   tab = false;
   lyrics = false;
+  panelState = false;
+  class: string;
 
   destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -41,7 +43,24 @@ export class SongComponent implements OnInit, OnDestroy {
     this.emitSongIdToParent.next(songId);
   }
 
-  onViewChange(ev: string, anchor?: string) {
+  /**
+   * Callback to invoke when selecting a song
+   *
+   * @param title of the selected song
+   */
+  onSelect(title: string) {
+    this.tab = false;
+    this.lyrics = false;
+    this.class = title;
+    const classElement = document.getElementsByClassName(`${this.class}`);
+    if (classElement.length > 0) {
+      setTimeout(() => {
+        classElement[0].scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+      }, 200);
+    }
+  }
+
+  onViewChange(ev: string, expanded?: boolean) {
     switch (ev) {
       case 'lyrics':
         this.lyrics = !this.lyrics;
@@ -49,9 +68,9 @@ export class SongComponent implements OnInit, OnDestroy {
       case 'tab':
         this.tab = !this.tab;
         break;
-      case 'both':
-        this.tab = false;
-        this.lyrics = false;
+      case 'close':
+        this.tab = expanded;
+        this.lyrics = expanded;
         break;
       default:
         break;

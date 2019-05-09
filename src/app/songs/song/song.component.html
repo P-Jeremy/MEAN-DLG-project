@@ -2,12 +2,15 @@
   <div class="list">
     <mat-accordion multi="false" *ngIf="songs.length && !isShuffle">
       <mat-expansion-panel
-        #mep="matExpansionPanel"
         class="song"
         *ngFor="let song of songs | filterTitle: term:isTitle"
+        #mep="matExpansionPanel"
       >
-        <mat-expansion-panel-header (click)="onViewChange('both')">
-          <div class="header" #onClose>
+        <mat-expansion-panel-header
+          [(ngClass)]="song.title"
+          (click)="onSelect(song.title)"
+        >
+          <div class="header">
             <div>
               <strong>{{ song.title }}</strong>
             </div>
@@ -21,7 +24,7 @@
           <a mat-raised-button color="primary" (click)="onViewChange('lyrics')"
             >Paroles</a
           >
-          <a #onOpen mat-raised-button color="primary" (click)="onViewChange('tab')"
+          <a mat-raised-button color="primary" (click)="onViewChange('tab')"
             >Tablature</a
           >
         </div>
@@ -37,7 +40,7 @@
             mat-raised-button
             color="warn"
             (click)="
-              onViewChange('both'); mep.expanded = !mep.expanded
+              onViewChange('close', !mep.expanded); mep.expanded = !mep.expanded
             "
             >Fermer</a
           >
@@ -63,8 +66,8 @@
     </mat-accordion>
     <mat-accordion *ngIf="isShuffle && randomSong" multi="false">
       <mat-expansion-panel #mep="matExpansionPanel">
-        <mat-expansion-panel-header (click)="onViewChange('both')">
-          <div class="header" #onClose>
+        <mat-expansion-panel-header>
+          <div class="header">
             <div>
               <strong>{{ randomSong.title }}</strong>
             </div>
@@ -93,7 +96,9 @@
             *ngIf="tab || lyrics"
             mat-raised-button
             color="warn"
-            (click)="onViewChange('both');  mep.expanded = !mep.expanded"
+            (click)="
+              onViewChange('close', !mep.expanded); mep.expanded = !mep.expanded
+            "
             >Fermer</a
           >
         </div>
