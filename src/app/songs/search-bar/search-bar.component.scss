@@ -1,3 +1,5 @@
+@import '~@angular/material/theming';
+
 .selected {
   color: #f44336;
 }
@@ -21,8 +23,10 @@
   height: 25px;
   padding: 0 10px 0 10px;
   outline: none;
-  background: none;
-  border: 3px solid #3E3C40;
+  background: white;
+  border: 2.5px solid #3E3C40;
+  @include mat-elevation(2);
+
 }
 
 .toggle {

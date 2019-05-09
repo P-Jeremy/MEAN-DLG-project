@@ -15,6 +15,7 @@ import { SongModule } from './songs/song.module';
 import { HomeComponent } from './home/home.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { StaticModule } from './static/static.module';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { environment } from '../environments/environment';
     AngularMaterialModule,
     PostModule,
     SongModule,
+    StaticModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [

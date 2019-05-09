@@ -1,7 +1,8 @@
 div {
   width: 100%;
-  margin-top: 80px;
+  top: 0;
   text-align: center;
+  background: white;
 }
 
 div
@@ -9,21 +10,12 @@ img {
   width: 35%;
   height: auto;
   margin: 0 auto;
-  /* -webkit-animation: rotation 6s infinite linear; */
 }
-
-/* @-webkit-keyframes rotation {
-		from {
-				-webkit-transform: rotate(0deg);
-		}
-		to {
-				-webkit-transform: rotate(359deg);
-		}
-} */
 
 @media only screen and (max-width: 750px)  {
   div
   img {
+    margin-top: 50%;
     width: 85%;
   }
 }
