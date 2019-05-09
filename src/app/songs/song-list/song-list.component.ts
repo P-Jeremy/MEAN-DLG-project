@@ -3,8 +3,8 @@ import { Subscription, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 
-import { SongsService } from '../songs.service';
-import { AuthService } from '../../auth/auth.service';
+import { SongsService } from '../../services/songs.service';
+import { AuthService } from '../../services/auth.service';
 import { Song } from '../../models/song.model';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 

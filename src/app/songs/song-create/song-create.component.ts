@@ -6,7 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { mimeType } from '../../posts/post-create/mime-type.validator';
 import { Song } from '../../models/song.model';
-import { SongsService } from '../songs.service';
+import { SongsService } from '../../services/songs.service';
 import { Subject } from 'rxjs';
 
 

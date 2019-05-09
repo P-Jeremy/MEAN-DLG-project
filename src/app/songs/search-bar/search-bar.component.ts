@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { SearchBarService } from './search-bar.service';
+import { SearchBarService } from '../../services/search-bar.service';
 
 @Component({
   selector: 'app-search-bar',

@@ -3,7 +3,7 @@ import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, ElementRef }
 
 
 import { Song } from '../../models/song.model';
-import { SearchBarService } from '../search-bar/search-bar.service';
+import { SearchBarService } from '../../services/search-bar.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
