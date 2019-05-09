@@ -27,6 +27,8 @@ export class SongComponent implements OnInit, OnDestroy {
   panelState = false;
   class: string;
 
+  private classElement: HTMLCollection;
+
   destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(private searchBarService: SearchBarService) { }
@@ -49,28 +51,25 @@ export class SongComponent implements OnInit, OnDestroy {
    * @param title of the selected song
    */
   onSelect(title: string) {
-    this.tab = false;
-    this.lyrics = false;
-    this.class = title;
-    const classElement = document.getElementsByClassName(`${this.class}`);
-    if (classElement.length > 0) {
+    this.classElement = document.getElementsByClassName(`${title}`);
+    if (this.classElement.length > 0) {
       setTimeout(() => {
-        classElement[0].scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
-      }, 200);
+        this.classElement[0].scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+      }, 100);
     }
   }
 
-  onViewChange(ev: string, expanded?: boolean) {
+  onSongOptions(ev: string, status: boolean) {
     switch (ev) {
       case 'lyrics':
-        this.lyrics = !this.lyrics;
+        this.lyrics = status;
         break;
       case 'tab':
-        this.tab = !this.tab;
+        this.tab = status;
         break;
       case 'close':
-        this.tab = expanded;
-        this.lyrics = expanded;
+        this.tab = status;
+        this.lyrics = status;
         break;
       default:
         break;
