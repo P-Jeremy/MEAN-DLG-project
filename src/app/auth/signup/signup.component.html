@@ -1,91 +1,97 @@
-<app-spinner *ngIf="isLoading"></app-spinner>
-<mat-card>
-  <form (submit)="onSignup(signupForm)" #signupForm="ngForm" *ngIf="!isLoading">
-    <mat-form-field>
-      <input
-        matInput
-        type="email"
-        name="email"
-        ngModel
-        placeholder="Email"
-        #emailInput="ngModel"
-        required
-        email
-      />
-      <mat-error *ngIf="emailInput.invalid"
-        >Cet email n'est pas valide</mat-error
-      >
-    </mat-form-field>
-    <mat-form-field>
-      <input
-        matInput
-        type="text"
-        name="pseudo"
-        ngModel
-        placeholder="Pseudo"
-        #pseudoInput="ngModel"
-        required
-      />
-      <mat-error *ngIf="pseudoInput.invalid"
-        >Veuillez saisir un pseudo</mat-error
-      >
-    </mat-form-field>
-    <mat-form-field>
-      <input
-        matInput
-        type="password"
-        name="password"
-        required
-        ngModel
-        placeholder="Mot de passe"
-        #passwordInput="ngModel"
-      />
-      <mat-error *ngIf="passwordInput"
-        >Veuillez saisir un mot de passe</mat-error
-      >
-    </mat-form-field>
-    <mat-form-field>
-      <input
-        matInput
-        type="password"
-        name="passwordBis"
-        ngModel
-        placeholder="Veillez à nouveau saisir votre mot de passe"
-        #passwordBisInput="ngModel"
-      />
-    </mat-form-field>
-    <mat-form-field>
-      <input
-        matInput
-        type="password"
-        name="apiKey"
-        ngModel
-        required
-        placeholder="Clé"
-        #apiKey="ngModel"
-      />
-    </mat-form-field>
-    <div class="button_container">
-      <div>
-        <button
-          *ngIf="!isLoading"
-          mat-raised-button
-          color="primary"
-          type="submit"
+<div class="global">
+  <mat-card>
+    <app-spinner *ngIf="isLoading"></app-spinner>
+    <form
+      (submit)="onSignup(signupForm)"
+      #signupForm="ngForm"
+      *ngIf="!isLoading"
+    >
+      <mat-form-field>
+        <input
+          matInput
+          type="email"
+          name="email"
+          ngModel
+          placeholder="Email"
+          #emailInput="ngModel"
+          required
+          email
+        />
+        <mat-error *ngIf="emailInput.invalid"
+          >Cet email n'est pas valide</mat-error
         >
-          Inscription
-        </button>
-      </div>
-      <div>
-        <button
-          *ngIf="!isLoading"
-          mat-raised-button
-          color="warn"
-          [routerLink]="['/']"
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          type="text"
+          name="pseudo"
+          ngModel
+          placeholder="Pseudo"
+          #pseudoInput="ngModel"
+          required
+        />
+        <mat-error *ngIf="pseudoInput.invalid"
+          >Veuillez saisir un pseudo</mat-error
         >
-          annuler
-        </button>
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          type="password"
+          name="password"
+          required
+          ngModel
+          placeholder="Mot de passe"
+          #passwordInput="ngModel"
+        />
+        <mat-error *ngIf="passwordInput"
+          >Veuillez saisir un mot de passe</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          type="password"
+          name="passwordBis"
+          ngModel
+          placeholder="Veillez à nouveau saisir votre mot de passe"
+          #passwordBisInput="ngModel"
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          type="password"
+          name="apiKey"
+          ngModel
+          required
+          placeholder="Clé"
+          #apiKey="ngModel"
+        />
+      </mat-form-field>
+      <div class="button_container">
+        <div>
+          <button
+            *ngIf="!isLoading"
+            mat-raised-button
+            color="primary"
+            type="submit"
+          >
+            Inscription
+          </button>
+        </div>
+        <div>
+          <button
+            *ngIf="!isLoading"
+            mat-raised-button
+            color="warn"
+            [routerLink]="['/']"
+          >
+            annuler
+          </button>
+        </div>
       </div>
-    </div>
-  </form>
-</mat-card>
+    </form>
+  </mat-card>
+</div>

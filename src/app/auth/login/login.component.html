@@ -1,55 +1,59 @@
-<app-spinner *ngIf="isLoading"></app-spinner>
-<mat-card>
-  <form (submit)="onLogin(loginForm)" #loginForm="ngForm" *ngIf="!isLoading">
-    <mat-form-field>
-      <input
-        matInput
-        type="email"
-        name="email"
-        ngModel
-        placeholder="Email"
-        #emailInput="ngModel"
-        required
-        email
-      />
-      <mat-error *ngIf="emailInput.invalid"
-        >Cet email n'est pas valide</mat-error
-      >
-    </mat-form-field>
-    <mat-form-field>
-      <input
-        matInput
-        type="password"
-        name="password"
-        ngModel
-        placeholder="Password"
-        #passwordInput="ngModel"
-      />
-      <mat-error *ngIf="passwordInput">Entrez un mot de passe valide</mat-error>
-    </mat-form-field>
-    <div class="connection">
-      <div class="login">
-        <button
-          *ngIf="!isLoading"
-          mat-raised-button
-          color="primary"
-          type="submit"
+<div class="global">
+  <app-spinner *ngIf="isLoading"></app-spinner>
+  <mat-card>
+    <form (submit)="onLogin(loginForm)" #loginForm="ngForm" *ngIf="!isLoading">
+      <mat-form-field>
+        <input
+          matInput
+          type="email"
+          name="email"
+          ngModel
+          placeholder="Email"
+          #emailInput="ngModel"
+          required
+          email
+        />
+        <mat-error *ngIf="emailInput.invalid"
+          >Cet email n'est pas valide</mat-error
         >
-          Connexion
-        </button>
-        <button
-        *ngIf="!isLoading"
-        mat-raised-button
-        color="warn"
-        [routerLink]="['/']"
-      >
-        annuler
-      </button>
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          type="password"
+          name="password"
+          ngModel
+          placeholder="Password"
+          #passwordInput="ngModel"
+        />
+        <mat-error *ngIf="passwordInput"
+          >Entrez un mot de passe valide</mat-error
+        >
+      </mat-form-field>
+      <div class="connection">
+        <div class="login">
+          <button
+            *ngIf="!isLoading"
+            mat-raised-button
+            color="primary"
+            type="submit"
+          >
+            Connexion
+          </button>
+          <button
+            *ngIf="!isLoading"
+            mat-raised-button
+            color="warn"
+            [routerLink]="['/']"
+          >
+            annuler
+          </button>
+        </div>
+        <div>
+          <a [routerLink]="['resetpassword']">mot de passe oublié ?</a>
+        </div>
       </div>
-      <div>
-        <a [routerLink]="['resetpassword']">mot de passe oublié ?</a>
-      </div>
-    </div>
-    <mat-spinner *ngIf="isLoading"></mat-spinner>
-  </form>
-</mat-card>
+      <mat-spinner *ngIf="isLoading"></mat-spinner>
+    </form>
+  </mat-card>
+</div>
