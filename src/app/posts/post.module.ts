@@ -6,6 +6,7 @@ import { AngularMaterialModule } from '../angular-material.module';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { StaticModule } from '../static/static.module';
+import { PostRoutingModule } from './post-routing.module';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { StaticModule } from '../static/static.module';
     ReactiveFormsModule,
     AngularMaterialModule,
     RouterModule,
-    StaticModule
+    StaticModule,
+    PostRoutingModule
   ]
 })
 

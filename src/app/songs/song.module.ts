@@ -10,6 +10,7 @@ import { StaticModule } from '../static/static.module';
 import { SongComponent } from './song/song.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { SearchBarService } from './search-bar/search-bar.service';
+import { SongRoutingModule } from './song-routing.module';
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import { SearchBarService } from './search-bar/search-bar.service';
     AngularMaterialModule,
     RouterModule,
     StaticModule,
+    SongRoutingModule
   ],
   providers: [SearchBarService]
 })
