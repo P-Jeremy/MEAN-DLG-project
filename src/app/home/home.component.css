@@ -1,12 +1,12 @@
 div {
   width: 100%;
+  top: 0;
   text-align: center;
   background: white;
 }
 
 div
 img {
-  margin-top: 80px;
   width: 35%;
   height: auto;
   margin: 0 auto;
@@ -15,6 +15,7 @@ img {
 @media only screen and (max-width: 750px)  {
   div
   img {
+    margin-top: 50%;
     width: 85%;
   }
 }

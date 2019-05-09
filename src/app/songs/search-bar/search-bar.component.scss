@@ -1,3 +1,5 @@
+@import '~@angular/material/theming';
+
 .selected {
   color: #f44336;
 }
@@ -22,7 +24,8 @@
   padding: 0 10px 0 10px;
   outline: none;
   background: white;
-  border: 3px solid #3E3C40;
+  border: 2.5px solid #3E3C40;
+  @include mat-elevation(2);
 
 }
 
