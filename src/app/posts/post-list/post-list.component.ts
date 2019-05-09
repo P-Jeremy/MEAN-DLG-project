@@ -3,9 +3,9 @@ import { Subscription, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { Post } from '../../models/post.model';
-import { PostsService } from '../posts.service';
+import { PostsService } from '../../services/posts.service';
 import { PageEvent } from '@angular/material';
-import { AuthService } from '../../auth/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
