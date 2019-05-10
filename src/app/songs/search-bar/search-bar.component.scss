@@ -13,18 +13,18 @@
 .search_bar {
   display: flex;
   flex-direction: column;
-  width: 250px;
+  width: 280px;
   margin: 0 auto;
-  padding-bottom: 8px;
+  padding-bottom: 15px;
 }
 
 .search_bar input {
   border-radius: 50px;
-  height: 25px;
+  height: 30px;
   padding: 0 10px 0 10px;
   outline: none;
   background: white;
-  border: 2.5px solid #3E3C40;
+  border: 1.5px solid rgb(70, 69, 71);
   @include mat-elevation(2);
 }
 
