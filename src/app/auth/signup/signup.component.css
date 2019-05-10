@@ -25,6 +25,9 @@ mat-spinner {
 }
 
 @media only screen and (max-width: 425px)  {
+  .global {
+    height: 100%
+  }
   mat-card {
     width: 80%;
   }

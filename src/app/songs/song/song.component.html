@@ -45,7 +45,9 @@
             *ngIf="tab || lyrics"
             mat-raised-button
             color="warn"
-            (click)="onSongOptions('close', false); mep.expanded = !mep.expanded"
+            (click)="
+              onSongOptions('close', false); mep.expanded = !mep.expanded
+            "
             >Fermer</a
           >
         </div>
@@ -68,49 +70,55 @@
         </mat-action-row>
       </mat-expansion-panel>
     </mat-accordion>
-    <mat-accordion *ngIf="isShuffle && randomSong" multi="false">
-      <mat-expansion-panel #mep="matExpansionPanel">
-        <mat-expansion-panel-header (click)="onSongOptions('close', false)">
-          <div class="header">
-            <div>
-              <strong>{{ randomSong.title }}</strong>
+  </div>
+  <div *ngIf="isShuffle" class="shuffle_container">
+    <div class="list">
+      <mat-accordion *ngIf="isShuffle && randomSong" multi="false">
+        <mat-expansion-panel #mep="matExpansionPanel">
+          <mat-expansion-panel-header (click)="onSongOptions('close', false)">
+            <div class="header">
+              <div>
+                <strong>{{ randomSong.title }}</strong>
+              </div>
+              <span class="spacer"></span>
+              <div>
+                {{ randomSong.author }}
+              </div>
             </div>
-            <span class="spacer"></span>
-            <div>
-              {{ randomSong.author }}
+          </mat-expansion-panel-header>
+          <div class="buttons_container">
+            <a
+              mat-raised-button
+              color="primary"
+              (click)="onSongOptions('lyrics', !lyrics)"
+              >Paroles</a
+            >
+            <a
+              mat-raised-button
+              color="primary"
+              (click)="onSongOptions('tab', !tab)"
+              >Tablature</a
+            >
+          </div>
+          <div class="song_content">
+            <div *ngIf="tab" class="tab">
+              <img src="{{ randomSong.tab }}" alt="tab" />
             </div>
+            <div *ngIf="lyrics" class="lyrics">
+              <div class="text" [innerHTML]="randomSong.lyrics"></div>
+            </div>
+            <a
+              *ngIf="tab || lyrics"
+              mat-raised-button
+              color="warn"
+              (click)="
+                onSongOptions('close', false); mep.expanded = !mep.expanded
+              "
+              >Fermer</a
+            >
           </div>
-        </mat-expansion-panel-header>
-        <div class="buttons_container">
-          <a
-            mat-raised-button
-            color="primary"
-            (click)="onSongOptions('lyrics', !lyrics)"
-            >Paroles</a
-          >
-          <a
-            mat-raised-button
-            color="primary"
-            (click)="onSongOptions('tab', !tab)"
-            >Tablature</a
-          >
-        </div>
-        <div class="song_content">
-          <div *ngIf="tab" class="tab">
-            <img src="{{ randomSong.tab }}" alt="tab" />
-          </div>
-          <div *ngIf="lyrics" class="lyrics">
-            <div class="text" [innerHTML]="randomSong.lyrics"></div>
-          </div>
-          <a
-            *ngIf="tab || lyrics"
-            mat-raised-button
-            color="warn"
-            (click)="onSongOptions('close', false); mep.expanded = !mep.expanded"
-            >Fermer</a
-          >
-        </div>
-      </mat-expansion-panel>
-    </mat-accordion>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
   </div>
 </div>
