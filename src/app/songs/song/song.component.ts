@@ -15,7 +15,7 @@ export class SongComponent {
 
   @Input() isShuffle: boolean;
 
-  @Output() emitSongIdToParent: EventEmitter<string> = new EventEmitter();
+  @Output() emitSongDeleteToParent: EventEmitter<string> = new EventEmitter();
 
   @Output() triggerScroll: EventEmitter<any> = new EventEmitter();
 
@@ -35,11 +35,16 @@ export class SongComponent {
 
   constructor() { }
 
-  /* Callback to emit song Id to parent */
-  onDeleteClick(songId: string) {
-    this.emitSongIdToParent.next(songId);
+  /* Callback to trigger the delete action in parent */
+  onDeleteClick() {
+    this.emitSongDeleteToParent.emit();
   }
 
+  /**
+   * CallBack to trigger tab and lyrics state
+   * @param ev Use case
+   * @param status boolean
+   */
   onSongOptions(ev: string, status: boolean) {
     switch (ev) {
       case 'lyrics':
@@ -57,6 +62,7 @@ export class SongComponent {
     }
   }
 
+  /* Callback to trigger scroll action in parent */
   onSelect() {
     this.triggerScroll.emit(null);
   }

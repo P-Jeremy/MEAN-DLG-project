@@ -72,18 +72,24 @@ export class SongListComponent implements OnInit, OnDestroy {
       .subscribe(currentTitleState => this.isTitle = currentTitleState);
   }
 
-  /* Callback to handle post delete on the DB */
-  onDelete(songId: string) {
-    this.isLoading = true;
-    this.songsService.deleteSong(songId)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.songsService.getSongs();
-      }, error => {
-        this.isLoading = false;
-      });
+  /** Callback to handle song delete from the DB
+   * @param songId id of the song to delete
+   * @param songTitle title of the song to delete
+   */
+  onDelete(songId: string, songTitle: string) {
+    if (confirm(`Voulez vous vraiment supprimer "${songTitle}" ?`)) {
+      this.isLoading = true;
+      this.songsService.deleteSong(songId)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          this.songsService.getSongs();
+        }, error => {
+          this.isLoading = false;
+        });
+    }
   }
 
+  /** Callback to get a random song */
   onShuffle() {
     this.isLoading = true;
     setTimeout(() => {
@@ -101,7 +107,7 @@ export class SongListComponent implements OnInit, OnDestroy {
     this.classElement = document.getElementsByClassName(`${title}`);
     if (this.classElement.length > 0) {
       setTimeout(() => {
-        this.classElement[0].scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+        this.classElement[0].scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
       }, 200);
     }
   }

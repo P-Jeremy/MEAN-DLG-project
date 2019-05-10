@@ -20,15 +20,20 @@
   ></app-search-bar>
 
   <div *ngIf="songs.length && !isLoading">
-    <div *ngFor="let song of songs | filterTitle: term:isTitle">
-      <app-song
-        (triggerScroll)="onSelect(song.title)"
-        [(ngClass)]="song.title"
-        [song]="song"
-        [userIsAdmin]="userIsAdmin"
-        [isShuffle]="isShuffle"
-        (emitSongIdToParent)="onDelete($event)"
-      ></app-song>
+    <div class="list_container">
+      <div class="list">
+        <mat-accordion multi="false">
+          <app-song
+            *ngFor="let song of songs | filterTitle: term:isTitle"
+            [(ngClass)]="song.title"
+            [song]="song"
+            [userIsAdmin]="userIsAdmin"
+            [isShuffle]="isShuffle"
+            (triggerScroll)="onSelect(song.title)"
+            (emitSongDeleteToParent)="onDelete(song.id, song.title)"
+          ></app-song>
+        </mat-accordion>
+      </div>
     </div>
   </div>
 
