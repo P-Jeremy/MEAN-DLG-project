@@ -102,7 +102,7 @@ export class SongListComponent implements OnInit, OnDestroy {
     if (this.classElement.length > 0) {
       setTimeout(() => {
         this.classElement[0].scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
-      }, 200);
+      }, 100);
     }
   }
 

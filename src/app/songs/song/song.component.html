@@ -1,65 +1,56 @@
-<div class="list_container">
-  <div class="list">
-    <mat-accordion multi="false">
-      <mat-expansion-panel class="song">
-        <mat-expansion-panel-header (click)="onSongOptions('close', false)">
-          <div class="header" (click)="onSelect()">
-            <div>
-              <strong>{{ song.title }}</strong>
-            </div>
-            <span class="spacer"></span>
-            <div>
-              {{ song.author }}
-            </div>
-          </div>
-        </mat-expansion-panel-header>
-        <div class="buttons_container">
-          <a
-            mat-raised-button
-            color="primary"
-            (click)="onSongOptions('lyrics', !lyrics)"
-            >Paroles</a
-          >
-          <a
-            mat-raised-button
-            color="primary"
-            (click)="onSongOptions('tab', !tab)"
-            >Tablature</a
-          >
-        </div>
-        <div class="song_content">
-          <div *ngIf="tab" class="tab">
-            <img src="{{ song.tab }}" alt="tab" />
-          </div>
-          <div *ngIf="lyrics" class="lyrics">
-            <div class="text" [innerHTML]="song.lyrics"></div>
-          </div>
-          <a
-            *ngIf="tab || lyrics"
-            mat-raised-button
-            color="warn"
-            (click)="onSongOptions('close', false)"
-            >Fermer</a
-          >
-        </div>
-        <mat-action-row *ngIf="userIsAdmin && !isShuffle">
-          <a
-            *ngIf="userIsAdmin"
-            [routerLink]="['edit', song.id]"
-            mat-button
-            color="primary"
-            >Editer</a
-          >
-          <button
-            *ngIf="userIsAdmin"
-            mat-button
-            color="warn"
-            (click)="onDeleteClick(song.id)"
-          >
-            Supprimer
-          </button>
-        </mat-action-row>
-      </mat-expansion-panel>
-    </mat-accordion>
+<mat-expansion-panel class="song">
+  <mat-expansion-panel-header (click)="onSongOptions('close', false)">
+    <div class="header" (click)="onSelect()">
+      <div>
+        <strong>{{ song.title }}</strong>
+      </div>
+      <span class="spacer"></span>
+      <div>
+        {{ song.author }}
+      </div>
+    </div>
+  </mat-expansion-panel-header>
+  <div class="buttons_container">
+    <a
+      mat-raised-button
+      color="primary"
+      (click)="onSongOptions('lyrics', !lyrics)"
+      >Paroles</a
+    >
+    <a mat-raised-button color="primary" (click)="onSongOptions('tab', !tab)"
+      >Tablature</a
+    >
   </div>
-</div>
+  <div class="song_content">
+    <div *ngIf="tab" class="tab">
+      <img src="{{ song.tab }}" alt="tab" />
+    </div>
+    <div *ngIf="lyrics" class="lyrics">
+      <div class="text" [innerHTML]="song.lyrics"></div>
+    </div>
+    <a
+      *ngIf="tab || lyrics"
+      mat-raised-button
+      color="warn"
+      (click)="onSongOptions('close', false); onSelect()"
+      >Fermer</a
+    >
+  </div>
+  <mat-action-row *ngIf="userIsAdmin && !isShuffle">
+    <a
+      *ngIf="userIsAdmin"
+      [routerLink]="['edit', song.id]"
+      mat-button
+      color="primary"
+      >Editer</a
+    >
+    <button
+      *ngIf="userIsAdmin"
+      mat-button
+      color="warn"
+      (click)="onDeleteClick(song.id)"
+    >
+      Supprimer
+    </button>
+  </mat-action-row>
+</mat-expansion-panel>

@@ -9,23 +9,14 @@
   flex: 1 1 auto;
 }
 
-.list_container {
-  width: 100%;
-}
-
 .lyrics {
   margin-bottom: 30px;
   font-size: 1.7em;
   line-height: 1.8;
 }
 
-.list {
-  width: 60%;
-  margin: 0 auto;
-}
-
 .tab img {
-  width: 100%
+  width: 100%;
 }
 
 .header {
@@ -34,20 +25,10 @@
 }
 
 mat-expansion-panel-header :nth-child(3) {
-  margin-right: 15px
+  margin-right: 15px;
 }
 
-@media only screen and (max-width: 1024px)  {
-  .list {
-    width: 90%;
-  }
-}
-
-@media only screen and (max-width: 768px)  {
-  .list {
-    width: 95%;
-  }
-
+@media only screen and (max-width: 768px) {
   .lyrics {
     font-size: 1em;
     line-height: 1.6;
@@ -56,7 +37,7 @@ mat-expansion-panel-header :nth-child(3) {
 
 @media only screen and (max-width: 425px) {
   .spacer {
-    flex:none
+    flex: none;
   }
 
   .lyrics {
