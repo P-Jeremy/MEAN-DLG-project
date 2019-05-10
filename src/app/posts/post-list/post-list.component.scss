@@ -1,6 +1,4 @@
-:host {
-  margin-top: 60px;
-}
+@import '~@angular/material/theming';
 
 .main_container {
   margin-top: 60px;
@@ -59,6 +57,7 @@ img {
 
 mat-paginator {
   margin-top: 1rem;
+  @include mat-elevation(2);
 }
 
 mat-spinner {

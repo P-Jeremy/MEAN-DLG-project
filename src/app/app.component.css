@@ -1,18 +1,18 @@
-html, body {
-  height: 100%;
-  margin: 0;
- }
-
-main {
+html,
+body {
   width: 100%;
-  margin: 0 auto;
+  height: 100vh;
+}
+
+.global {
   padding-top: 60px;
-  padding-bottom: 60px;
+  height: 100%;
 }
 
 app-header {
   position: fixed;
   z-index: 3;
-  top:0;
+  top: 0;
   width: 100%;
 }
+

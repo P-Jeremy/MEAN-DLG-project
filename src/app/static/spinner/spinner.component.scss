@@ -1,0 +1,30 @@
+.global {
+  height: 100vh;
+  width: 100%
+}
+
+.container {
+  width: 100%;
+  text-align: center;
+}
+
+.spinner {
+  width: 20%;
+  -webkit-animation: rotation 0.5s infinite linear;
+  @-webkit-keyframes rotation {
+      from {
+          -webkit-transform: rotate(0deg);
+      }
+      to {
+          -webkit-transform: rotate(360deg);
+      }
+  }
+}
+
+
+@media only screen and (max-width: 750px)  {
+  .spinner {
+    width: 55%;
+  }
+}
+
