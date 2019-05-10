@@ -7,6 +7,7 @@ import { SongsService } from '../../services/songs.service';
 import { AuthService } from '../../services/auth.service';
 import { Song } from '../../models/song.model';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { SearchBarService } from 'src/app/services/search-bar.service';
 
 @Component({
   selector: 'app-song-list',
@@ -20,13 +21,21 @@ export class SongListComponent implements OnInit, OnDestroy {
   isLoading = false;
   userIsAdmin = false;
   isShuffle = false;
+  isTitle: boolean;
+  term: string;
 
   private songSub: Subscription;
+  private classElement: HTMLCollection;
   private adminListenerSub: Subscription;
   destroy$: Subject<boolean> = new Subject<boolean>();
 
 
-  constructor(public songsService: SongsService, private authService: AuthService, public route: ActivatedRoute) { }
+  constructor(
+    public songsService: SongsService,
+    private authService: AuthService,
+    public route: ActivatedRoute,
+    private searchBarService: SearchBarService
+  ) { }
 
   ngOnInit() {
     this.isShuffle = false;
@@ -34,21 +43,20 @@ export class SongListComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.route.paramMap.subscribe((paramMap: ParamMap) => {
         if (paramMap.has('shuffle')) {
+          this.songsService.getRandomSong();
           this.isShuffle = true;
-          this.songsService.getRandomSong()
-          .pipe(takeUntil(this.destroy$))
-          .subscribe((res) => {
-            this.randomSong = res.song;
-          });
+        } else {
+          this.songsService.getSongs();
         }
       });
-      this.songsService.getSongs();
+
       this.songSub = this.songsService.getSongUpdatedListener()
         .pipe(takeUntil(this.destroy$))
         .subscribe((songData: { songs: Song[], songCount: number }) => {
           this.songs = songData.songs;
           this.isLoading = false;
         });
+
       this.userIsAdmin = this.authService.getIsAdmin();
       this.adminListenerSub = this.authService
         .getAdminStatusListener()
@@ -57,6 +65,11 @@ export class SongListComponent implements OnInit, OnDestroy {
           this.userIsAdmin = isUserAdmin;
         });
     }, 500);
+
+    this.searchBarService.currentTerm.pipe(takeUntil(this.destroy$))
+      .subscribe(currentTerm => this.term = currentTerm);
+    this.searchBarService.currentIsTitleState.pipe(takeUntil(this.destroy$))
+      .subscribe(currentTitleState => this.isTitle = currentTitleState);
   }
 
   /* Callback to handle post delete on the DB */
@@ -73,14 +86,24 @@ export class SongListComponent implements OnInit, OnDestroy {
 
   onShuffle() {
     this.isLoading = true;
-    this.songsService.getRandomSong()
-    .pipe(takeUntil(this.destroy$))
-    .subscribe((res) => {
-      this.randomSong = res.song;
-    });
     setTimeout(() => {
+      this.songsService.getRandomSong();
       this.isLoading = false;
-    }, 500);
+    }, 1000);
+  }
+
+  /**
+   * Callback to invoke when selecting a song
+   *
+   * @param title of the selected song
+   */
+  onSelect(title: string) {
+    this.classElement = document.getElementsByClassName(`${title}`);
+    if (this.classElement.length > 0) {
+      setTimeout(() => {
+        this.classElement[0].scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
+      }, 200);
+    }
   }
 
   ngOnDestroy() {

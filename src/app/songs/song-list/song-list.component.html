@@ -2,7 +2,11 @@
   <app-spinner *ngIf="isLoading"></app-spinner>
 
   <div *ngIf="isShuffle && !isLoading" class="button_container">
-    <a class="shuffle_button" mat-raised-button color="primary" (click)="onShuffle()"
+    <a
+      class="shuffle_button"
+      mat-raised-button
+      color="primary"
+      (click)="onShuffle()"
       ><mat-icon> swap_calls</mat-icon></a
     >
   </div>
@@ -15,14 +19,23 @@
     *ngIf="!isShuffle && !isLoading && songs.length"
   ></app-search-bar>
 
-  <app-song
-    *ngIf="!isLoading"
-    [songs]="songs"
-    [userIsAdmin]="userIsAdmin"
-    [randomSong]="randomSong"
-    [isShuffle]="isShuffle"
-    (emitSongIdToParent)="onDelete($event)"
-  ></app-song>
+  <div *ngIf="songs.length && !isLoading">
+    <div class="list_container">
+      <div class="list">
+        <mat-accordion multi="false">
+          <app-song
+            *ngFor="let song of songs | filterTitle: term:isTitle"
+            (triggerScroll)="onSelect(song.title)"
+            [(ngClass)]="song.title"
+            [song]="song"
+            [userIsAdmin]="userIsAdmin"
+            [isShuffle]="isShuffle"
+            (emitSongIdToParent)="onDelete($event)"
+          ></app-song>
+        </mat-accordion>
+      </div>
+    </div>
+  </div>
 
   <p
     class="mat-body-1 info-text"
