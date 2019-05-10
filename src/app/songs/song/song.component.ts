@@ -1,62 +1,43 @@
 
-import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, ElementRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 
 import { Song } from '../../models/song.model';
-import { SearchBarService } from '../../services/search-bar.service';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-song',
   templateUrl: './song.component.html',
   styleUrls: ['./song.component.css']
 })
-export class SongComponent implements OnInit, OnDestroy {
+export class SongComponent {
 
-  @Input() songs: Song[];
-  @Input() randomSong: Song;
   @Input() userIsAdmin: boolean;
+
   @Input() isShuffle: boolean;
+
   @Output() emitSongIdToParent: EventEmitter<string> = new EventEmitter();
 
-  isTitle: boolean;
-  term: string;
+  @Output() triggerScroll: EventEmitter<any> = new EventEmitter();
+
+  private _song: Song;
+
+  /** OrderContent to be displayed */
+  @Input() get song(): Song {
+    return this._song;
+  }
+
+  set song(song: Song) {
+    this._song = song;
+  }
+
   tab = false;
   lyrics = false;
-  panelState = false;
-  class: string;
 
-  private classElement: HTMLCollection;
-
-  destroy$: Subject<boolean> = new Subject<boolean>();
-
-  constructor(private searchBarService: SearchBarService) { }
-
-  ngOnInit() {
-    this.searchBarService.currentTerm.pipe(takeUntil(this.destroy$))
-      .subscribe(currentTerm => this.term = currentTerm);
-    this.searchBarService.currentIsTitleState.pipe(takeUntil(this.destroy$))
-      .subscribe(currentTitleState => this.isTitle = currentTitleState);
-  }
+  constructor() { }
 
   /* Callback to emit song Id to parent */
   onDeleteClick(songId: string) {
     this.emitSongIdToParent.next(songId);
-  }
-
-  /**
-   * Callback to invoke when selecting a song
-   *
-   * @param title of the selected song
-   */
-  onSelect(title: string) {
-    this.classElement = document.getElementsByClassName(`${title}`);
-    if (this.classElement.length > 0) {
-      setTimeout(() => {
-        this.classElement[0].scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
-      }, 200);
-    }
   }
 
   onSongOptions(ev: string, status: boolean) {
@@ -76,7 +57,7 @@ export class SongComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
-    this.destroy$.next(true);
+  onSelect() {
+    this.triggerScroll.emit(null);
   }
 }

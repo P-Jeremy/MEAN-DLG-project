@@ -13,10 +13,6 @@
   width: 100%;
 }
 
-.shuffle_container {
-  width: 100%;
-}
-
 .lyrics {
   margin-bottom: 30px;
   font-size: 1.7em;
@@ -30,10 +26,6 @@
 
 .tab img {
   width: 100%
-}
-
-.shuffle_accordion {
-  margin-top: 15px;
 }
 
 .header {

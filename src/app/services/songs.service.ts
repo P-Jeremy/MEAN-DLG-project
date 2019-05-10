@@ -16,14 +16,14 @@ const API_DOMAIN = environment.apiDomain + '/songs/';
 * Makes the service available at all 'root' levels of the application.
 * Wich means everywhere on the SPA
 */
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class SongsService {
   private songs: Song[] = [];
-  private songUpdated = new Subject<{songs: Song[]}>();
+  private songUpdated = new Subject<{ songs: Song[] }>();
   private songStatusListener = new Subject<boolean>();
 
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) { }
 
   /**
    *  Get Songs method
@@ -31,26 +31,26 @@ export class SongsService {
    * @returns all the songs of DB through the songUpdated observable
    */
   getSongs() {
-    this.http.get<{message: string, songs: any}>(API_DOMAIN)
-        .pipe(map((songData) => {
-          return {
-            songs: songData.songs.map(song => {
-              return {
-                title: song.title,
-                author: song.author,
-                id: song._id,
-                lyrics: song.lyrics,
-                tab: song.tab
-              };
-            }),
+    this.http.get<{ message: string, songs: any }>(API_DOMAIN)
+      .pipe(map((songData) => {
+        return {
+          songs: songData.songs.map(song => {
+            return {
+              title: song.title,
+              author: song.author,
+              id: song._id,
+              lyrics: song.lyrics,
+              tab: song.tab
             };
-        }))
-        .subscribe((transformedSongData) => {
-          this.songs = transformedSongData.songs;
-          this.songUpdated.next({
-            songs: [...this.songs]
-          });
+          }),
+        };
+      }))
+      .subscribe((transformedSongData) => {
+        this.songs = transformedSongData.songs;
+        this.songUpdated.next({
+          songs: [...this.songs]
         });
+      });
   }
 
   /**
@@ -61,8 +61,14 @@ export class SongsService {
   }
 
   getRandomSong() {
-// tslint:disable-next-line: no-bitwise
-    return this.http.get<{song: any[]}>(`${API_DOMAIN}/shuffle`);
+    this.http.get<{ song: any }>(`${API_DOMAIN}/shuffle`)
+      .subscribe((randomSong) => {
+        this.songs.splice(0, this.songs.length);
+        this.songs.push(randomSong.song);
+        this.songUpdated.next({
+          songs: [...this.songs]
+        });
+      });
   }
 
   /**
@@ -76,7 +82,8 @@ export class SongsService {
       title: string,
       author: string,
       lyrics: string,
-      tab: string}>(API_DOMAIN + id);
+      tab: string
+    }>(API_DOMAIN + id);
   }
 
   /**
@@ -100,11 +107,11 @@ export class SongsService {
     songData.append('lyrics', lyrics);
     songData.append('tab', tab, title);
 
-    this.http.post<{message: string, song: Song}>(API_DOMAIN, songData)
-        .subscribe(() => {
-          this.songStatusListener.next(true);
-          this.redirect();
-        },
+    this.http.post<{ message: string, song: Song }>(API_DOMAIN, songData)
+      .subscribe(() => {
+        this.songStatusListener.next(true);
+        this.redirect();
+      },
         error => {
           this.songStatusListener.next(false);
           this.redirect();
@@ -130,27 +137,27 @@ export class SongsService {
     let songData: Song | FormData;
 
     /* If updated song has a new tab image as a file */
-    if (typeof(tab) === 'object') {
-        songData = new FormData();
-        songData.append('id', id);
-        songData.append('title', title);
-        songData.append('content', author);
-        songData.append('tab', tab, title);
-        songData.append('lyrics', lyrics);
+    if (typeof (tab) === 'object') {
+      songData = new FormData();
+      songData.append('id', id);
+      songData.append('title', title);
+      songData.append('content', author);
+      songData.append('tab', tab, title);
+      songData.append('lyrics', lyrics);
       /* Else, tab image === url as a string */
     } else {
-        songData = {
-          id,
-          title,
-          author,
-          lyrics,
-          tab
-        };
+      songData = {
+        id,
+        title,
+        author,
+        lyrics,
+        tab
+      };
     }
     this.http.put(API_DOMAIN + id, songData)
-        .subscribe(() => {
-          this.redirect();
-        });
+      .subscribe(() => {
+        this.redirect();
+      });
   }
 
   /** Return to home page */
