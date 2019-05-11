@@ -102,7 +102,6 @@ export class AuthService {
     if (password !== passwordBis) {
       this.message.title = 'Oh hell no...';
       this.message.content = 'Veuillez entrer deux mots de passes identiques';
-      this.authStatusListener.next(false);
       return this.dialog.open(AppMessagesComponent, { data: this.message });
     }
     return this.http.post<{ message: string }>(API_DOMAIN + `signup?key=${apiKey}`, authData)

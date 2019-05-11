@@ -1,6 +1,6 @@
 <mat-expansion-panel class="song">
-  <mat-expansion-panel-header (click)="onSongOptions('close', false)">
-    <div class="header" (click)="onSelect()">
+  <mat-expansion-panel-header (click)="onSongOptions('close', false); onSelect()">
+    <div class="header">
       <div>
         <strong>{{ song.title }}</strong>
       </div>
@@ -32,7 +32,7 @@
       *ngIf="tab || lyrics"
       mat-raised-button
       color="warn"
-      (click)="onSongOptions('close', false); onSelect()"
+      (click)="onSongOptions('close', false)"
       >Fermer</a
     >
   </div>

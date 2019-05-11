@@ -265,11 +265,11 @@ exports.signIn = async (req, res, next) => {
           isAdmin: fetchedUser.isAdmin
         },
         secretJwt,
-        { expiresIn: "1h" }
+        { expiresIn: "1d" }
       );
       return res.status(200).json({
         token: token,
-        expiresIn: 3600,
+        expiresIn: 86400,
         userId: fetchedUser._id,
         isAdmin: fetchedUser.isAdmin
       });
