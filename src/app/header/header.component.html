@@ -1,51 +1,128 @@
-<mat-toolbar color="primary">
+<mat-toolbar class="header" color="primary">
   <span class="spacer"></span>
 
   <span class="fill-remaining-space"></span>
 
-  <div fxLayout="row" fxHide fxShow.gt-md>
+  <div class="list" fxLayout="row" fxHide fxShow.gt-md>
+  <span class="spacer"></span>
+
     <ul>
       <li *ngIf="userIsAuth">
-        <a mat-button  [mat-menu-trigger-for]="subMenuSet"><h4>Playlist</h4></a>
+        <a mat-raised-button color="accent" [mat-menu-trigger-for]="subMenuSet"
+          ><h4>Playlist</h4></a
+        >
       </li>
       <li *ngIf="userIsAuth">
-        <a mat-button routerLink="post" routerLinkActive="router_link"
+        <a
+          mat-raised-button
+          color="accent"
+          routerLink="post"
+          routerLinkActive="router_link"
           ><h4>Taverne</h4></a
         >
       </li>
       <li *ngIf="userIsAuth">
-        <a mat-button routerLink="auth/profile" routerLinkActive="router_link"
+        <a
+          mat-raised-button
+          color="accent"
+          routerLink="auth/profile"
+          routerLinkActive="router_link"
           ><h4>Profil</h4></a
         >
       </li>
       <li *ngIf="!userIsAuth">
-        <a mat-button routerLink="auth/login" routerLinkActive="router_link"
+        <a
+          mat-raised-button
+          color="accent"
+          routerLink="auth/login"
+          routerLinkActive="router_link"
           ><h4>Connexion</h4></a
         >
       </li>
       <li *ngIf="!userIsAuth">
-        <a mat-button routerLink="auth/signup" routerLinkActive="router_link"
+        <a
+          mat-raised-button
+          color="accent"
+          routerLink="auth/signup"
+          routerLinkActive="router_link"
           ><h4>Inscription</h4></a
         >
       </li>
       <li *ngIf="userIsAuth">
-        <a mat-button (click)="onLogout()"><mat-icon class="logout" color="warn">power_settings_new</mat-icon></a>
+        <a mat-button color="accent" (click)="onLogout()"
+          ><mat-icon class="logout" color="accent"
+            >power_settings_new</mat-icon
+          ></a
+        >
       </li>
     </ul>
   </div>
-  <button mat-button [mat-menu-trigger-for]="menu" fxShow fxHide.gt-md>
+  <button
+    class="burger"
+    mat-raised-button
+    color="accent"
+    [mat-menu-trigger-for]="menu"
+    fxShow
+    fxHide.gt-md
+  >
     <mat-icon>menu</mat-icon>
   </button>
 </mat-toolbar>
 <mat-menu #subMenuSet>
-  <button *ngIf="userIsAuth" mat-menu-item routerLink="song" routerLinkActive="router_link">Liste</button>
-  <button *ngIf="userIsAuth" mat-menu-item [routerLink]="['song', 'shuffle']" routerLinkActive="router_link">Shuffle</button>
+  <button
+    *ngIf="userIsAuth"
+    mat-menu-item
+    routerLink="song"
+    routerLinkActive="router_link"
+  >
+    Liste
+  </button>
+  <button
+    *ngIf="userIsAuth"
+    mat-menu-item
+    [routerLink]="['song', 'shuffle']"
+    routerLinkActive="router_link"
+  >
+    Shuffle
+  </button>
 </mat-menu>
 <mat-menu x-position="before" #menu>
-  <button *ngIf="userIsAuth" mat-menu-item [mat-menu-trigger-for]="subMenuSet">Playlist</button>
-  <button *ngIf="userIsAuth" mat-menu-item routerLink="/post" routerLinkActive="router_link">Taverne</button>
-  <button *ngIf="userIsAuth" mat-menu-item routerLink="auth/profile" routerLinkActive="router_link">Profil</button>
-  <button *ngIf="!userIsAuth" mat-menu-item routerLink="auth/login" routerLinkActive="router_link">Connexion</button>
-  <button *ngIf="!userIsAuth" mat-menu-item routerLink="auth/signup" routerLinkActive="router_link">Inscription</button>
-  <button *ngIf="userIsAuth" mat-menu-item (click)="onLogout()"><mat-icon color="warn">power_settings_new</mat-icon></button>
+  <button *ngIf="userIsAuth" mat-menu-item [mat-menu-trigger-for]="subMenuSet">
+    Playlist
+  </button>
+  <button
+    *ngIf="userIsAuth"
+    mat-menu-item
+    routerLink="/post"
+    routerLinkActive="router_link"
+  >
+    Taverne
+  </button>
+  <button
+    *ngIf="userIsAuth"
+    mat-menu-item
+    routerLink="auth/profile"
+    routerLinkActive="router_link"
+  >
+    Profil
+  </button>
+  <button
+    *ngIf="!userIsAuth"
+    mat-menu-item
+    routerLink="auth/login"
+    routerLinkActive="router_link"
+  >
+    Connexion
+  </button>
+  <button
+    *ngIf="!userIsAuth"
+    mat-menu-item
+    routerLink="auth/signup"
+    routerLinkActive="router_link"
+  >
+    Inscription
+  </button>
+  <button *ngIf="userIsAuth" mat-menu-item (click)="onLogout()">
+    <mat-icon color="accent">power_settings_new</mat-icon>
+  </button>
 </mat-menu>

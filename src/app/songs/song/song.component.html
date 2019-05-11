@@ -13,11 +13,11 @@
   <div class="buttons_container">
     <a
       mat-raised-button
-      color="primary"
+      color="accent"
       (click)="onSongOptions('lyrics', !lyrics)"
       >Paroles</a
     >
-    <a mat-raised-button color="primary" (click)="onSongOptions('tab', !tab)"
+    <a mat-raised-button color="accent" (click)="onSongOptions('tab', !tab)"
       >Tablature</a
     >
   </div>
@@ -41,13 +41,13 @@
       *ngIf="userIsAdmin"
       [routerLink]="['edit', song.id]"
       mat-button
-      color="primary"
+      color="accent"
       >Editer</a
     >
     <button
       *ngIf="userIsAdmin"
       mat-button
-      color="warn"
+      color="primary"
       (click)="onDeleteClick(song.id)"
     >
       Supprimer

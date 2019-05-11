@@ -1,13 +1,25 @@
-@import '~@angular/material/theming';
+@import "~@angular/material/theming";
 
 .selected {
-  color: #f44336;
+  color: red;
+  .mat-icon {
+    box-shadow: 3px 3px 3px black
+  }
+}
+
+.notSelected {
+  color: white;
 }
 
 .search_bar_container {
+  position: fixed;
   text-align: center;
-  width: 100%;
-  margin: 0 0 50px 0;
+  width: 50%;
+  margin: auto;
+  left: 0;
+  right: 0;
+  top: 15px;
+  z-index: 3;
 }
 
 .search_bar {
@@ -24,12 +36,12 @@
   padding: 0 10px 0 10px;
   outline: none;
   background: white;
-  border: 1.5px solid rgb(70, 69, 71);
+  border: 3px solid rgb(70, 69, 71);
   @include mat-elevation-transition;
-  @include mat-elevation(2);
+  @include mat-elevation(4);
 
   &:active {
-    @include mat-elevation(8);
+    @include mat-elevation(10);
   }
 }
 
@@ -39,13 +51,12 @@
   margin: 0 auto;
   justify-content: space-evenly;
   font-size: 14px;
-  height: 15px
+  height: 15px;
 }
 
 .toggle mat-icon {
   font-size: 23px;
 }
-
 
 ::-webkit-input-placeholder {
   text-align: center;
@@ -62,9 +73,23 @@
   text-align: center;
 }
 
-::ng-deep.mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
-  background-color:rgba(0,0,0,.38);
+/deep/.mat-slide-toggle.mat-checked:not(.mat-disabled)
+  .mat-slide-toggle-bar {
+  background-color: rgba(0, 0, 0, 0.38);
 }
-::ng-deep.mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
-  background-color:white;
+/deep/.mat-slide-toggle.mat-checked:not(.mat-disabled)
+  .mat-slide-toggle-thumb {
+  background-color: white;
+}
+
+@media only screen and (max-width: 530px) {
+  .search_bar_container {
+    top: 5px;
+    width: 60%;
+    position: fixed;
+    .search_bar {
+      width: 180px;
+      padding-bottom: 10px;
+    }
+  }
 }

@@ -38,13 +38,13 @@
             *ngIf="userIsAuth && userId == post.creator_id"
             [routerLink]="['edit', post.id]"
             mat-button
-            color="primary"
+            color="accent"
             >Editer</a
           >
           <button
             *ngIf="userIsAuth && userId == post.creator_id"
             mat-button
-            color="warn"
+            color="primary"
             (click)="onDelete(post.id)"
           >
             Supprimer

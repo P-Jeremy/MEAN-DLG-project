@@ -8,7 +8,7 @@
   </div>
   <div class="toggle">
     <div>
-      <mat-icon [ngClass]="{ selected: !isTitle }">perm_identity</mat-icon>
+      <mat-icon [ngClass]="{ selected: !isTitle, notSelected: isTitle }">perm_identity</mat-icon>
     </div>
     <mat-slide-toggle
       (change)="onBoxChecked($event.checked)"
@@ -18,7 +18,7 @@
     </mat-slide-toggle>
 
     <div>
-      <mat-icon [ngClass]="{ selected: isTitle }">audiotrack</mat-icon>
+      <mat-icon [ngClass]="{ selected: isTitle,  notSelected: !isTitle }">audiotrack</mat-icon>
     </div>
   </div>
 </div>

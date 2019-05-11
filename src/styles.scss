@@ -7,9 +7,12 @@ html,
 body {
   height: 100%;
 }
+
 html {
-  background: rgba(0, 0, 0, 0.04);
-  background-size: cover;
+  background-image: url("./assets/images/background40.png");
+  background-size: 15em;
+  background-attachment: fixed;
+  background-position: center center;
 }
 
 body {
@@ -17,7 +20,7 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-$mat-myapp-primary: (
+$mat-myapp-accent: (
   50: #e8e8e8,
   100: #c5c5c6,
   200: #9f9ea0,
@@ -50,7 +53,7 @@ $mat-myapp-primary: (
   )
 );
 
-$mat-myapp-accent: (
+$mat-myapp-primary: (
   50: #f3e0e0,
   100: #e0b3b3,
   200: #cc8080,
