@@ -12,20 +12,20 @@ import { SearchBarService } from 'src/app/services/search-bar.service';
 @Component({
   selector: 'app-song-list',
   templateUrl: './song-list.component.html',
-  styleUrls: ['./song-list.component.css']
+  styleUrls: ['./song-list.component.scss']
 })
 export class SongListComponent implements OnInit, OnDestroy {
 
   songs: Song[] = [];
   randomSong;
-  isLoading = false;
+  isLoading: boolean;
   userIsAdmin = false;
   isShuffle = false;
   isTitle: boolean;
   term: string;
 
   private songSub: Subscription;
-  private classElement: HTMLCollection;
+  private classElement;
   private adminListenerSub: Subscription;
   destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -38,33 +38,41 @@ export class SongListComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.isShuffle = false;
-    this.isLoading = true;
-    setTimeout(() => {
-      this.route.paramMap.subscribe((paramMap: ParamMap) => {
-        if (paramMap.has('shuffle')) {
-          this.songsService.getRandomSong();
-          this.isShuffle = true;
-        } else {
-          this.songsService.getSongs();
-        }
+
+
+
+    this.route.paramMap.subscribe((paramMap: ParamMap) => {
+      if (paramMap.has('shuffle')) {
+        this.isLoading = true;
+
+        this.songsService.getRandomSong();
+        this.isShuffle = true;
+      } else {
+        this.isLoading = true;
+
+        this.songsService.getSongs();
+
+      }
+    });
+
+    this.songSub = this.songsService.getSongUpdatedListener()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((songData: { songs: Song[], songCount: number }) => {
+        this.isLoading = true;
+
+        this.songs = songData.songs;
+        this.isLoading = false;
+
       });
 
-      this.songSub = this.songsService.getSongUpdatedListener()
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((songData: { songs: Song[], songCount: number }) => {
-          this.songs = songData.songs;
-          this.isLoading = false;
-        });
+    this.userIsAdmin = this.authService.getIsAdmin();
 
-      this.userIsAdmin = this.authService.getIsAdmin();
-      this.adminListenerSub = this.authService
-        .getAdminStatusListener()
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(isUserAdmin => {
-          this.userIsAdmin = isUserAdmin;
-        });
-    }, 500);
+
+    this.adminListenerSub = this.authService.getAdminStatusListener()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(isUserAdmin => {
+        this.userIsAdmin = isUserAdmin;
+      });
 
     this.searchBarService.currentTerm.pipe(takeUntil(this.destroy$))
       .subscribe(currentTerm => this.term = currentTerm);
@@ -106,11 +114,18 @@ export class SongListComponent implements OnInit, OnDestroy {
   onSelect(title: string) {
     this.classElement = document.getElementsByClassName(`${title}`);
     if (this.classElement.length > 0) {
+      const element = this.classElement[0];
       setTimeout(() => {
-        this.classElement[0].scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
-      }, 200);
+        window.scrollTo({ top: this.centerElement(element), behavior: 'smooth' });
+      }, 300);
     }
   }
+  private centerElement(el: HTMLElement): number {
+    const offsetTop = window.innerHeight / 3;
+    return el.offsetTop - offsetTop;
+  }
+
+
 
   ngOnDestroy() {
     this.songSub.unsubscribe();

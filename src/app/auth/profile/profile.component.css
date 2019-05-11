@@ -1,6 +1,5 @@
 .container {
-  margin-top: 60px;
-  height: 100%;
+  margin: 60px 0 60px 0;
 }
 
 mat-card {
@@ -11,6 +10,11 @@ mat-card {
 .title {
   width: 100%;
   text-align: center;
+}
+
+.action_buttons {
+  width: 100%;
+  display: flex;
 }
 
 .notifications{
@@ -38,4 +42,8 @@ mat-card {
   mat-card {
     width: 80%;
   }
+}
+
+.container /deep/ .mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background, .mat-accent .mat-pseudo-checkbox-checked, .mat-accent .mat-pseudo-checkbox-indeterminate, .mat-pseudo-checkbox-checked, .mat-pseudo-checkbox-indeterminate {
+  background-color: #9a241f !important; /* Red background for example */
 }

@@ -5,13 +5,16 @@
     <a
       class="shuffle_button"
       mat-raised-button
-      color="primary"
+      color="accent"
       (click)="onShuffle()"
       ><mat-icon> swap_calls</mat-icon></a
     >
   </div>
 
-  <div *ngIf="userIsAdmin && !isShuffle && !isLoading" class="button_container">
+  <div
+    *ngIf="userIsAdmin && !isShuffle && !isLoading && songs.length"
+    class="button_container"
+  >
     <a class="add_song" mat-raised-button routerLink="create">Ajouter</a>
   </div>
 
@@ -36,11 +39,10 @@
       </div>
     </div>
   </div>
-
-  <p
-    class="mat-body-1 info-text"
-    *ngIf="!songs.length && !isLoading && !isShuffle"
-  >
-    Pas de titres dans la setlist...
-  </p>
 </div>
+<p
+  class="mat-body-1 info-text"
+  *ngIf="!isShuffle && !isLoading && !songs.length"
+>
+  Pas de titres dans la setlist...
+</p>

@@ -1,6 +1,6 @@
-<mat-expansion-panel class="song">
-  <mat-expansion-panel-header (click)="onSongOptions('close', false)">
-    <div class="header" (click)="onSelect()">
+<mat-expansion-panel [ngClass]="{'isShuffle': isShuffle, 'song': true}">
+  <mat-expansion-panel-header (click)="onSongOptions('close', false); onSelect()">
+    <div class="header">
       <div>
         <strong>{{ song.title }}</strong>
       </div>
@@ -13,11 +13,11 @@
   <div class="buttons_container">
     <a
       mat-raised-button
-      color="primary"
+      color="accent"
       (click)="onSongOptions('lyrics', !lyrics)"
       >Paroles</a
     >
-    <a mat-raised-button color="primary" (click)="onSongOptions('tab', !tab)"
+    <a mat-raised-button color="accent" (click)="onSongOptions('tab', !tab)"
       >Tablature</a
     >
   </div>
@@ -32,7 +32,7 @@
       *ngIf="tab || lyrics"
       mat-raised-button
       color="warn"
-      (click)="onSongOptions('close', false); onSelect()"
+      (click)="onSongOptions('close', false)"
       >Fermer</a
     >
   </div>
@@ -41,13 +41,13 @@
       *ngIf="userIsAdmin"
       [routerLink]="['edit', song.id]"
       mat-button
-      color="primary"
+      color="accent"
       >Editer</a
     >
     <button
       *ngIf="userIsAdmin"
       mat-button
-      color="warn"
+      color="primary"
       (click)="onDeleteClick(song.id)"
     >
       Supprimer
