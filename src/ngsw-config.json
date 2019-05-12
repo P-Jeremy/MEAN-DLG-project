@@ -9,6 +9,7 @@
           "/favicon.ico",
           "/index.html",
           "/*.css",
+          "/*.scss",
           "/*.js"
         ],
         "urls": [
@@ -18,7 +19,7 @@
       }
     }, {
       "name": "assets",
-      "installMode": "lazy",
+      "installMode": "prefetch",
       "updateMode": "prefetch",
       "resources": {
         "files": [
@@ -39,7 +40,7 @@
       ],
       "cacheConfig": {
         "maxSize": 100,
-        "maxAge": "1d",
+        "maxAge": "1h",
         "strategy": "freshness"
       }
     }
