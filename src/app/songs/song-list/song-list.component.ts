@@ -12,7 +12,7 @@ import { SearchBarService } from 'src/app/services/search-bar.service';
 @Component({
   selector: 'app-song-list',
   templateUrl: './song-list.component.html',
-  styleUrls: ['./song-list.component.css']
+  styleUrls: ['./song-list.component.scss']
 })
 export class SongListComponent implements OnInit, OnDestroy {
 
@@ -100,9 +100,9 @@ export class SongListComponent implements OnInit, OnDestroy {
   /** Callback to get a random song */
   onShuffle() {
     this.isLoading = true;
-    this.songsService.getRandomSong();
     setTimeout(() => {
-      // this.isLoading = false;
+      this.songsService.getRandomSong();
+      this.isLoading = false;
     }, 1000);
   }
 
