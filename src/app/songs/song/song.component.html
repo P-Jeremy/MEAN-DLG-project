@@ -1,4 +1,4 @@
-<mat-expansion-panel class="song">
+<mat-expansion-panel [ngClass]="{'isShuffle': isShuffle, 'song': true}">
   <mat-expansion-panel-header (click)="onSongOptions('close', false); onSelect()">
     <div class="header">
       <div>
