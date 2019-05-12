@@ -56,6 +56,7 @@ export class SongComponent {
       case 'close':
         this.tab = status;
         this.lyrics = status;
+        this.onSelect();
         break;
       default:
         break;

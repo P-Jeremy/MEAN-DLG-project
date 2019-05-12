@@ -32,11 +32,14 @@
     {
       "name": "local-api",
       "urls": [
-      "http://dlgjukeboxapi.us-east-1.elasticbeanstalk.com/api"
+      "http://dlgjukeboxapi.us-east-1.elasticbeanstalk.com/api/songs",
+      "http://dlgjukeboxapi.us-east-1.elasticbeanstalk.com/api/auth/user",
+      "http://dlgjukeboxapi.us-east-1.elasticbeanstalk.com/api/posts"
+
       ],
       "cacheConfig": {
         "maxSize": 100,
-        "maxAge": "1h",
+        "maxAge": "1d",
         "strategy": "freshness"
       }
     }
