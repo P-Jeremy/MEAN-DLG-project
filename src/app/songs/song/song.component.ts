@@ -21,7 +21,7 @@ export class SongComponent {
 
   private _song: Song;
 
-  /** OrderContent to be displayed */
+  /** Song to be displayed */
   @Input() get song(): Song {
     return this._song;
   }

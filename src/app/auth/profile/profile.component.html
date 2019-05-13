@@ -22,12 +22,7 @@
           >
         </mat-form-field>
         <div>
-          <button
-            *ngIf="isEdit"
-            mat-raised-button
-            color="primary"
-            type="submit"
-          >
+          <button *ngIf="isEdit" mat-raised-button color="accent" type="submit">
             Valider
           </button>
           <span class="spacer"></span>
@@ -35,7 +30,7 @@
           <button
             *ngIf="isEdit"
             mat-raised-button
-            color="warn"
+            color="primary"
             (click)="onEdit()"
           >
             Annuler
@@ -79,23 +74,25 @@
     </div>
     <br />
     <mat-card-actions>
-      <button
-        *ngIf="!isEdit"
-        mat-raised-button
-        color="primary"
-        (click)="onEdit()"
-      >
-        Editer
-      </button>
-      <span class="spacer"></span>
-      <button
-        *ngIf="!isEdit"
-        mat-raised-button
-        color="warn"
-        (click)="onDelete()"
-      >
-        supprimer le profil
-      </button>
+      <div class="action_buttons">
+        <button
+          *ngIf="!isEdit"
+          mat-raised-button
+          color="accent"
+          (click)="onEdit()"
+        >
+          Editer
+        </button>
+        <span class="spacer"></span>
+        <button
+          *ngIf="!isEdit"
+          mat-raised-button
+          color="primary"
+          (click)="onDelete()"
+        >
+          supprimer le profil
+        </button>
+      </div>
     </mat-card-actions>
   </mat-card>
 </div>

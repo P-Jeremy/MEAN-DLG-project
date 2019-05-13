@@ -4,6 +4,7 @@
     <a
       class="addPost"
       mat-raised-button
+      color="accent"
       *ngIf="userIsAuth"
       routerLink="post/create"
       ><mat-icon> mail_outline</mat-icon></a
@@ -15,7 +16,7 @@
         <mat-card-subtitle>
           <div class="header">
             <div class="top_header">
-              <div>
+              <div class="title">
                 <strong>{{ post.title }} </strong>
               </div>
               <div>{{ post.creator_pseudo }}</div>
@@ -38,13 +39,13 @@
             *ngIf="userIsAuth && userId == post.creator_id"
             [routerLink]="['edit', post.id]"
             mat-button
-            color="primary"
+            color="accent"
             >Editer</a
           >
           <button
             *ngIf="userIsAuth && userId == post.creator_id"
             mat-button
-            color="warn"
+            color="primary"
             (click)="onDelete(post.id)"
           >
             Supprimer

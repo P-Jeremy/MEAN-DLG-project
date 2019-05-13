@@ -1,11 +1,15 @@
 @import '~@angular/material/theming';
 
 .main_container {
-  margin-top: 60px;
+  margin: 60px 0 60px 0;
 }
 
 .info-text {
   text-align: center;
+}
+
+.title {
+  color: #9a241f;
 }
 
 .post_image {
