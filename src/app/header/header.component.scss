@@ -39,8 +39,10 @@ li {
   color: #9a241f;
 }
 
-.burger mat-icon{
-  font-weight: bolder;
+.burger {
+  mat-icon {
+    font-weight: bolder;
+  }
 }
 
 @media only screen and (max-width: 530px) {
@@ -52,15 +54,17 @@ li {
     top: 15px;
     right: 15px;
   }
-   .burger, .mat-raised-button {
+  .burger,
+  .mat-raised-button {
     height: 30px;
     line-height: 29px;
     padding: 0;
-    width: 35px!important;
-    min-width: unset!important;
+    width: 35px !important;
+    min-width: unset !important;
   }
-    .burger, .mat-raised-button, .mat-icon {
-      font-size: 24px;
-    }
+  .burger,
+  .mat-raised-button,
+  .mat-icon {
+    font-size: 24px;
   }
-
+}
