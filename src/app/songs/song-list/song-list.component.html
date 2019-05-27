@@ -1,7 +1,7 @@
 <div class="main_container">
   <app-spinner *ngIf="isLoading"></app-spinner>
 
-  <div *ngIf="isShuffle && !isLoading" class="button_container">
+  <div *ngIf="!isLoading && songs.length" class="button_container">
     <a
       class="shuffle_button"
       mat-raised-button
@@ -37,6 +37,16 @@
           ></app-song>
         </mat-accordion>
       </div>
+    </div>
+    <div class="backButton">
+      <button
+        *ngIf="isShuffle"
+        mat-raised-button
+        color="primary"
+        (click)="onCancelShuffle()"
+      >
+        Retour à la liste
+      </button>
     </div>
   </div>
 </div>

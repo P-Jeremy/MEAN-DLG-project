@@ -30,8 +30,8 @@ export class SongComponent {
     this._song = song;
   }
 
-  tab = false;
-  lyrics = false;
+  tab = true;
+  lyrics = true;
 
   constructor() { }
 

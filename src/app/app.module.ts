@@ -12,7 +12,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppMessagesComponent } from './appMessages/appMessages.component';
 import { PostModule } from './posts/post.module';
 import { SongModule } from './songs/song.module';
-import { HomeComponent } from './home/home.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { StaticModule } from './static/static.module';
@@ -22,7 +21,6 @@ import { StaticModule } from './static/static.module';
     AppComponent,
     HeaderComponent,
     AppMessagesComponent,
-    HomeComponent,
   ],
   imports: [
   BrowserModule,

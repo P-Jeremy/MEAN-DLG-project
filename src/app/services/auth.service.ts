@@ -142,7 +142,7 @@ export class AuthService {
           const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
           this.saveAuthData(token, expirationDate, this.userId, this.isAdmin);
           this.dialog.open(AppMessagesComponent, { data: this.message });
-          this.redirect(['/song']);
+          this.redirect(['/']);
         }
       },
         error => {
@@ -170,7 +170,7 @@ export class AuthService {
       this.setAuthTimer(expiresIn / 1000);
       this.authStatusListener.next(true);
       this.adminStatusListener.next(this.isAdmin)
-      this.redirect(['/song']);
+      this.redirect(['/']);
     }
   }
 
