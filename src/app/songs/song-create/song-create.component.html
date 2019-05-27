@@ -66,12 +66,14 @@
 <div *ngIf="help" class="help">
   <mat-card>
     <p>
-      L'éditeur de texte des paroles utilise les balises HTML pour le formatage (gras, saut de ligne etc etc).
-      <br>
+      L'éditeur de texte des paroles utilise les balises HTML pour le formatage
+      (gras, saut de ligne etc etc).
+      <br />
       Cliquez sur le bouton pour en savoir plus:
-      <br>
-      <br>
+      <br />
+      <br />
       <a
+        target="_blank"
         mat-raised-button
         color="accent"
         href="http://formation-html.weebly.com/texte-html.html"
@@ -80,25 +82,26 @@
         Balises html</a
       >
     </p>
-    <br>
-    <br>
+    <br />
+    <br />
     <p>
-        Pour convertir un text au format HTML.
-        <br>
-        Cliquez sur le bouton suivant:
-        <br>
-        <br>
-        <a
-          mat-raised-button
-          color="accent"
-          href="http://www.unit-conversion.info/texttools/text-to-html/"
-          (clique)="help = false"
-        >
-          Convertir</a
-        >
-      </p>
-      <br>
-      <br>
+      Pour convertir un text au format HTML.
+      <br />
+      Cliquez sur le bouton suivant:
+      <br />
+      <br />
+      <a
+        target="_blank"
+        mat-raised-button
+        color="accent"
+        href="http://www.unit-conversion.info/texttools/text-to-html/"
+        (clique)="help = false"
+      >
+        Convertir</a
+      >
+    </p>
+    <br />
+    <br />
     <a mat-raised-button color="primary" (click)="help = false">Fermer</a>
   </mat-card>
 </div>

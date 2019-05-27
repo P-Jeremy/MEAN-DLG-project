@@ -60,17 +60,6 @@ export class SongsService {
     return this.songUpdated.asObservable();
   }
 
-  getRandomSong() {
-    this.http.get<{ song: any }>(`${API_DOMAIN}/shuffle`)
-      .subscribe((randomSong) => {
-        this.songs.splice(0, this.songs.length);
-        this.songs.push(randomSong.song);
-        this.songUpdated.next({
-          songs: [...this.songs]
-        });
-      });
-  }
-
   /**
    * @param takes the id of the song to edit
    *
