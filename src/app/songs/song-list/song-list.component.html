@@ -11,13 +11,6 @@
     >
   </div>
 
-  <div
-    *ngIf="userIsAdmin && !isShuffle && !isLoading && songs.length"
-    class="button_container"
-  >
-    <a class="add_song" mat-raised-button routerLink="create">Ajouter</a>
-  </div>
-
   <app-search-bar
     *ngIf="!isShuffle && !isLoading && songs.length"
   ></app-search-bar>

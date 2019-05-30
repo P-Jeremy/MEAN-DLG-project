@@ -6,7 +6,7 @@
 
   <span class="fill-remaining-space"></span>
 
-  <div *ngIf="show">
+  <div>
     <div class="list" fxLayout="row" fxHide fxShow.gt-md>
       <span class="spacer"></span>
 
@@ -15,8 +15,7 @@
           <a
             mat-raised-button
             color="accent"
-            routerLink="/"
-            routerLinkActive="router_link"
+            [mat-menu-trigger-for]="subMenuSet"
             ><h4>Playlist</h4></a
           >
         </li>
@@ -77,12 +76,29 @@
     </button>
   </div>
 </mat-toolbar>
-<mat-menu x-position="before" #menu>
+<mat-menu #subMenuSet>
   <button
     *ngIf="userIsAuth"
     mat-menu-item
     routerLink="/"
     routerLinkActive="router_link"
+  >
+    Liste
+  </button>
+  <button
+    *ngIf="userIsAdmin"
+    mat-menu-item
+    [routerLink]="['song', 'create']"
+    routerLinkActive="router_link"
+  >
+    Ajouter titre
+  </button>
+</mat-menu>
+<mat-menu x-position="before" #menu>
+  <button
+    *ngIf="userIsAuth"
+    mat-menu-item
+    [mat-menu-trigger-for]="subMenuSet"
   >
     Playlist
   </button>

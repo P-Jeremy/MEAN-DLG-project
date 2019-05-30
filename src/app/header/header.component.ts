@@ -12,7 +12,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userIsAuth = false;
   userIsAdmin = false;
   userId: string;
-  show = false;
 
   private authListenerSubs: Subscription;
   private adminListenerSubs: Subscription;
@@ -21,9 +20,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(private authService: AuthService) {}
 
   ngOnInit() {
-    setTimeout(() => {
-      this.show = true;
-    }, 2050);
     this.userIsAuth = this.authService.getIsAuth();
     this.userIsAdmin = this.authService.getIsAdmin();
     this.userId = localStorage.getItem('userId');
