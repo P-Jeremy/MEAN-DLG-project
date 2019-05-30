@@ -11,6 +11,7 @@
       <mat-icon [ngClass]="{ selected: !isTitle, notSelected: isTitle }">perm_identity</mat-icon>
     </div>
     <mat-slide-toggle
+      class="searchToggle"
       (change)="onBoxChecked($event.checked)"
       [checked]="isTitle"
       [disabled]="false"

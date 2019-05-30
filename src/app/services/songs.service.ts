@@ -22,6 +22,10 @@ export class SongsService {
   private songUpdated = new Subject<{ songs: Song[] }>();
   private songStatusListener = new Subject<boolean>();
 
+  private tags: [] = [];
+  private tagUpdated = new Subject<{ tags: any }>();
+  private tagStatusListener = new Subject<boolean>();
+
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -72,7 +76,7 @@ export class SongsService {
       author: string,
       lyrics: string,
       tab: string
-    }>(API_DOMAIN + id);
+    }>(`${API_DOMAIN}/single` + id);
   }
 
   /**
@@ -143,15 +147,15 @@ export class SongsService {
         tab
       };
     }
-    this.http.put(API_DOMAIN + id, songData)
+    this.http.put(`${API_DOMAIN}/edit` + id, songData)
       .subscribe(() => {
         this.redirect();
       });
   }
 
   /** Return to home page */
-  redirect() {
-    this.router.navigate(['/song']);
+  redirect(ev?: string) {
+    this.router.navigate([`/song${ev}`]);
   }
 
   /**
@@ -161,5 +165,44 @@ export class SongsService {
    */
   deleteSong(songId: string) {
     return this.http.delete(API_DOMAIN + songId);
+  }
+
+  addTag(title: string) {
+
+    const newList = { title };
+    return this.http.post<{ message: string, tag: string }>(`${API_DOMAIN}tags`, newList)
+      .subscribe(() => {
+        this.router.navigateByUrl('song', { skipLocationChange: true }).then(() =>
+          this.router.navigate(["song/tag"]));
+      });
+  }
+
+  /**
+   *  Get Tags method
+   *
+   * @returns all the tags of DB through the tagUpdated observable
+   */
+  getTags() {
+    this.http.get<{ message: string, tags: any }>(`${API_DOMAIN}tags`)
+      .pipe(map((tagData) => {
+        return {
+          tags: tagData.tags.map(tag => {
+            return tag;
+          }),
+        };
+      }))
+      .subscribe((transformedTagData) => {
+        this.tags = transformedTagData.tags;
+        this.tagUpdated.next({
+          tags: [...this.tags]
+        });
+      });
+  }
+
+  /**
+   * @returns the tagUpdated as an observable
+   */
+  getTagUpdatedListener() {
+    return this.tagUpdated.asObservable();
   }
 }

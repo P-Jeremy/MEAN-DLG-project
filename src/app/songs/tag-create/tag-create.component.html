@@ -1,0 +1,24 @@
+<div class="global">
+  <mat-card>
+    <app-spinner *ngIf="isLoading"></app-spinner>
+    <form *ngIf="!isLoading" [formGroup]="form" (submit)="onSaveTag()">
+      <mat-form-field>
+        <input
+          matInput
+          type="text"
+          formControlName="title"
+          placeholder="Titre de la playlist"
+        />
+        <mat-error *ngIf="form.get('title').invalid"
+          >Veillez préciser le nom de la playlist</mat-error
+        >
+      </mat-form-field>
+      <button mat-raised-button color="accent" type="submit">
+        Poster
+      </button>
+      <button mat-raised-button color="primary" routerLink="/">
+        annuler
+      </button>
+    </form>
+  </mat-card>
+</div>
