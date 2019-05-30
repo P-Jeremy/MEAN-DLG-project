@@ -23,7 +23,7 @@ import { StaticModule } from './static/static.module';
     AppMessagesComponent,
   ],
   imports: [
-  BrowserModule,
+    BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
@@ -34,12 +34,12 @@ import { StaticModule } from './static/static.module';
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [
-    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
-    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
 
   ],
   bootstrap: [AppComponent],
   entryComponents: [AppMessagesComponent]
 })
-export class AppModule {}
+export class AppModule { }
 
