@@ -37,21 +37,6 @@ exports.addSong = async (req, res, next) => {
   }
 };
 
-exports.getShuffleSong = async (req,res,next) => {
-  const count = await Song.count();
-  const random = await Math.floor(Math.random() * count)
-  try {
-    const randomSong = await Song.find().limit(1).skip(random);
-    return res.status(200).json({
-      song: randomSong[0]
-    })
-  } catch {
-    res.status(500).json({
-      message: "Le shuffle est cassé..."
-    })
-  }
-}
-
 exports.getSongs = async (req, res, next) => {
   try {
     const songs = await Song.find();

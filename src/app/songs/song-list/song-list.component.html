@@ -1,7 +1,7 @@
 <div class="main_container">
   <app-spinner *ngIf="isLoading"></app-spinner>
 
-  <div *ngIf="isShuffle && !isLoading" class="button_container">
+  <div *ngIf="!isLoading && songs.length" class="button_container">
     <a
       class="shuffle_button"
       mat-raised-button
@@ -9,13 +9,6 @@
       (click)="onShuffle()"
       ><mat-icon> swap_calls</mat-icon></a
     >
-  </div>
-
-  <div
-    *ngIf="userIsAdmin && !isShuffle && !isLoading && songs.length"
-    class="button_container"
-  >
-    <a class="add_song" mat-raised-button routerLink="create">Ajouter</a>
   </div>
 
   <app-search-bar
@@ -37,6 +30,16 @@
           ></app-song>
         </mat-accordion>
       </div>
+    </div>
+    <div class="backButton">
+      <button
+        *ngIf="isShuffle"
+        mat-raised-button
+        color="primary"
+        (click)="onCancelShuffle()"
+      >
+        Retour à la liste
+      </button>
     </div>
   </div>
 </div>
