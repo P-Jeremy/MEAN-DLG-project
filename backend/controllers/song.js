@@ -1,25 +1,38 @@
 const Song = require("../models/song");
-const User = require('../models/user');
-const sendMail = require('../helpers/email/sendMail');
-const titleNotif = require('../helpers/email/templates/titleNotif');
+const User = require("../models/user");
+const Tag = require("../models/tag");
+const sendMail = require("../helpers/email/sendMail");
+const titleNotif = require("../helpers/email/templates/titleNotif");
 
 exports.addSong = async (req, res, next) => {
+
+  console.warn("COUCOU");
+
   try {
     const tab = req.file ? req.file.location : null;
+
+    console.warn("TAG", req.body.tags);
+
 
     const newSong = new Song({
       title: req.body.title,
       author: req.body.author,
       lyrics: req.body.lyrics,
-      tab: tab
+      tab: tab,
+      tags: req.body.tags
     });
 
+    console.warn("NEWSONG", newSong);
+
+
+
     const result = await newSong.save();
+    console.warn(result);
+
     const users = await User.find({ titleNotif: true });
-    await users
-      .map(user => {
-        sendMail(titleNotif(user.email, result.title));
-      });
+    await users.map(user => {
+      sendMail(titleNotif(user.email, result.title));
+    });
     return res.status(201).json({
       message: "Chanson crée avec succès",
       song: {
@@ -39,15 +52,15 @@ exports.addSong = async (req, res, next) => {
 
 exports.getSongs = async (req, res, next) => {
   try {
-    const songs = await Song.find();
+    const songs = await Song.find().populate('tags').exec();
     return res.status(200).json({
       message: "Songs fetched !",
-      songs: songs,
+      songs: songs
     });
   } catch (error) {
     res.status(500).json({
       message: "Impossible de charger la setlist"
-    })
+    });
   }
 };
 
@@ -55,8 +68,8 @@ exports.updateSong = async (req, res, next) => {
   const isAdmin = req.userData.isAdmin;
   if (!isAdmin) {
     return res.status(403).json({
-      message: 'Vous n\'êtes pas authorisé'
-    })
+      message: "Vous n'êtes pas authorisé"
+    });
   }
 
   let tabPath;
@@ -74,10 +87,7 @@ exports.updateSong = async (req, res, next) => {
     tab: tabPath
   });
 
-  const result = await Song.updateOne(
-    { _id: req.params.id},
-    song
-  );
+  const result = await Song.updateOne({ _id: req.params.id }, song);
   if (result.n > 0) {
     res.status(200).json(`Update successful ! ${result}`);
   } else {
@@ -85,39 +95,79 @@ exports.updateSong = async (req, res, next) => {
   }
 };
 
-exports.getSingleSong = (req, res, next) => {
-  Song.findById(req.params.id)
-    .then(song => {
-      if (song) {
-        res.status(200).json(song);
-      } else {
-        res.status(404).json({ message: "Titre non trouvé" });
-      }
-    })
-    .catch(error => {
-      res.status(500).json({
-        message: "La modification du titre à échoué..."
-      });
+exports.getSingleSong = async (req, res, next) => {
+  try {
+    const song = await Song.findById(req.params.id);
+    if (!song) {
+      res.status(404).json({ message: "Titre non trouvé" });
+    }
+    res.status(200).json(song);
+  } catch (error) {
+    res.status(500).json({
+      message: "Une erreur est survenue..."
     });
+  }
 };
 
 exports.deleteSong = (req, res, next) => {
   const isAdmin = req.userData.isAdmin;
   if (!isAdmin) {
     return res
-    .status(403)
-    .json({ message: `Vous n'êtes pas authorisé à modifier ce titre` });
+      .status(403)
+      .json({ message: `Vous n'êtes pas authorisé à modifier ce titre` });
   } else {
-    Song.deleteOne({ _id: req.params.id})
-    .then(result => {
-      if (result.n > 0) {
-        res.status(200).json(`Deletion successful ! ${result}`);
-      }
-    })
-    .catch(error => {
-      res.status(500).json({
-        message: "La suppression du titre à échoué..."
+    Song.deleteOne({ _id: req.params.id })
+      .then(result => {
+        if (result.n > 0) {
+          res.status(200).json(`Deletion successful ! ${result}`);
+        }
+      })
+      .catch(error => {
+        res.status(500).json({
+          message: "La suppression du titre à échoué..."
+        });
       });
+  }
+};
+
+exports.addTags = async (req, res, next) => {
+  const isAdmin = req.userData.isAdmin;
+  if (!isAdmin) {
+    return res
+      .status(403)
+      .json({ message: `Vous n'êtes pas authorisé à ajouter une playlist` });
+  }
+  try {
+    const tagExists = await Tag.find({ name: req.body.title });
+    if (tagExists.length) {
+      return res.status(403).json({
+        message: "Cette playlist existe déjà"
+      });
+    }
+    const tag = new Tag({
+      name: req.body.title
+    }).save();
+    return res.status(201).json({
+      message: "Liste crée avec succès",
+      tag: tag.title
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Une erreur est survenue..."
+    });
+  }
+};
+
+exports.getTags = async (req, res, next) => {
+  try {
+    const tags = await Tag.find();
+    return res.status(200).json({
+      message: "Tags fetched !",
+      tags: tags
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Impossible de charger les listes"
     });
   }
 };
