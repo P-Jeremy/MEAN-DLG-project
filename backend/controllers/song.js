@@ -5,29 +5,19 @@ const sendMail = require("../helpers/email/sendMail");
 const titleNotif = require("../helpers/email/templates/titleNotif");
 
 exports.addSong = async (req, res, next) => {
-
-  console.warn("COUCOU");
-
   try {
     const tab = req.file ? req.file.location : null;
-
-    console.warn("TAG", req.body.tags);
-
 
     const newSong = new Song({
       title: req.body.title,
       author: req.body.author,
       lyrics: req.body.lyrics,
-      tab: tab,
-      tags: req.body.tags
+      tab: tab
     });
 
-    console.warn("NEWSONG", newSong);
-
-
+    newSong.tags = JSON.parse(req.body.tags);
 
     const result = await newSong.save();
-    console.warn(result);
 
     const users = await User.find({ titleNotif: true });
     await users.map(user => {
@@ -52,7 +42,9 @@ exports.addSong = async (req, res, next) => {
 
 exports.getSongs = async (req, res, next) => {
   try {
-    const songs = await Song.find().populate('tags').exec();
+    const songs = await Song.find()
+      .populate("tags")
+      .exec();
     return res.status(200).json({
       message: "Songs fetched !",
       songs: songs
@@ -87,6 +79,9 @@ exports.updateSong = async (req, res, next) => {
     tab: tabPath
   });
 
+  song.tags = JSON.parse(req.body.tags);
+
+
   const result = await Song.updateOne({ _id: req.params.id }, song);
   if (result.n > 0) {
     res.status(200).json(`Update successful ! ${result}`);
@@ -97,7 +92,7 @@ exports.updateSong = async (req, res, next) => {
 
 exports.getSingleSong = async (req, res, next) => {
   try {
-    const song = await Song.findById(req.params.id);
+    const song = await Song.findById(req.params.id).populate("tags");
     if (!song) {
       res.status(404).json({ message: "Titre non trouvé" });
     }
