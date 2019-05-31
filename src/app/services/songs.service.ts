@@ -78,7 +78,8 @@ export class SongsService {
       title: string,
       author: string,
       lyrics: string,
-      tab: string
+      tab: string,
+      tags: any
     }>(`${API_DOMAIN}/single` + id);
   }
 
@@ -130,7 +131,7 @@ export class SongsService {
    *
    * @returns the response through the postUpdated observable
    */
-  updateSong(id: string, title: string, author: string, lyrics: string, tab: File | string) {
+  updateSong(id: string, title: string, author: string, lyrics: string, tab: File | string, tags: []) {
     let songData: Song | FormData;
 
     /* If updated song has a new tab image as a file */
@@ -141,6 +142,8 @@ export class SongsService {
       songData.append('content', author);
       songData.append('tab', tab, title);
       songData.append('lyrics', lyrics);
+      songData.append('tags', JSON.stringify(tags));
+
       /* Else, tab image === url as a string */
     } else {
       songData = {
@@ -148,7 +151,8 @@ export class SongsService {
         title,
         author,
         lyrics,
-        tab
+        tab,
+        tags: JSON.stringify(tags)
       };
     }
     this.http.put(`${API_DOMAIN}/edit` + id, songData)
@@ -173,7 +177,6 @@ export class SongsService {
   }
 
   addTag(title: string) {
-
     const newList = { title };
     return this.http.post<{ message: string, tag: string }>(`${API_DOMAIN}tags`, newList)
       .subscribe(() => {

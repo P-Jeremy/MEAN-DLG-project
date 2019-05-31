@@ -50,6 +50,12 @@ export class SongCreateComponent implements OnInit, OnDestroy {
         this.mode = 'edit';
         this.songId = paramMap.get('songId');
         this.isLoading = true;
+        this.songService.getTags();
+        this.tagSub = this.songService.getTagUpdatedListener()
+          .pipe(takeUntil(this.destroy$))
+          .subscribe((tagData: { tags: [] }) => {
+            this.tags = tagData.tags;
+          });
         this.songService.getSingleSong(this.songId)
           .pipe(takeUntil(this.destroy$))
           .subscribe(SongData => {
@@ -59,13 +65,19 @@ export class SongCreateComponent implements OnInit, OnDestroy {
               title: SongData.title,
               author: SongData.author,
               lyrics: SongData.lyrics,
-              tab: SongData.tab
+              tab: SongData.tab,
+              tags: SongData.tags
             };
+            let selected = [];
+            if (this.song.tags.length) {
+              selected = this.song.tags.map(tag => tag['_id']);
+            }
             this.form.setValue({
               title: this.song.title,
               author: this.song.author,
               lyrics: this.song.lyrics,
-              tab: this.song.tab
+              tab: this.song.tab,
+              selectedTags: selected
             });
           });
       } else {
@@ -75,13 +87,8 @@ export class SongCreateComponent implements OnInit, OnDestroy {
         this.tagSub = this.songService.getTagUpdatedListener()
           .pipe(takeUntil(this.destroy$))
           .subscribe((tagData: { tags: [] }) => {
-
             this.tags = tagData.tags;
-            console.warn(this.tags);
           });
-
-        console.warn(this.tags);
-
       }
     });
   }
@@ -90,7 +97,6 @@ export class SongCreateComponent implements OnInit, OnDestroy {
     if (this.form.invalid) {
       return;
     }
-    console.warn(this.form);
     const song: Song = {
       id: null,
       title: this.form.value.title,
@@ -100,7 +106,7 @@ export class SongCreateComponent implements OnInit, OnDestroy {
     if (this.mode === 'create') {
       this.songService.addSongs(song.title, song.author, this.form.value.lyrics, this.form.value.tab, this.form.value.selectedTags);
     } else {
-      this.songService.updateSong(this.songId, song.title, song.author, this.form.value.lyrics, this.form.value.tab);
+      this.songService.updateSong(this.songId, song.title, song.author, this.form.value.lyrics, this.form.value.tab, this.form.value.selectedTags);
     }
     this.lyrics = false;
     this.tab = false;
