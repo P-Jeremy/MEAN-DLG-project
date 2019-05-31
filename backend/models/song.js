@@ -5,7 +5,7 @@ const songSchema = mongoose.Schema({
   author: { type: String, required: true },
   lyrics: { type: String, required: true },
   tab: { type: String, required: true },
-  tags: [{ type: mongoose.Schema.Types.ObjectId, ref: "Tag" }],
+  tags: { type: mongoose.Schema.Types.ObjectId, ref: "Tag" },
 });
 
 songSchema.set("timestamps", true);

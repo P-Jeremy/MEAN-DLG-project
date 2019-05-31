@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from './services/auth.service';
 import { SwUpdate } from '@angular/service-worker';
 
 @Component({
@@ -8,10 +7,9 @@ import { SwUpdate } from '@angular/service-worker';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  constructor(private authService: AuthService, private swUpdate: SwUpdate) { }
+  constructor(private swUpdate: SwUpdate) { }
 
   ngOnInit() {
-    this.authService.autoAuthUser();
     if (this.swUpdate.isEnabled) {
 
       this.swUpdate.available.subscribe(() => {

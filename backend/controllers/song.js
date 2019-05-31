@@ -5,17 +5,30 @@ const sendMail = require("../helpers/email/sendMail");
 const titleNotif = require("../helpers/email/templates/titleNotif");
 
 exports.addSong = async (req, res, next) => {
+
+  console.warn("COUCOU");
+
   try {
     const tab = req.file ? req.file.location : null;
+
+    console.warn("TAG", req.body.tags);
+
 
     const newSong = new Song({
       title: req.body.title,
       author: req.body.author,
       lyrics: req.body.lyrics,
-      tab: tab
+      tab: tab,
+      tags: req.body.tags
     });
 
+    console.warn("NEWSONG", newSong);
+
+
+
     const result = await newSong.save();
+    console.warn(result);
+
     const users = await User.find({ titleNotif: true });
     await users.map(user => {
       sendMail(titleNotif(user.email, result.title));
@@ -39,7 +52,7 @@ exports.addSong = async (req, res, next) => {
 
 exports.getSongs = async (req, res, next) => {
   try {
-    const songs = await Song.find();
+    const songs = await Song.find().populate('tags').exec();
     return res.status(200).json({
       message: "Songs fetched !",
       songs: songs

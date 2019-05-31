@@ -44,13 +44,16 @@ export class SongsService {
               author: song.author,
               id: song._id,
               lyrics: song.lyrics,
-              tab: song.tab
+              tab: song.tab,
+              tags: song.tags
             };
           }),
         };
       }))
       .subscribe((transformedSongData) => {
         this.songs = transformedSongData.songs;
+        console.warn(this.songs);
+
         this.songUpdated.next({
           songs: [...this.songs]
         });
@@ -92,13 +95,14 @@ export class SongsService {
    *
    * @returns the response through the postUpdated observable
    */
-  addSongs(title: string, author: string, lyrics: string, tab: File) {
+  addSongs(title: string, author: string, lyrics: string, tab: File, tags: []) {
 
     const songData = new FormData();
     songData.append('title', title);
     songData.append('author', author);
     songData.append('lyrics', lyrics);
     songData.append('tab', tab, title);
+    songData.append('tags', JSON.stringify(tags));
 
     this.http.post<{ message: string, song: Song }>(API_DOMAIN, songData)
       .subscribe(() => {
@@ -155,7 +159,8 @@ export class SongsService {
 
   /** Return to home page */
   redirect(ev?: string) {
-    this.router.navigate([`/song${ev}`]);
+    const to = ev ? `/song${ev}` : `/`;
+    this.router.navigate([to]);
   }
 
   /**

@@ -53,6 +53,14 @@
         <br />
       </div>
     </div>
+    <mat-selection-list
+    formControlName="selectedTags"
+    >
+      <mat-list-option *ngFor="let tag of tags" [value]="tag._id">
+        {{ tag.name }}
+      </mat-list-option>
+    </mat-selection-list>
+
     <div class="buttons_container">
       <button mat-raised-button color="accent" type="submit">
         Poster
