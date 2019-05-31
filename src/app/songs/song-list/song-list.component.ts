@@ -24,15 +24,17 @@ export class SongListComponent implements OnInit, OnDestroy {
   isShuffle = false;
   isTitle: boolean;
   term: string;
+  tags = [];
 
   private songSub: Subscription;
+  private tagSub: Subscription;
   private classElement;
   private adminListenerSub: Subscription;
   destroy$: Subject<boolean> = new Subject<boolean>();
 
 
   constructor(
-    public songsService: SongsService,
+    public songService: SongsService,
     private authService: AuthService,
     public route: ActivatedRoute,
     private searchBarService: SearchBarService
@@ -42,10 +44,9 @@ export class SongListComponent implements OnInit, OnDestroy {
 
     this.isLoading = true;
 
+    this.songService.getSongs();
 
-    this.songsService.getSongs();
-
-    this.songSub = this.songsService.getSongUpdatedListener()
+    this.songSub = this.songService.getSongUpdatedListener()
       .pipe(takeUntil(this.destroy$))
       .subscribe((songData: { songs: Song[], songCount: number }) => {
         this.isLoading = true;
@@ -54,6 +55,14 @@ export class SongListComponent implements OnInit, OnDestroy {
         this.songsCopy = [...this.songs];
         this.isLoading = false;
       });
+
+    this.songService.getTags();
+    this.tagSub = this.songService.getTagUpdatedListener()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((tagData: { tags: [] }) => {
+        this.tags = tagData.tags.filter(tag => tag['isActive']);
+      });
+
 
     this.userIsAdmin = this.authService.getIsAdmin();
 
@@ -77,10 +86,10 @@ export class SongListComponent implements OnInit, OnDestroy {
   onDelete(songId: string, songTitle: string) {
     if (confirm(`Voulez vous vraiment supprimer "${songTitle}" ?`)) {
       this.isLoading = true;
-      this.songsService.deleteSong(songId)
+      this.songService.deleteSong(songId)
         .pipe(takeUntil(this.destroy$))
         .subscribe(() => {
-          this.songsService.getSongs();
+          this.songService.getSongs();
         }, error => {
           this.isLoading = false;
         });
@@ -133,6 +142,7 @@ export class SongListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.songSub.unsubscribe();
+    this.tagSub.unsubscribe();
     this.adminListenerSub.unsubscribe();
     this.destroy$.next(true);
   }

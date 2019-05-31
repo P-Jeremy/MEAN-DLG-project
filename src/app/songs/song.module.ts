@@ -14,6 +14,7 @@ import { FilterTitlePipe } from './filter-title.pipe';
 import { TagCreateComponent } from './tag-create/tag-create.component';
 import { TagDisplayComponent } from './tag-display/tag-display.component';
 import { TagContainerComponent } from './tag-container/tag-container.component';
+import { FilterTagsPipe } from './filter-tags.pipe';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import { TagContainerComponent } from './tag-container/tag-container.component';
     TagCreateComponent,
     TagDisplayComponent,
     TagContainerComponent,
+    FilterTagsPipe,
   ],
   imports: [
     CommonModule,
