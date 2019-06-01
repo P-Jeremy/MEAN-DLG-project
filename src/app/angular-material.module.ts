@@ -14,6 +14,7 @@ import {
   MatMenuModule,
   MatCheckboxModule,
   MatSlideToggleModule,
+  MatSelectModule,
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -37,7 +38,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatMenuModule,
     MatCheckboxModule,
     MatSlideToggleModule,
-    MatListModule
+    MatListModule,
+    MatSelectModule
   ]
 })
 

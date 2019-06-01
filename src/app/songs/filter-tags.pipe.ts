@@ -6,10 +6,16 @@ import { Song } from '../models/song.model';
 })
 export class FilterTagsPipe implements PipeTransform {
 
-  transform(songs: Song[], tag?: string): any {
-    if (!tag) {
-      return;
+  transform(songs: Song[], tag: string): any {
+    if (tag === undefined) {
+      return songs;
     }
-    return songs.filter(song => song.tags[`${tag}`]);
+    const filterSongs = songs.filter(song => {
+      if (song.tags.length > 0) {
+        return song.tags.filter(s => s.name.includes(tag));
+      }
+      return;
+    });
+    return filterSongs;
   }
 }
