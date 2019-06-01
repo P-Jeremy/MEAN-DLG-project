@@ -52,8 +52,6 @@ export class SongsService {
       }))
       .subscribe((transformedSongData) => {
         this.songs = transformedSongData.songs;
-        console.warn(this.songs);
-
         this.songUpdated.next({
           songs: [...this.songs]
         });
@@ -204,6 +202,19 @@ export class SongsService {
         this.tagUpdated.next({
           tags: [...this.tags]
         });
+      });
+  }
+
+  /**
+   *  Delete Tag method
+   *
+   * @param tagId Id of the song to delete
+   */
+  deleteTag(tagId: string) {
+    return this.http.delete(`${API_DOMAIN}/delete/tags` + tagId)
+      .subscribe(() => {
+        this.router.navigateByUrl('song', { skipLocationChange: true }).then(() =>
+          this.router.navigate(["song/tag"]));
       });
   }
 

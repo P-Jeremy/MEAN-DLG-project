@@ -26,5 +26,7 @@ router.post('/tags', checkAdmin, songController.addTags);
 /* Get all the tags from DB */
 router.get('/tags', songController.getTags);
 
+/* Delete the tag corresponding to the param id passed through URL from client */
+router.delete('/delete/tags:id', checkAdmin, songController.deleteTag);
 
 module.exports = router;

@@ -3,11 +3,9 @@
   <mat-card *ngIf="!isLoading">
     <div *ngFor="let tag of tags">
       <p>{{ tag.name }}</p>
-      <mat-slide-toggle
-      class="toggleTag"
-      [checked]="tag.isActive"
-      color="accent"
-      >Active</mat-slide-toggle>
+      <button mat-raised-button color="primary" (click)="onDeleteTag(tag._id)">
+        supprimer
+      </button>
     </div>
   </mat-card>
 </div>

@@ -27,12 +27,14 @@ export class TagDisplayComponent implements OnInit, OnDestroy {
     this.tagSub = this.songService.getTagUpdatedListener()
       .pipe(takeUntil(this.destroy$))
       .subscribe((tagData: { tags: [] }) => {
-        console.warn(tagData);
-
         this.isLoading = true;
         this.tags = tagData.tags;
         this.isLoading = false;
       });
+  }
+
+  onDeleteTag(id: string) {
+    this.songService.deleteTag(id);
   }
 
   ngOnDestroy() {

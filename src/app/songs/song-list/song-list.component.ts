@@ -61,11 +61,8 @@ export class SongListComponent implements OnInit, OnDestroy {
     this.tagSub = this.songService.getTagUpdatedListener()
       .pipe(takeUntil(this.destroy$))
       .subscribe((tagData: { tags: [] }) => {
-        this.tags = tagData.tags.filter(tag => tag['isActive']);
+        this.tags = tagData.tags;
       });
-
-
-    console.warn("TAGSEL", this.selectedTag);
 
     this.userIsAdmin = this.authService.getIsAdmin();
 

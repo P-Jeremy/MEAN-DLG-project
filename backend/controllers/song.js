@@ -166,3 +166,24 @@ exports.getTags = async (req, res, next) => {
     });
   }
 };
+
+exports.deleteTag = (req, res, next) => {
+  const isAdmin = req.userData.isAdmin;
+  if (!isAdmin) {
+    return res
+      .status(403)
+      .json({ message: `Vous n'êtes pas authorisé à modifier cette liste` });
+  } else {
+    Tag.deleteOne({ _id: req.params.id })
+      .then(result => {
+        if (result.n > 0) {
+          res.status(200).json(`Deletion successful ! ${result}`);
+        }
+      })
+      .catch(error => {
+        res.status(500).json({
+          message: "La suppression de la liste à échoué..."
+        });
+      });
+  }
+};
