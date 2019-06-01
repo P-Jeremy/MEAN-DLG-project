@@ -25,6 +25,7 @@ export class SongListComponent implements OnInit, OnDestroy {
   isTitle: boolean;
   term: string;
   tags = [];
+  selectedTag: string;
 
   private songSub: Subscription;
   private tagSub: Subscription;
@@ -63,6 +64,8 @@ export class SongListComponent implements OnInit, OnDestroy {
         this.tags = tagData.tags.filter(tag => tag['isActive']);
       });
 
+
+    console.warn("TAGSEL", this.selectedTag);
 
     this.userIsAdmin = this.authService.getIsAdmin();
 
@@ -115,6 +118,10 @@ export class SongListComponent implements OnInit, OnDestroy {
       this.songs = [...this.songsCopy];
       this.isLoading = false;
     }, 1000);
+  }
+
+  changeTag(ev) {
+    this.selectedTag = ev;
   }
 
   /**
