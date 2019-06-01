@@ -17,7 +17,8 @@ import { SearchBarService } from 'src/app/services/search-bar.service';
 export class SongListComponent implements OnInit, OnDestroy {
 
   songs: Song[] = [];
-  randomSong;
+  songsCopy: Song[] = [];
+  randomSong = [];
   isLoading: boolean;
   userIsAdmin = false;
   isShuffle = false;
@@ -39,21 +40,10 @@ export class SongListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
+    this.isLoading = true;
 
 
-    this.route.paramMap.subscribe((paramMap: ParamMap) => {
-      if (paramMap.has('shuffle')) {
-        this.isLoading = true;
-
-        this.songsService.getRandomSong();
-        this.isShuffle = true;
-      } else {
-        this.isLoading = true;
-
-        this.songsService.getSongs();
-
-      }
-    });
+    this.songsService.getSongs();
 
     this.songSub = this.songsService.getSongUpdatedListener()
       .pipe(takeUntil(this.destroy$))
@@ -61,8 +51,8 @@ export class SongListComponent implements OnInit, OnDestroy {
         this.isLoading = true;
 
         this.songs = songData.songs;
+        this.songsCopy = [...this.songs];
         this.isLoading = false;
-
       });
 
     this.userIsAdmin = this.authService.getIsAdmin();
@@ -100,8 +90,20 @@ export class SongListComponent implements OnInit, OnDestroy {
   /** Callback to get a random song */
   onShuffle() {
     this.isLoading = true;
+    this.isShuffle = true;
+    this.songs.splice(0, this.songs.length);
     setTimeout(() => {
-      this.songsService.getRandomSong();
+      this.songs.push(this.songsCopy[Math.floor(Math.random() * this.songsCopy.length)]);
+      this.isLoading = false;
+    }, 1000);
+  }
+
+  onCancelShuffle() {
+    this.isLoading = true;
+    this.isShuffle = false;
+    this.songs.splice(0, this.songs.length);
+    setTimeout(() => {
+      this.songs = [...this.songsCopy];
       this.isLoading = false;
     }, 1000);
   }
@@ -116,12 +118,14 @@ export class SongListComponent implements OnInit, OnDestroy {
     if (this.classElement.length > 0) {
       const element = this.classElement[0];
       setTimeout(() => {
-        window.scrollTo({ top: this.centerElement(element), behavior: 'smooth' });
-      }, 300);
+        const elementInfos = element.getBoundingClientRect();
+        window.scrollTo({ top: this.centerElement(element, elementInfos), behavior: 'smooth' });
+      }, 250);
     }
   }
-  private centerElement(el: HTMLElement): number {
-    const offsetTop = window.innerHeight / 3;
+  private centerElement(el: HTMLElement, elInfo: ClientRect): number {
+    const offsetTop = (window.innerHeight - elInfo.top) / 2.5;
+
     return el.offsetTop - offsetTop;
   }
 

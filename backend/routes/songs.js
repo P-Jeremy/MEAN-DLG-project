@@ -10,10 +10,7 @@ const upload = require('../helpers/upload');
 router.post('', checkAdmin , upload.single('tab'), songController.addSong);
 
 /* Get all the songs from DB */
-router.get('', checkAuth, songController.getSongs);
-
-/* Get a random song from DB */
-router.get('/shuffle', checkAuth, songController.getShuffleSong);
+router.get('', songController.getSongs);
 
 /* Update the song corresponding to the param id passed through URL from client */
 router.put('/:id', checkAdmin, upload.single('tab'), songController.updateSong);

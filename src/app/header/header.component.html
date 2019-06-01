@@ -1,93 +1,105 @@
 <mat-toolbar class="header" color="primary">
+  <a class="logo" href="/">
+    <img src="../../assets/images/IMG-20190324-WA0005.jpg" alt="" />
+  </a>
   <span class="spacer"></span>
 
   <span class="fill-remaining-space"></span>
 
-  <div class="list" fxLayout="row" fxHide fxShow.gt-md>
-  <span class="spacer"></span>
+  <div>
+    <div class="list" fxLayout="row" fxHide fxShow.gt-md>
+      <span class="spacer"></span>
 
-    <ul>
-      <li *ngIf="userIsAuth">
-        <a mat-raised-button color="accent" [mat-menu-trigger-for]="subMenuSet"
-          ><h4>Playlist</h4></a
-        >
-      </li>
-      <li *ngIf="userIsAuth">
-        <a
-          mat-raised-button
-          color="accent"
-          routerLink="post"
-          routerLinkActive="router_link"
-          ><h4>Taverne</h4></a
-        >
-      </li>
-      <li *ngIf="userIsAuth">
-        <a
-          mat-raised-button
-          color="accent"
-          routerLink="auth/profile"
-          routerLinkActive="router_link"
-          ><h4>Profil</h4></a
-        >
-      </li>
-      <li *ngIf="!userIsAuth">
-        <a
-          mat-raised-button
-          color="accent"
-          routerLink="auth/login"
-          routerLinkActive="router_link"
-          ><h4>Connexion</h4></a
-        >
-      </li>
-      <li *ngIf="!userIsAuth">
-        <a
-          mat-raised-button
-          color="accent"
-          routerLink="auth/signup"
-          routerLinkActive="router_link"
-          ><h4>Inscription</h4></a
-        >
-      </li>
-      <li *ngIf="userIsAuth">
-        <a mat-button color="accent" (click)="onLogout()"
-          ><mat-icon class="logout" color="accent"
-            >power_settings_new</mat-icon
-          ></a
-        >
-      </li>
-    </ul>
+      <ul>
+        <li *ngIf="userIsAuth">
+          <a
+            mat-raised-button
+            color="accent"
+            [mat-menu-trigger-for]="subMenuSet"
+            ><h4>Playlist</h4></a
+          >
+        </li>
+        <li *ngIf="userIsAuth">
+          <a
+            mat-raised-button
+            color="accent"
+            routerLink="post"
+            routerLinkActive="router_link"
+            ><h4>Taverne</h4></a
+          >
+        </li>
+        <li *ngIf="userIsAuth">
+          <a
+            mat-raised-button
+            color="accent"
+            routerLink="auth/profile"
+            routerLinkActive="router_link"
+            ><h4>Profil</h4></a
+          >
+        </li>
+        <li *ngIf="!userIsAuth">
+          <a
+            mat-raised-button
+            color="accent"
+            routerLink="auth/login"
+            routerLinkActive="router_link"
+            ><h4>Connexion</h4></a
+          >
+        </li>
+        <li *ngIf="!userIsAuth">
+          <a
+            mat-raised-button
+            color="accent"
+            routerLink="auth/signup"
+            routerLinkActive="router_link"
+            ><h4>Inscription</h4></a
+          >
+        </li>
+        <li *ngIf="userIsAuth">
+          <a mat-button color="accent" (click)="onLogout()"
+            ><mat-icon class="logout" color="accent"
+              >power_settings_new</mat-icon
+            ></a
+          >
+        </li>
+      </ul>
+    </div>
+    <button
+      class="burger"
+      mat-raised-button
+      color="accent"
+      [mat-menu-trigger-for]="menu"
+      fxShow
+      fxHide.gt-md
+    >
+      <mat-icon>menu</mat-icon>
+    </button>
   </div>
-  <button
-    class="burger"
-    mat-raised-button
-    color="accent"
-    [mat-menu-trigger-for]="menu"
-    fxShow
-    fxHide.gt-md
-  >
-    <mat-icon>menu</mat-icon>
-  </button>
 </mat-toolbar>
 <mat-menu #subMenuSet>
   <button
     *ngIf="userIsAuth"
     mat-menu-item
-    routerLink="song"
+    routerLink="/"
     routerLinkActive="router_link"
   >
     Liste
   </button>
   <button
-    *ngIf="userIsAuth"
+    *ngIf="userIsAdmin"
     mat-menu-item
-    [routerLink]="['song', 'shuffle']"
+    [routerLink]="['song', 'create']"
     routerLinkActive="router_link"
   >
-    Shuffle
+    Ajouter titre
   </button>
 </mat-menu>
 <mat-menu x-position="before" #menu>
-  <button *ngIf="userIsAuth" mat-menu-item [mat-menu-trigger-for]="subMenuSet">
+  <button
+    *ngIf="userIsAuth"
+    mat-menu-item
+    [mat-menu-trigger-for]="subMenuSet"
+  >
     Playlist
   </button>
   <button

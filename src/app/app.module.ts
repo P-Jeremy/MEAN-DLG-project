@@ -12,7 +12,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppMessagesComponent } from './appMessages/appMessages.component';
 import { PostModule } from './posts/post.module';
 import { SongModule } from './songs/song.module';
-import { HomeComponent } from './home/home.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { StaticModule } from './static/static.module';
@@ -22,10 +21,9 @@ import { StaticModule } from './static/static.module';
     AppComponent,
     HeaderComponent,
     AppMessagesComponent,
-    HomeComponent,
   ],
   imports: [
-  BrowserModule,
+    BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
@@ -36,12 +34,12 @@ import { StaticModule } from './static/static.module';
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [
-    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
-    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
 
   ],
   bootstrap: [AppComponent],
   entryComponents: [AppMessagesComponent]
 })
-export class AppModule {}
+export class AppModule { }
 
