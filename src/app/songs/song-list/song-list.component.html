@@ -15,12 +15,27 @@
     *ngIf="!isShuffle && !isLoading && songs.length"
   ></app-search-bar>
 
+  <div class="tags">
+    <mat-card *ngIf="!isLoading && tags.length">
+      <h4>Playlists</h4>
+      <mat-form-field>
+        <mat-label>Listes</mat-label>
+        <mat-select #tagValue  (selectionChange)="changeTag($event.value)">
+          <mat-option>Aucune</mat-option>
+          <mat-option *ngFor="let tag of tags" [value]="tag.name">{{
+            tag.name
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-card>
+  </div>
+
   <div *ngIf="songs.length && !isLoading">
     <div class="list_container">
       <div class="list">
         <mat-accordion multi="false">
           <app-song
-            *ngFor="let song of songs | filterTitle: term:isTitle"
+            *ngFor="let song of songs | filterTitle: term:isTitle | filterTags: selectedTag "
             [(ngClass)]="song.title"
             [song]="song"
             [userIsAdmin]="userIsAdmin"

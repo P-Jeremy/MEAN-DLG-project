@@ -86,6 +86,26 @@ $mat-myapp-primary: (
   )
 );
 
+app-search-bar {
+  .toggle {
+    /deep/.searchToggle.mat-slide-toggle.mat-checked:not(.mat-disabled)
+      .mat-slide-toggle-bar {
+      background-color: rgba(0, 0, 0, 0.38);
+    }
+    /deep/.searchToggle.mat-slide-toggle.mat-checked:not(.mat-disabled)
+      .mat-slide-toggle-thumb {
+      background-color: white;
+    }
+  }
+}
+
+app-tag-display {
+  /deep/.toggleTag.mat-slide-toggle.mat-checked:not(.mat-disabled)
+    .mat-slide-toggle-thumb {
+    background-color: #9a241f;
+  }
+}
+
 $primary: mat-palette($mat-myapp-primary);
 $accent: mat-palette($mat-myapp-accent);
 
