@@ -1,5 +1,6 @@
 <div class="global">
   <mat-card>
+    <h1>Playlists</h1>
     <app-spinner *ngIf="isLoading"></app-spinner>
     <form *ngIf="!isLoading" [formGroup]="form" (submit)="onSaveTag()">
       <mat-form-field>
@@ -13,12 +14,15 @@
           >Veillez préciser le nom de la playlist</mat-error
         >
       </mat-form-field>
-      <button mat-raised-button color="accent" type="submit">
-        Poster
-      </button>
-      <button mat-raised-button color="primary" routerLink="/">
-        annuler
-      </button>
+      <div class="buttons">
+        <button mat-raised-button color="accent" type="submit">
+          Poster
+        </button>
+        <span class="spacer"></span>
+        <button mat-raised-button color="primary" routerLink="/">
+          annuler
+        </button>
+      </div>
     </form>
   </mat-card>
 </div>

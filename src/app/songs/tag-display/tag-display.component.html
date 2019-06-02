@@ -1,9 +1,9 @@
 <div class="global">
 <app-spinner *ngIf="isLoading"></app-spinner>
   <mat-card *ngIf="!isLoading">
-    <div *ngFor="let tag of tags">
+    <div class="listDisplay" *ngFor="let tag of tags">
       <p>{{ tag.name }}</p>
-      <button mat-raised-button color="primary" (click)="onDeleteTag(tag._id)">
+      <button mat-raised-button color="primary" (click)="onDeleteTag(tag._id, tag.name)">
         supprimer
       </button>
     </div>

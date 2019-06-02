@@ -17,11 +17,11 @@
 
   <div class="tags">
     <mat-card *ngIf="!isLoading && tags.length">
-      <h4>Playlistes</h4>
+      <h4>Playlists</h4>
       <mat-form-field>
         <mat-label>Listes</mat-label>
         <mat-select #tagValue  (selectionChange)="changeTag($event.value)">
-          <mat-option>Générale</mat-option>
+          <mat-option>Aucune</mat-option>
           <mat-option *ngFor="let tag of tags" [value]="tag.name">{{
             tag.name
           }}</mat-option>

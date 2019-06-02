@@ -33,8 +33,10 @@ export class TagDisplayComponent implements OnInit, OnDestroy {
       });
   }
 
-  onDeleteTag(id: string) {
-    this.songService.deleteTag(id);
+  onDeleteTag(id: string, name: string) {
+    if (confirm(`Supprimer la liste ${name}?`)) {
+      this.songService.deleteTag(id);
+    }
   }
 
   ngOnDestroy() {

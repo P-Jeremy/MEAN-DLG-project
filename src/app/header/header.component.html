@@ -83,7 +83,7 @@
     routerLink="/"
     routerLinkActive="router_link"
   >
-    Liste
+    Répertoire
   </button>
   <button
     *ngIf="userIsAdmin"
@@ -99,7 +99,7 @@
   [routerLink]="['song/tag']"
   routerLinkActive="router_link"
 >
-  listes
+  Gérer listes
 </button>
 </mat-menu>
 <mat-menu x-position="before" #menu>
@@ -108,7 +108,7 @@
     mat-menu-item
     [mat-menu-trigger-for]="subMenuSet"
   >
-    Playlist
+    Répertoire
   </button>
   <button
     *ngIf="userIsAuth"
