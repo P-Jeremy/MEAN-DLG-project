@@ -16,7 +16,7 @@
             mat-raised-button
             color="accent"
             [mat-menu-trigger-for]="subMenuSet"
-            ><h4>Playlist</h4></a
+            ><h4>Répertoire</h4></a
           >
         </li>
         <li *ngIf="userIsAuth">
@@ -83,7 +83,7 @@
     routerLink="/"
     routerLinkActive="router_link"
   >
-    Liste
+    Titres
   </button>
   <button
     *ngIf="userIsAdmin"
@@ -99,7 +99,7 @@
   [routerLink]="['song/tag']"
   routerLinkActive="router_link"
 >
-  listes
+  Gérer listes
 </button>
 </mat-menu>
 <mat-menu x-position="before" #menu>
@@ -108,7 +108,7 @@
     mat-menu-item
     [mat-menu-trigger-for]="subMenuSet"
   >
-    Playlist
+    Répertoire
   </button>
   <button
     *ngIf="userIsAuth"
