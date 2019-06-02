@@ -4,17 +4,17 @@
 }
 
 .show {
-  display: block
+  display: block;
 }
 
 .hide {
-  display:none
+  display: none;
 }
 
 .backButton {
   margin: 50px 0 50px 0;
   width: 100%;
-  text-align: center
+  text-align: center;
 }
 
 .sticky {
@@ -26,8 +26,18 @@
   margin-bottom: 100px;
 }
 
+.tags {
+  width: 60%;
+  margin: 0 auto;
+  text-align: center;
+  mat-card {
+    height: 75px;
+  }
+}
+
 .list_container {
   width: 100%;
+  margin-top: 40px;
 }
 
 .list {
@@ -59,10 +69,17 @@
   .list {
     width: 90%;
   }
+  .tags {
+    width: 90%;
+  }
 }
 
 @media only screen and (max-width: 768px) {
   .list {
+    width: 95%;
+  }
+
+  .tags {
     width: 95%;
   }
 }

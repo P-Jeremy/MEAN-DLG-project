@@ -157,7 +157,7 @@ export class AuthService {
   autoAuthUser() {
     const authInformation = this.getAuthData();
     if (!authInformation) {
-      this.redirect(['/']);
+      return;
     }
     const now = new Date();
     const expiresIn = authInformation.expirationDate.getTime() - now.getTime();
