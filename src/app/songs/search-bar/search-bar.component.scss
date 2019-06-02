@@ -72,12 +72,6 @@
   text-align: center;
 }
 
-/deep/.mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
-  background-color: rgba(0, 0, 0, 0.38);
-}
-/deep/.mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
-  background-color: white;
-}
 
 @media only screen and (max-width: 530px) {
   .search_bar_container {

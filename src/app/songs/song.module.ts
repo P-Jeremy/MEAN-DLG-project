@@ -11,6 +11,10 @@ import { SearchBarComponent } from './search-bar/search-bar.component';
 import { SearchBarService } from '../services/search-bar.service';
 import { SongRoutingModule } from './song-routing.module';
 import { FilterTitlePipe } from './filter-title.pipe';
+import { TagCreateComponent } from './tag-create/tag-create.component';
+import { TagDisplayComponent } from './tag-display/tag-display.component';
+import { TagContainerComponent } from './tag-container/tag-container.component';
+import { FilterTagsPipe } from './filter-tags.pipe';
 
 
 @NgModule({
@@ -20,6 +24,10 @@ import { FilterTitlePipe } from './filter-title.pipe';
     SongCreateComponent,
     SongComponent,
     SearchBarComponent,
+    TagCreateComponent,
+    TagDisplayComponent,
+    TagContainerComponent,
+    FilterTagsPipe,
   ],
   imports: [
     CommonModule,

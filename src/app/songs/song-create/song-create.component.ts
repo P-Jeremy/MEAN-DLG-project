@@ -7,7 +7,7 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { mimeType } from '../../posts/post-create/mime-type.validator';
 import { Song } from '../../models/song.model';
 import { SongsService } from '../../services/songs.service';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 
 
 @Component({
@@ -26,45 +26,69 @@ export class SongCreateComponent implements OnInit, OnDestroy {
   tab = false;
   isLoading = false;
   form: FormGroup;
+  tags: [];
+
+  private tagSub: Subscription;
 
   destroy$: Subject<boolean> = new Subject<boolean>();
 
-  constructor( public songService: SongsService, public route: ActivatedRoute) {}
+  constructor(public songService: SongsService, public route: ActivatedRoute) { }
 
   ngOnInit() {
     this.form = new FormGroup({
-      title: new FormControl(null, {validators: [Validators.required]}),
-      author: new FormControl(null, {validators: [Validators.required]}),
-      lyrics: new FormControl(null, {validators: [Validators.required]}),
-      tab: new FormControl(null, {validators: [Validators.required], asyncValidators : [mimeType]})
+      title: new FormControl(null, { validators: [Validators.required] }),
+      author: new FormControl(null, { validators: [Validators.required] }),
+      lyrics: new FormControl(null, { validators: [Validators.required] }),
+      tab: new FormControl(null, { validators: [Validators.required], asyncValidators: [mimeType] }),
+      selectedTags: new FormControl([]),
     });
+
+
 
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has('songId')) {
         this.mode = 'edit';
         this.songId = paramMap.get('songId');
         this.isLoading = true;
+        this.songService.getTags();
+        this.tagSub = this.songService.getTagUpdatedListener()
+          .pipe(takeUntil(this.destroy$))
+          .subscribe((tagData: { tags: [] }) => {
+            this.tags = tagData.tags;
+          });
         this.songService.getSingleSong(this.songId)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(SongData => {
-              this.isLoading = false;
-              this.song = {
-                id: SongData._id,
-                title: SongData.title,
-                author: SongData.author,
-                lyrics: SongData.lyrics,
-                tab: SongData.tab
-              };
-              this.form.setValue({
-                title: this.song.title,
-                author: this.song.author,
-                lyrics: this.song.lyrics,
-                tab: this.song.tab
-              });
+          .pipe(takeUntil(this.destroy$))
+          .subscribe(SongData => {
+            this.isLoading = false;
+            this.song = {
+              id: SongData._id,
+              title: SongData.title,
+              author: SongData.author,
+              lyrics: SongData.lyrics,
+              tab: SongData.tab,
+              tags: SongData.tags
+            };
+            let selected = [];
+            if (this.song.tags.length) {
+              selected = this.song.tags.map(tag => tag['_id']);
+            }
+            this.form.setValue({
+              title: this.song.title,
+              author: this.song.author,
+              lyrics: this.song.lyrics,
+              tab: this.song.tab,
+              selectedTags: selected
             });
+          });
       } else {
         this.mode = 'create';
         this.songId = null;
+        this.songService.getTags();
+        this.tagSub = this.songService.getTagUpdatedListener()
+          .pipe(takeUntil(this.destroy$))
+          .subscribe((tagData: { tags: [] }) => {
+            this.tags = tagData.tags;
+          });
       }
     });
   }
@@ -80,9 +104,9 @@ export class SongCreateComponent implements OnInit, OnDestroy {
     };
     this.isLoading = true;
     if (this.mode === 'create') {
-      this.songService.addSongs(song.title, song.author, this.form.value.lyrics, this.form.value.tab);
+      this.songService.addSongs(song.title, song.author, this.form.value.lyrics, this.form.value.tab, this.form.value.selectedTags);
     } else {
-      this.songService.updateSong(this.songId, song.title, song.author, this.form.value.lyrics, this.form.value.tab);
+      this.songService.updateSong(this.songId, song.title, song.author, this.form.value.lyrics, this.form.value.tab, this.form.value.selectedTags);
     }
     this.lyrics = false;
     this.tab = false;
@@ -108,6 +132,7 @@ export class SongCreateComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.tagSub.unsubscribe();
     this.destroy$.next(true);
   }
 }
