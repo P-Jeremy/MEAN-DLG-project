@@ -18,6 +18,8 @@ export class ForgottenPasswordComponent implements OnInit, OnDestroy {
   constructor(public authService: AuthService, public route: ActivatedRoute) {}
 
   ngOnInit() {
+    console.warn("COUCUO");
+
   }
 
 
