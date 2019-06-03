@@ -44,10 +44,12 @@ export class ProfileComponent implements OnInit {
     this.authService.changeNotifStatus(ev, src);
   }
 
+  /** Allows to change the edit status */
   onEdit() {
     this.isEdit = !this.isEdit;
   }
 
+  /** Allows to save a user profile */
   onSaveProfile() {
     this.isLoading = true;
     this.authService.setNewPseudo(this.form.value.pseudo).subscribe(() => {
@@ -59,9 +61,10 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  /** Allows a suer to delete his profile (isActive status: false) */
   onDelete() {
     this.isLoading = true;
-    if (confirm('Etes vous psur de vouloir supprimer votre profil ?')) {
+    if (confirm('Etes vous sûr de vouloir supprimer votre profil ?')) {
       this.authService.deleteProfile();
     }
     this.isLoading = false;

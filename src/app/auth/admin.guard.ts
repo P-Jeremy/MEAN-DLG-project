@@ -12,7 +12,7 @@ export class AdminGuard implements CanActivate {
 
   constructor(private authService: AuthService) {}
 
-  /** Authorize routes if user is authenticated */
+  /** Authorize routes if user is Admin */
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
