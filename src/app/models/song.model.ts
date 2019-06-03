@@ -4,5 +4,10 @@ export interface Song {
   author: string;
   lyrics?: string;
   tab?: File | string;
-  tags?: any;
+  tags?: TagsData[] | string;
+}
+
+export interface TagsData {
+  _id?: string;
+  name: string;
 }

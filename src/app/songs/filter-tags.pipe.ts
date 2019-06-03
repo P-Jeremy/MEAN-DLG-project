@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Song } from '../models/song.model';
+import { Song, TagsData } from '../models/song.model';
 
 @Pipe({
   name: 'filterTags'
@@ -12,7 +12,7 @@ export class FilterTagsPipe implements PipeTransform {
     }
     const filterSongs = songs.filter(song => {
       if (song.tags.length > 0) {
-        return song.tags.filter(tag => tag.name.includes(tag));
+        return (song.tags as TagsData[]).filter(tag => tag.name.includes(selectedTag));
       }
       return;
     });

@@ -5,7 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { SongsService } from '../../services/songs.service';
 import { AuthService } from '../../services/auth.service';
-import { Song } from '../../models/song.model';
+import { Song, TagsData } from '../../models/song.model';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { SearchBarService } from 'src/app/services/search-bar.service';
 
@@ -24,7 +24,7 @@ export class SongListComponent implements OnInit, OnDestroy {
   isShuffle = false;
   isTitle: boolean;
   term: string;
-  tags = [];
+  tags: TagsData[];
   selectedTag: string;
 
   private songSub: Subscription;
@@ -60,7 +60,7 @@ export class SongListComponent implements OnInit, OnDestroy {
     this.songService.getTags();
     this.tagSub = this.songService.getTagUpdatedListener()
       .pipe(takeUntil(this.destroy$))
-      .subscribe((tagData: { tags: [] }) => {
+      .subscribe((tagData) => {
         this.tags = tagData.tags;
       });
 
@@ -107,6 +107,7 @@ export class SongListComponent implements OnInit, OnDestroy {
     }, 1000);
   }
 
+  /** Allows to go back to the main song list */
   onCancelShuffle() {
     this.isLoading = true;
     this.isShuffle = false;
@@ -117,7 +118,12 @@ export class SongListComponent implements OnInit, OnDestroy {
     }, 1000);
   }
 
-  changeTag(ev) {
+  /**
+   * Allows to select a tag from the list
+   *
+   * @param ev name of the tag
+   */
+  changeTag(ev: string) {
     this.selectedTag = ev;
   }
 
