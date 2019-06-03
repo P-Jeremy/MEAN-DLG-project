@@ -66,18 +66,18 @@ export class SongCreateComponent implements OnInit, OnDestroy {
               author: SongData.author,
               lyrics: SongData.lyrics,
               tab: SongData.tab,
-              tags: SongData.tags
+              tags: (SongData.tags as TagsData[])
             };
-            let selected = [];
+            let selectedTags = [];
             if (this.song.tags.length) {
-              selected = this.song.tags.map(tag => tag['_id']);
+              selectedTags = (this.song.tags as TagsData[]).map(tag => tag['_id']);
             }
             this.form.setValue({
               title: this.song.title,
               author: this.song.author,
               lyrics: this.song.lyrics,
               tab: this.song.tab,
-              selectedTags: selected
+              selectedTags
             });
           });
       } else {

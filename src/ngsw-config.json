@@ -2,7 +2,7 @@
   "index": "/index.html",
   "assetGroups": [
     {
-      "name": "app",
+      "name": "DLG",
       "installMode": "prefetch",
       "resources": {
         "files": [

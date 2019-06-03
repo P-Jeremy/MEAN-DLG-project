@@ -4,7 +4,7 @@ export interface Song {
   author: string;
   lyrics?: string;
   tab?: File | string;
-  tags?: [TagsData] | string;
+  tags?: TagsData[] | string;
 }
 
 export interface TagsData {

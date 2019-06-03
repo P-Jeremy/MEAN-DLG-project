@@ -77,7 +77,7 @@ export class SongsService {
       author: string,
       lyrics: string,
       tab: string,
-      tags: any
+      tags: TagsData[]
     }>(`${API_DOMAIN}/single` + id);
   }
 
