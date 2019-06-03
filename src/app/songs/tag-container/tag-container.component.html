@@ -1,2 +1,2 @@
-<app-tag-create></app-tag-create>
-<app-tag-display ></app-tag-display>
+<app-tag-create *ngIf="showTagCreate"></app-tag-create>
+<app-tag-display (onShowTagEmit)="onShowTagEmit()"></app-tag-display>

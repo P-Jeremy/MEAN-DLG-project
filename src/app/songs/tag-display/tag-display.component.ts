@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { SongsService } from 'src/app/services/songs.service';
 import { Subscription, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -12,6 +12,8 @@ export class TagDisplayComponent implements OnInit, OnDestroy {
 
   tags = [];
   isLoading: boolean;
+
+  @Output() onShowTagEmit = new EventEmitter<boolean>();
 
 
   private tagSub: Subscription;
@@ -30,6 +32,7 @@ export class TagDisplayComponent implements OnInit, OnDestroy {
         this.isLoading = true;
         this.tags = tagData.tags;
         this.isLoading = false;
+        this.onShowTagEmit.emit();
       });
   }
 

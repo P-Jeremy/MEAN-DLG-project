@@ -53,9 +53,8 @@
         <br />
       </div>
     </div>
-    <mat-selection-list
-    formControlName="selectedTags"
-    >
+    <h2>Playlists</h2>
+    <mat-selection-list formControlName="selectedTags">
       <mat-list-option *ngFor="let tag of tags" [value]="tag._id">
         {{ tag.name }}
       </mat-list-option>

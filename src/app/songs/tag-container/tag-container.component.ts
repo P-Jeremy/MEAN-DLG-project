@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-tag-container',
@@ -7,9 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TagContainerComponent implements OnInit {
 
+  showTagCreate = false;
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  onShowTagEmit() {
+    this.showTagCreate = true;
   }
 
 }
