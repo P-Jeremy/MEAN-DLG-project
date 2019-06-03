@@ -5,7 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { mimeType } from '../../posts/post-create/mime-type.validator';
-import { Song } from '../../models/song.model';
+import { Song, TagsData } from '../../models/song.model';
 import { SongsService } from '../../services/songs.service';
 import { Subject, Subscription } from 'rxjs';
 
@@ -26,7 +26,7 @@ export class SongCreateComponent implements OnInit, OnDestroy {
   tab = false;
   isLoading = false;
   form: FormGroup;
-  tags: [];
+  tags: TagsData[];
 
   private tagSub: Subscription;
 
@@ -86,7 +86,7 @@ export class SongCreateComponent implements OnInit, OnDestroy {
         this.songService.getTags();
         this.tagSub = this.songService.getTagUpdatedListener()
           .pipe(takeUntil(this.destroy$))
-          .subscribe((tagData: { tags: [] }) => {
+          .subscribe((tagData) => {
             this.tags = tagData.tags;
           });
       }

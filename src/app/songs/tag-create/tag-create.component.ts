@@ -32,6 +32,11 @@ export class TagCreateComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Caallback tha handle the new tag creation
+   *
+   * @param title of the tag to create
+   */
   onSaveTag(title: string) {
     if (this.form.invalid) {
       return;
@@ -39,7 +44,7 @@ export class TagCreateComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     const tagTitle = this.form.value.title;
     this.songService.addTag(tagTitle);
-    this.form.reset("");
+    this.form.reset('');
     this.isLoading = false;
   }
 
