@@ -23,6 +23,9 @@ export class ForgottenPasswordComponent implements OnInit, OnDestroy {
   }
 
 
+  /** Allows to submit the new password
+   * @param form password input
+   */
   onSubmit(form: NgForm) {
     if (form.invalid) {
       return;

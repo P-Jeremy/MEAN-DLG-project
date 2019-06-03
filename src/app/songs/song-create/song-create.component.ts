@@ -93,6 +93,7 @@ export class SongCreateComponent implements OnInit, OnDestroy {
     });
   }
 
+  /** Allows to submit song form to create a song in DB */
   onSaveSong() {
     if (this.form.invalid) {
       return;
@@ -113,15 +114,7 @@ export class SongCreateComponent implements OnInit, OnDestroy {
     this.form.reset();
   }
 
-  onLyricsPicked(event: Event) {
-    const file = (event.target as HTMLInputElement).files[0];
-    this.lyrics = true;
-    this.form.patchValue({
-      lyrics: file
-    });
-    this.form.get('lyrics').updateValueAndValidity();
-  }
-
+  /** Allows to get the file picked by user and set it in the form */
   onTabPicked(event: Event) {
     const file = (event.target as HTMLInputElement).files[0];
     this.tab = true;

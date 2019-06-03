@@ -36,6 +36,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.adminListenerSubs.unsubscribe();
   }
 
+  /** Allows a user to logout */
   onLogout() {
     if (confirm('Êtes vous sûr de vouloir vous déconnecter ?')) {
       this.authService.logout();

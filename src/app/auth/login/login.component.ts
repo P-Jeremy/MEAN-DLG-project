@@ -25,6 +25,9 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
 
+  /** Allows a user ti signin
+   * @param form user form with email and password
+   */
   onLogin(form: NgForm) {
     if (form.invalid) {
       return;

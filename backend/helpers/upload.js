@@ -19,6 +19,7 @@ aws.config.update({
 
 const s3 = new aws.S3();
 
+/** Allows to upload pics in Amazon S3 */
 module.exports = multer({
   storage: multerS3({
     s3: s3,

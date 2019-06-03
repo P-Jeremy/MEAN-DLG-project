@@ -12,11 +12,13 @@ export class SearchBarComponent {
 
   constructor(private searchBarService: SearchBarService) { }
 
+  /** Allows to switch from title to artist for the search filter */
   onBoxChecked(ev: boolean) {
     this.isTitle = !this.isTitle;
     this.searchBarService.isTitleChange(ev);
   }
 
+  /** Allows to use the input for search */
   onChange(ev: string) {
     this.searchBarService.getNewTerm(ev);
   }
