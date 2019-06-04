@@ -1,4 +1,5 @@
 export interface AppMessages {
 title?: string;
-content: string;
+content?: string;
+img?: string;
 }

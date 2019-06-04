@@ -19,6 +19,9 @@ export class SongComponent {
 
   @Output() triggerScroll: EventEmitter<any> = new EventEmitter();
 
+  @Output() triggerZoom: EventEmitter<any> = new EventEmitter();
+
+
   private _song: Song;
 
   /** Song to be displayed */
@@ -66,5 +69,9 @@ export class SongComponent {
   /* Callback to trigger scroll action in parent */
   onSelect() {
     this.triggerScroll.emit(null);
+  }
+
+  onTriggerZoom() {
+    this.triggerZoom.emit(null);
   }
 }
