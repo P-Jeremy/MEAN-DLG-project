@@ -12,10 +12,6 @@ mat-form-field {
   width: 100%;
 }
 
-mat-spinner {
-  margin: auto;
-}
-
 .button_container {
   width: 100%;
   display: flex;

@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   constructor(public authService: AuthService) {}
 
   ngOnInit() {
+
     this.authStatusSub = this.authService.getAuthStatusListener()
     .subscribe( authStatus => {
       this.isLoading = false;
@@ -25,6 +26,9 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
 
+  /** Allows a user ti signin
+   * @param form user form with email and password
+   */
   onLogin(form: NgForm) {
     if (form.invalid) {
       return;

@@ -24,6 +24,12 @@ ul {
   @include mat-elevation(3);
 }
 
+@media only screen and (max-width: 1024px) {
+  .logo > img {
+    width: 7vh;
+  }
+}
+
 @media only screen and (max-width: 750px) {
   div img {
     margin: 20% auto;

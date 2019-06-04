@@ -2,7 +2,7 @@
   "index": "/index.html",
   "assetGroups": [
     {
-      "name": "app",
+      "name": "DLG",
       "installMode": "prefetch",
       "resources": {
         "files": [
@@ -35,12 +35,11 @@
       "urls": [
       "http://dlgjukeboxapi.us-east-1.elasticbeanstalk.com/api/songs",
       "http://dlgjukeboxapi.us-east-1.elasticbeanstalk.com/api/auth/user",
-      "http://dlgjukeboxapi.us-east-1.elasticbeanstalk.com/api/posts"
-
+      "http://dlgjukeboxapi.us-east-1.elasticbeanstalk.com/api/songs/tags"
       ],
       "cacheConfig": {
         "maxSize": 100,
-        "maxAge": "1h",
+        "maxAge": "5h",
         "strategy": "freshness"
       }
     }

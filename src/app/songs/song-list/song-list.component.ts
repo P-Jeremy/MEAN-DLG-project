@@ -5,9 +5,11 @@ import { takeUntil } from 'rxjs/operators';
 
 import { SongsService } from '../../services/songs.service';
 import { AuthService } from '../../services/auth.service';
-import { Song } from '../../models/song.model';
+import { Song, TagsData } from '../../models/song.model';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { SearchBarService } from 'src/app/services/search-bar.service';
+import { MatDialog } from '@angular/material';
+import { AppMessagesComponent } from 'src/app/appMessages/appMessages.component';
 
 @Component({
   selector: 'app-song-list',
@@ -24,7 +26,7 @@ export class SongListComponent implements OnInit, OnDestroy {
   isShuffle = false;
   isTitle: boolean;
   term: string;
-  tags = [];
+  tags: TagsData[];
   selectedTag: string;
 
   private songSub: Subscription;
@@ -35,6 +37,7 @@ export class SongListComponent implements OnInit, OnDestroy {
 
 
   constructor(
+    private dialog: MatDialog,
     public songService: SongsService,
     private authService: AuthService,
     public route: ActivatedRoute,
@@ -60,7 +63,7 @@ export class SongListComponent implements OnInit, OnDestroy {
     this.songService.getTags();
     this.tagSub = this.songService.getTagUpdatedListener()
       .pipe(takeUntil(this.destroy$))
-      .subscribe((tagData: { tags: [] }) => {
+      .subscribe((tagData) => {
         this.tags = tagData.tags;
       });
 
@@ -107,6 +110,7 @@ export class SongListComponent implements OnInit, OnDestroy {
     }, 1000);
   }
 
+  /** Allows to go back to the main song list */
   onCancelShuffle() {
     this.isLoading = true;
     this.isShuffle = false;
@@ -117,7 +121,12 @@ export class SongListComponent implements OnInit, OnDestroy {
     }, 1000);
   }
 
-  changeTag(ev) {
+  /**
+   * Allows to select a tag from the list
+   *
+   * @param ev name of the tag
+   */
+  changeTag(ev: string) {
     this.selectedTag = ev;
   }
 
@@ -140,6 +149,15 @@ export class SongListComponent implements OnInit, OnDestroy {
     const offsetTop = (window.innerHeight - elInfo.top) / 2.5;
 
     return el.offsetTop - offsetTop;
+  }
+
+  onTabZoom(ev: string) {
+    this.dialog.open(AppMessagesComponent, {
+      data: {
+        img: ev
+      },
+      panelClass: 'custom-modalbox'
+    });
   }
 
 

@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 
 
 /* SONG interface */
-import { Song } from '../models/song.model';
+import { Song, TagsData } from '../models/song.model';
 
 import { environment } from '../../environments/environment';
 
@@ -22,8 +22,8 @@ export class SongsService {
   private songUpdated = new Subject<{ songs: Song[] }>();
   private songStatusListener = new Subject<boolean>();
 
-  private tags: [] = [];
-  private tagUpdated = new Subject<{ tags: any }>();
+  private tags: TagsData[] = [];
+  private tagUpdated = new Subject<{ tags: TagsData[] }>();
   private tagStatusListener = new Subject<boolean>();
 
 
@@ -77,7 +77,7 @@ export class SongsService {
       author: string,
       lyrics: string,
       tab: string,
-      tags: any
+      tags: TagsData[]
     }>(`${API_DOMAIN}/single` + id);
   }
 
@@ -127,6 +127,8 @@ export class SongsService {
    *
    * @param tab of the song
    *
+   * @param tags array of tags related to the song
+   *
    * @returns the response through the postUpdated observable
    */
   updateSong(id: string, title: string, author: string, lyrics: string, tab: File | string, tags: []) {
@@ -174,6 +176,11 @@ export class SongsService {
     return this.http.delete(API_DOMAIN + songId);
   }
 
+  /**
+   * Allows to add a tag to the DB
+   *
+   * @param title of the Tag to add to the DB
+   */
   addTag(title: string) {
     const newList = { title };
     return this.http.post<{ message: string, tag: string }>(`${API_DOMAIN}tags`, newList)
@@ -189,12 +196,14 @@ export class SongsService {
    * @returns all the tags of DB through the tagUpdated observable
    */
   getTags() {
-    this.http.get<{ message: string, tags: any }>(`${API_DOMAIN}tags`)
+    this.http.get<{ message: string, tags: TagsData[] }>(`${API_DOMAIN}tags`)
       .pipe(map((tagData) => {
         return {
           tags: tagData.tags.map(tag => {
             return tag;
-          }),
+          }).sort(
+            (a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ?
+              1 : ((b.name.toLowerCase() > a.name.toLowerCase() ? -1 : 0)))
         };
       }))
       .subscribe((transformedTagData) => {

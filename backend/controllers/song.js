@@ -4,6 +4,7 @@ const Tag = require("../models/tag");
 const sendMail = require("../helpers/email/sendMail");
 const titleNotif = require("../helpers/email/templates/titleNotif");
 
+/** Allows to add a song in DB */
 exports.addSong = async (req, res, next) => {
   try {
     const tab = req.file ? req.file.location : null;
@@ -40,6 +41,7 @@ exports.addSong = async (req, res, next) => {
   }
 };
 
+/** Allows to get all the songs */
 exports.getSongs = async (req, res, next) => {
   try {
     const songs = await Song.find()
@@ -56,6 +58,7 @@ exports.getSongs = async (req, res, next) => {
   }
 };
 
+/** Allows to update a song */
 exports.updateSong = async (req, res, next) => {
   const isAdmin = req.userData.isAdmin;
   if (!isAdmin) {
@@ -90,6 +93,7 @@ exports.updateSong = async (req, res, next) => {
   }
 };
 
+/** Allows to get a single song */
 exports.getSingleSong = async (req, res, next) => {
   try {
     const song = await Song.findById(req.params.id).populate("tags");
@@ -104,6 +108,7 @@ exports.getSingleSong = async (req, res, next) => {
   }
 };
 
+/** Allows to delete a song */
 exports.deleteSong = (req, res, next) => {
   const isAdmin = req.userData.isAdmin;
   if (!isAdmin) {
@@ -125,6 +130,7 @@ exports.deleteSong = (req, res, next) => {
   }
 };
 
+/** Allows to create a tag */
 exports.addTags = async (req, res, next) => {
   const isAdmin = req.userData.isAdmin;
   if (!isAdmin) {
@@ -153,6 +159,7 @@ exports.addTags = async (req, res, next) => {
   }
 };
 
+/** Allows to get all the tags */
 exports.getTags = async (req, res, next) => {
   try {
     const tags = await Tag.find();
@@ -167,6 +174,7 @@ exports.getTags = async (req, res, next) => {
   }
 };
 
+/** Allows to delete a tag */
 exports.deleteTag = (req, res, next) => {
   const isAdmin = req.userData.isAdmin;
   if (!isAdmin) {

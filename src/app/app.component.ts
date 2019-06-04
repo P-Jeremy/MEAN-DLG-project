@@ -12,6 +12,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.authService.autoAuthUser();
+
     if (this.swUpdate.isEnabled) {
 
       this.swUpdate.available.subscribe(() => {

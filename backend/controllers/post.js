@@ -4,6 +4,7 @@ const sendEmail = require("../helpers/email/sendMail");
 const commentNotif = require("../helpers/email/templates/commentsNotif");
 const postNotif = require("../helpers/email/templates/postNotif");
 
+/** Allows to create a new post */
 exports.addPost = async (req, res, next) => {
   const fetchedUser = await User.findById({ _id: req.userData.userId });
   if (!fetchedUser || !fetchedUser.isActive) {
@@ -45,6 +46,7 @@ exports.addPost = async (req, res, next) => {
   }
 };
 
+/** Allows to create a new comment */
 exports.addComment = async (req, res, next) => {
   const fetchedUser = await User.findById({ _id: req.userData.userId });
   const result = await Post.findOneAndUpdate(
@@ -78,6 +80,7 @@ exports.addComment = async (req, res, next) => {
   });
 };
 
+/** Allows to delete a comment */
 exports.deleteComment = async (req, res, next) => {
   const result = await Post.findOneAndUpdate(
     { _id: req.params.postId },
@@ -95,6 +98,7 @@ exports.deleteComment = async (req, res, next) => {
   });
 };
 
+/** Allows to get all the posts */
 exports.getPosts = (req, res, next) => {
   const pageSize = +req.query.pageSize; // The '+' allows to use the query as a number instead of a string
   const currentPage = +req.query.page;
@@ -117,6 +121,7 @@ exports.getPosts = (req, res, next) => {
     });
 };
 
+/** Allows to update a post */
 exports.updatePost = async (req, res, next) => {
   let imagePath;
   if (req.file) {
@@ -147,6 +152,7 @@ exports.updatePost = async (req, res, next) => {
   }
 };
 
+/** Allows  to get a single post */
 exports.getSinglePost = (req, res, next) => {
   Post.findById(req.params.id)
     .then(post => {
@@ -163,6 +169,7 @@ exports.getSinglePost = (req, res, next) => {
     });
 };
 
+/** Allows to set a post isActive status to false */
 exports.deletePost = async (req, res, next) => {
   const fetchedPost = await Post.findOne({
     _id: req.params.id,

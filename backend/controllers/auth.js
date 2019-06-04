@@ -12,7 +12,7 @@ const clientDomain = process.env.CLIENT_DOMAIN;
 const User = require("../models/user");
 const Post = require("../models/post");
 
-/* Allows a new user to register */
+/** Allows a new user to register */
 exports.signUp = async (req, res, next) => {
   const { key } = req.query;
   const { email, pseudo, password } = req.body;
@@ -61,6 +61,7 @@ exports.signUp = async (req, res, next) => {
   }
 };
 
+/** Get a user profile */
 exports.getUserProfile = async (req, res, next) => {
   try {
     const foudUser = await User.findOne({
@@ -80,6 +81,7 @@ exports.getUserProfile = async (req, res, next) => {
   }
 };
 
+/** Update a user pseudo */
 exports.updatePseudo = async (req, res, next) => {
   const isPseudoAvailable = await User.find({ pseudo: req.body.data });
   if (!isPseudoAvailable) {
@@ -103,6 +105,7 @@ exports.updatePseudo = async (req, res, next) => {
   }
 };
 
+/** Validate a user signing up */
 exports.confirmation = (req, res, next) => {
   const { token } = req.params;
   const decode = jwt.verify(token, secretJwt);
@@ -131,6 +134,7 @@ exports.confirmation = (req, res, next) => {
   }
 };
 
+/** Allows a registered user to ask to reset password */
 exports.newPasswordAsk = async (req, res) => {
   try {
     const { email } = req.body;
@@ -159,6 +163,7 @@ exports.newPasswordAsk = async (req, res) => {
   }
 };
 
+/** Allows a user to modify is notifications status */
 exports.updateNotifStatus = async (req, res, next) => {
   const status = req.body.newStatus;
   const type = req.body.type;
@@ -195,6 +200,7 @@ exports.updateNotifStatus = async (req, res, next) => {
   }
 };
 
+/** Allows to set a isDeleted user status to true */
 exports.deleteUser = async (req, res, next) => {
   try {
     const deletedUser = await User.findOneAndUpdate(
@@ -212,6 +218,7 @@ exports.deleteUser = async (req, res, next) => {
   }
 };
 
+/** Allows to register a user's new password */
 exports.newPasswordSet = async (req, res, next) => {
   const { password, passwordBis } = req.body;
   const { email } = req.userData;
@@ -235,6 +242,7 @@ exports.newPasswordSet = async (req, res, next) => {
   }
 };
 
+/** Allows a user to signin */
 exports.signIn = async (req, res, next) => {
   const fetchedUser = await User.findOne({ email: req.body.email });
   if (!fetchedUser) {
