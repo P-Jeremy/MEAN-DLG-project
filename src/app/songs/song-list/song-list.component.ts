@@ -8,6 +8,8 @@ import { AuthService } from '../../services/auth.service';
 import { Song, TagsData } from '../../models/song.model';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { SearchBarService } from 'src/app/services/search-bar.service';
+import { MatDialog } from '@angular/material';
+import { AppMessagesComponent } from 'src/app/appMessages/appMessages.component';
 
 @Component({
   selector: 'app-song-list',
@@ -35,6 +37,7 @@ export class SongListComponent implements OnInit, OnDestroy {
 
 
   constructor(
+    private dialog: MatDialog,
     public songService: SongsService,
     private authService: AuthService,
     public route: ActivatedRoute,
@@ -146,6 +149,15 @@ export class SongListComponent implements OnInit, OnDestroy {
     const offsetTop = (window.innerHeight - elInfo.top) / 2.5;
 
     return el.offsetTop - offsetTop;
+  }
+
+  onTabZoom(ev: string) {
+    this.dialog.open(AppMessagesComponent, {
+      data: {
+        img: ev
+      },
+      panelClass: 'custom-modalbox'
+    });
   }
 
 

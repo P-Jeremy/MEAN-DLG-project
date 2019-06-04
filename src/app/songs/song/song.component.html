@@ -1,4 +1,4 @@
-<mat-expansion-panel [ngClass]="{'isShuffle': isShuffle, 'song': true}">
+<mat-expansion-panel [ngClass]="{ isShuffle: isShuffle, song: true }">
   <mat-expansion-panel-header (click)="onSelect()">
     <div class="header">
       <div>
@@ -23,7 +23,9 @@
   </div>
   <div class="song_content">
     <div *ngIf="tab" class="tab">
-      <img src="{{ song.tab }}" alt="tab" />
+      <a (click)="onTriggerZoom()">
+        <img src="{{ song.tab }}" alt="tab" />
+      </a>
     </div>
     <div *ngIf="lyrics" class="lyrics">
       <div class="text" [innerHTML]="song.lyrics"></div>
