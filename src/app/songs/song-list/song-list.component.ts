@@ -92,6 +92,7 @@ export class SongListComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.songService.getSongs();
+        this.songService.getTags();
       });
   }
 
