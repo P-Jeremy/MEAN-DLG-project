@@ -1,29 +1,26 @@
 
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 import * as socketIo from 'socket.io-client';
 
-const SERVER_URL = environment.serverDomaine;
+const SERVER_URL = environment.serverDomain;
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class SocketService {
 
   private socket: any;
-  private dataUpdated = new Subject<any>();
-
 
   constructor() { }
 
   public initSocket(): void {
-    this.socket = socketIo(SERVER_URL);
+    this.socket = socketIo(SERVER_URL, {transports: ['websocket']});
   }
 
-  public getNews(): void {
-    this.socket.on('NewData', (data: any) => {
-      this.dataUpdated = data;
-      return this.dataUpdated.asObservable();
+  public getNews(): Observable<any> {
+    return new Observable<any>(observer => {
+      this.socket.on('NewData', (data: any) => observer.next(data));
     });
   }
 }

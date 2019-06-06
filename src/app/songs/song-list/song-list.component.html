@@ -35,7 +35,7 @@
       <div class="list">
         <mat-accordion multi="false">
           <app-song
-            *ngFor="let song of songs | filterTitle: term:isTitle | filterTags: selectedTag "
+            *ngFor="let song of songs | filterTitle: term:isTitle | filterTags: selectedTag"
             [(ngClass)]="song.title"
             [song]="song"
             [userIsAdmin]="userIsAdmin"

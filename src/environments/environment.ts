@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   apiDomain: 'http://localhost:8080/api',
-  serverDomaine: 'http://localhost:8080'
+  serverDomain: 'http://localhost:8080'
 
 };
 

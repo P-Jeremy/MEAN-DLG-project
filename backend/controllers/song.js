@@ -24,18 +24,20 @@ exports.addSong = async (req, res, next) => {
     await users.map(user => {
       sendMail(titleNotif(user.email, result.title));
     });
-    const socketio = req.app.get('socketio');
-    socketio.sockets.emit('NewData', newSong);
+    const socketio = req.app.get("socketio");
+    const insertedSong = {
+      id: result._id,
+      title: result.title,
+      author: result.author,
+      lyrics: result.lyrics,
+      tab: result.tab
+    };
+
+    socketio.sockets.emit("NewData", insertedSong);
 
     return res.status(201).json({
       message: "Chanson crée avec succès",
-      song: {
-        id: result._id,
-        title: result.title,
-        author: result.author,
-        lyrics: result.lyrics,
-        tab: result.tab
-      }
+      song: insertedSong
     });
   } catch (error) {
     return res.status(500).json({
@@ -86,7 +88,6 @@ exports.updateSong = async (req, res, next) => {
   });
 
   song.tags = JSON.parse(req.body.tags);
-
 
   const result = await Song.updateOne({ _id: req.params.id }, song);
   if (result.n > 0) {
