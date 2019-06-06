@@ -30,11 +30,10 @@ export class SongListComponent implements OnInit, OnDestroy {
   tags: TagsData[];
   selectedTag: string;
 
-  private songSub: Subscription;
-  private tagSub: Subscription;
+
   private classElement;
   private adminListenerSub: Subscription;
-  private ioConnection: Subscription;
+  ioConnection: Subscription;
   destroy$: Subject<boolean> = new Subject<boolean>();
 
 
@@ -53,6 +52,8 @@ export class SongListComponent implements OnInit, OnDestroy {
 
     this.songService.getSongs();
 
+    this.songService.getTags();
+
     this.initIoConnection();
 
     this.songService.getSongUpdatedListener()
@@ -64,7 +65,6 @@ export class SongListComponent implements OnInit, OnDestroy {
         this.isLoading = false;
       });
 
-    this.songService.getTags();
     this.songService.getTagUpdatedListener()
       .pipe(takeUntil(this.destroy$))
       .subscribe((tagData) => {
@@ -90,7 +90,7 @@ export class SongListComponent implements OnInit, OnDestroy {
     this.socketService.initSocket();
     this.ioConnection = this.socketService.getNews()
       .pipe(takeUntil(this.destroy$))
-      .subscribe((data: any) => {
+      .subscribe(() => {
         this.songService.getSongs();
       });
   }

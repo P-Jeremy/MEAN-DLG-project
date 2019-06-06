@@ -24,7 +24,6 @@ exports.addSong = async (req, res, next) => {
     await users.map(user => {
       sendMail(titleNotif(user.email, result.title));
     });
-    const socketio = req.app.get("socketio");
     const insertedSong = {
       id: result._id,
       title: result.title,
@@ -32,7 +31,7 @@ exports.addSong = async (req, res, next) => {
       lyrics: result.lyrics,
       tab: result.tab
     };
-
+    const socketio = req.app.get("socketio");
     socketio.sockets.emit("NewData", insertedSong);
 
     return res.status(201).json({
@@ -91,6 +90,8 @@ exports.updateSong = async (req, res, next) => {
 
   const result = await Song.updateOne({ _id: req.params.id }, song);
   if (result.n > 0) {
+    const socketio = req.app.get("socketio");
+    socketio.sockets.emit("NewData");
     res.status(200).json(`Update successful ! ${result}`);
   } else {
     res.status(401).json({ message: `Impossible de modifier ce titre...` });
@@ -123,6 +124,9 @@ exports.deleteSong = (req, res, next) => {
     Song.deleteOne({ _id: req.params.id })
       .then(result => {
         if (result.n > 0) {
+          const socketio = req.app.get("socketio");
+          socketio.sockets.emit("NewData");
+
           res.status(200).json(`Deletion successful ! ${result}`);
         }
       })
@@ -152,6 +156,8 @@ exports.addTags = async (req, res, next) => {
     const tag = new Tag({
       name: req.body.title
     }).save();
+    const socketio = req.app.get("socketio");
+    socketio.sockets.emit("NewData");
     return res.status(201).json({
       message: "Liste crée avec succès",
       tag: tag.title
@@ -189,6 +195,10 @@ exports.deleteTag = (req, res, next) => {
     Tag.deleteOne({ _id: req.params.id })
       .then(result => {
         if (result.n > 0) {
+          const socketio = req.app.get("socketio");
+
+          socketio.sockets.emit("NewData");
+
           res.status(200).json(`Deletion successful ! ${result}`);
         }
       })
