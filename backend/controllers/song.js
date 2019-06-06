@@ -24,6 +24,9 @@ exports.addSong = async (req, res, next) => {
     await users.map(user => {
       sendMail(titleNotif(user.email, result.title));
     });
+    const socketio = req.app.get('socketio');
+    socketio.sockets.emit('NewData', newSong);
+
     return res.status(201).json({
       message: "Chanson crée avec succès",
       song: {

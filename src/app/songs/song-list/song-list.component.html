@@ -15,7 +15,7 @@
     *ngIf="!isShuffle && !isLoading && songs.length"
   ></app-search-bar>
 
-  <div class="tags">
+  <div *ngIf="!isShuffle" class="tags">
     <mat-card *ngIf="!isLoading && tags.length">
       <h4>Playlists</h4>
       <mat-form-field>

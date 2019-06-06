@@ -2,6 +2,7 @@ require("dotenv").config();
 const app = require("./app");
 const debug = require("debug")("node-angular");
 const http = require("http");
+const socketio = require('socket.io');
 
 const normalizePort = val => {
   let port = parseInt(val, 10);
@@ -49,6 +50,8 @@ const port = normalizePort(process.env.PORT || "8080");
 
 app.set("port", port);
 const server = http.createServer(app);
+const io = socketio.listen(server);
+app.set('socketio', io);
 server.on("error", onError);
 server.on("Listenning", onListenning);
 
