@@ -28,6 +28,10 @@ exports.addPost = async (req, res, next) => {
       .map(user => {
         sendEmail(postNotif(user.email, result.creator_pseudo, result.title));
       });
+    const socketio = req.app.get("socketio");
+
+    socketio.sockets.emit("NewData");
+
     return res.status(201).json({
       message: "Post crée avec succès",
       post: {
@@ -63,16 +67,21 @@ exports.addComment = async (req, res, next) => {
   );
 
   const users = await User.find({ commentNotif: true });
-    await users
-      .filter(notAuthor => notAuthor.pseudo !== fetchedUser.pseudo)
-      .map(user => {
-        sendEmail(commentNotif(
+  await users
+    .filter(notAuthor => notAuthor.pseudo !== fetchedUser.pseudo)
+    .map(user => {
+      sendEmail(
+        commentNotif(
           user.email,
           result.title,
           req.body.comment,
           fetchedUser.pseudo
-        ));
-      });
+        )
+      );
+    });
+  const socketio = req.app.get("socketio");
+
+  socketio.sockets.emit("NewData");
 
   return res.status(200).json({
     message: "Ok",
@@ -92,6 +101,11 @@ exports.deleteComment = async (req, res, next) => {
       }
     }
   );
+
+  const socketio = req.app.get("socketio");
+
+  socketio.sockets.emit("NewData");
+
   res.status(200).json({
     message: "Ok",
     post: result
@@ -130,14 +144,14 @@ exports.updatePost = async (req, res, next) => {
     imagePath = !req.body.image ? null : req.body.image;
   }
 
-  const originalPost = await Post.findById({_id: req.body.id});
+  const originalPost = await Post.findById({ _id: req.body.id });
 
   const post = new Post({
     _id: req.body.id,
     title: req.body.title,
     content: req.body.content,
     image: imagePath,
-    comments : originalPost.comments,
+    comments: originalPost.comments,
     creator: req.userData.userId
   });
   const result = await Post.updateOne(
@@ -146,6 +160,10 @@ exports.updatePost = async (req, res, next) => {
   );
 
   if (result.n > 0) {
+    const socketio = req.app.get("socketio");
+
+    socketio.sockets.emit("NewData");
+
     res.status(200).json(`Update successful ! ${result}`);
   } else {
     res.status(401).json({ message: `Impossible de modifier ce post...` });
@@ -184,6 +202,10 @@ exports.deletePost = async (req, res, next) => {
 
   try {
     await Post.findOneAndUpdate({ _id: fetchedPost._id }, { isActive: false });
+    const socketio = req.app.get("socketio");
+
+    socketio.sockets.emit("NewData");
+
     res.status(200).json({
       message: "Le message à bien été supprimé"
     });

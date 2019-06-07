@@ -6,10 +6,11 @@ import { takeUntil } from 'rxjs/operators';
 import { SongsService } from '../../services/songs.service';
 import { AuthService } from '../../services/auth.service';
 import { Song, TagsData } from '../../models/song.model';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { SearchBarService } from 'src/app/services/search-bar.service';
 import { MatDialog } from '@angular/material';
 import { AppMessagesComponent } from 'src/app/appMessages/appMessages.component';
+import { SocketService } from '../../services/socket.service';
 
 @Component({
   selector: 'app-song-list',
@@ -29,10 +30,10 @@ export class SongListComponent implements OnInit, OnDestroy {
   tags: TagsData[];
   selectedTag: string;
 
-  private songSub: Subscription;
-  private tagSub: Subscription;
+
   private classElement;
   private adminListenerSub: Subscription;
+  ioConnection: Subscription;
   destroy$: Subject<boolean> = new Subject<boolean>();
 
 
@@ -41,7 +42,8 @@ export class SongListComponent implements OnInit, OnDestroy {
     public songService: SongsService,
     private authService: AuthService,
     public route: ActivatedRoute,
-    private searchBarService: SearchBarService
+    private searchBarService: SearchBarService,
+    private socketService: SocketService
   ) { }
 
   ngOnInit() {
@@ -50,18 +52,20 @@ export class SongListComponent implements OnInit, OnDestroy {
 
     this.songService.getSongs();
 
-    this.songSub = this.songService.getSongUpdatedListener()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((songData: { songs: Song[], songCount: number }) => {
-        this.isLoading = true;
+    this.songService.getTags();
 
+    this.initIoConnection();
+
+    this.songService.getSongUpdatedListener()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((songData: { songs: Song[] }) => {
+        this.isLoading = true;
         this.songs = songData.songs;
         this.songsCopy = [...this.songs];
         this.isLoading = false;
       });
 
-    this.songService.getTags();
-    this.tagSub = this.songService.getTagUpdatedListener()
+    this.songService.getTagUpdatedListener()
       .pipe(takeUntil(this.destroy$))
       .subscribe((tagData) => {
         this.tags = tagData.tags;
@@ -82,6 +86,17 @@ export class SongListComponent implements OnInit, OnDestroy {
       .subscribe(currentTitleState => this.isTitle = currentTitleState);
   }
 
+  /** Init web socket connection */
+  private initIoConnection(): void {
+    this.socketService.initSocket();
+    this.ioConnection = this.socketService.getNews()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.songService.getSongs();
+        this.songService.getTags();
+      });
+  }
+
   /** Callback to handle song delete from the DB
    * @param songId id of the song to delete
    * @param songTitle title of the song to delete
@@ -93,7 +108,7 @@ export class SongListComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.destroy$))
         .subscribe(() => {
           this.songService.getSongs();
-        }, error => {
+        }, () => {
           this.isLoading = false;
         });
     }
@@ -163,8 +178,6 @@ export class SongListComponent implements OnInit, OnDestroy {
 
 
   ngOnDestroy() {
-    this.songSub.unsubscribe();
-    this.tagSub.unsubscribe();
     this.adminListenerSub.unsubscribe();
     this.destroy$.next(true);
   }

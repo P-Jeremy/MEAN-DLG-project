@@ -7,6 +7,7 @@ import { PostsService } from '../../services/posts.service';
 import { PageEvent } from '@angular/material';
 import { AuthService } from '../../services/auth.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { SocketService } from 'src/app/services/socket.service';
 
 @Component({
   selector: 'app-post-list',
@@ -26,13 +27,13 @@ export class PostListComponent implements OnInit, OnDestroy {
   commentInput = false;
   form: FormGroup;
 
-  private postSub: Subscription;
   private authListenerSub: Subscription;
 
+  ioConnection: Subscription;
   destroy$: Subject<boolean> = new Subject<boolean>();
 
 
-  constructor(public postsService: PostsService, private authService: AuthService) { }
+  constructor(public postsService: PostsService, private authService: AuthService, private socketService: SocketService) { }
 
   ngOnInit() {
     this.form = new FormGroup({
@@ -41,9 +42,8 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.userId = this.authService.getUserId();
     this.postsService.getPosts(this.postsPerPage, this.currentPage);
-    this.postSub = this.postsService.getPostUpdatedListener().pipe(
-        takeUntil(this.destroy$)
-    )
+    this.postsService.getPostUpdatedListener()
+      .pipe(takeUntil(this.destroy$))
       .subscribe((postData: { posts: Post[], postCount: number }) => {
         this.totalPosts = postData.postCount;
         this.posts = postData.posts;
@@ -55,6 +55,17 @@ export class PostListComponent implements OnInit, OnDestroy {
       .subscribe(isUserAuth => {
         this.userIsAuth = isUserAuth;
         this.userId = this.authService.getUserId();
+      });
+
+    this.initIoConnection();
+  }
+
+  private initIoConnection(): void {
+    this.socketService.initSocket();
+    this.ioConnection = this.socketService.getNews()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.postsService.getPosts(this.postsPerPage, this.currentPage);
       });
   }
 
@@ -109,7 +120,6 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.postSub.unsubscribe();
     this.authListenerSub.unsubscribe();
     this.destroy$.next(true);
   }

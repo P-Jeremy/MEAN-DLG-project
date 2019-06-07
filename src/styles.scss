@@ -16,8 +16,14 @@ html {
 }
 
 body {
-  margin: 0;
+  margin: 150px auto;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+@media only screen and (max-width: 768px) {
+  body {
+    margin: 60px auto;
+  }
 }
 
 $mat-myapp-accent: (
