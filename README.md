@@ -9,7 +9,7 @@ This project is my first Angular experience. It's an experimental playground and
 
 |         | Stack           | status  |
 | ------- |:-------------:| -------:|
-| Back    | NodeJs / ExpressJS / MongoDb / bcrypt / JWT / AWS S3 | Done   |
+| Back    | NodeJs / ExpressJS / MongoDb / bcrypt / JWT / AWS S3 / WebSocketIo | Done |
 | Front   | Angular /Material | Done   |
 
 ***
