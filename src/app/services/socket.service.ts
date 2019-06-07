@@ -1,6 +1,6 @@
 
 import { Injectable } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 import * as socketIo from 'socket.io-client';
@@ -10,7 +10,7 @@ const SERVER_URL = environment.serverDomain;
 @Injectable({ providedIn: 'root' })
 export class SocketService {
 
-  private socket: any;
+  private socket: SocketIOClient.Socket;
 
   constructor() { }
 
@@ -18,9 +18,9 @@ export class SocketService {
     this.socket = socketIo(SERVER_URL, {transports: ['websocket']});
   }
 
-  public getNews(): Observable<any> {
-    return new Observable<any>(observer => {
-      this.socket.on('NewData', (data: any) => observer.next(data));
+  public getNews(): Observable<void> {
+    return new Observable<void>(observer => {
+      this.socket.on('NewData', () => observer.next());
     });
   }
 }

@@ -24,8 +24,6 @@ export class SongsService {
 
   private tags: TagsData[] = [];
   private tagUpdated = new Subject<{ tags: TagsData[] }>();
-  private tagStatusListener = new Subject<boolean>();
-
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -108,7 +106,7 @@ export class SongsService {
         this.songStatusListener.next(true);
         this.redirect();
       },
-        error => {
+        () => {
           this.songStatusListener.next(false);
           this.redirect();
         });

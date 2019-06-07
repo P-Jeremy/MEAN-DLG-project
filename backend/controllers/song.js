@@ -32,7 +32,7 @@ exports.addSong = async (req, res, next) => {
       tab: result.tab
     };
     const socketio = req.app.get("socketio");
-    socketio.sockets.emit("NewData", insertedSong);
+    socketio.sockets.emit("NewData");
 
     return res.status(201).json({
       message: "Chanson crée avec succès",

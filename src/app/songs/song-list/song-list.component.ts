@@ -86,6 +86,7 @@ export class SongListComponent implements OnInit, OnDestroy {
       .subscribe(currentTitleState => this.isTitle = currentTitleState);
   }
 
+  /** Init web socket connection */
   private initIoConnection(): void {
     this.socketService.initSocket();
     this.ioConnection = this.socketService.getNews()
@@ -107,7 +108,7 @@ export class SongListComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.destroy$))
         .subscribe(() => {
           this.songService.getSongs();
-        }, error => {
+        }, () => {
           this.isLoading = false;
         });
     }
