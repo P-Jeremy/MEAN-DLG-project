@@ -26,14 +26,13 @@ ul {
 
 @media only screen and (max-width: 1024px) {
   .logo > img {
-    width: 7vh;
+    width: 9vh;
   }
 }
 
 @media only screen and (max-width: 750px) {
-  div img {
-    margin: 20% auto;
-    width: 85%;
+  .logo > img {
+    width: 8vw
   }
 }
 

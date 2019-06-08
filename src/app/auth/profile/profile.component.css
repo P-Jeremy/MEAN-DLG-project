@@ -1,5 +1,7 @@
 .container {
-  margin: 0 0 60px 0;
+  position: fixed;
+  left: 0;
+  right: 0
 }
 
 mat-card {
@@ -10,11 +12,6 @@ mat-card {
 .title {
   width: 100%;
   text-align: center;
-}
-
-.action_buttons {
-  width: 100%;
-  display: flex;
 }
 
 .notifications{
@@ -34,8 +31,10 @@ mat-card {
   margin-left: 25px;
 }
 
-.spacer {
-  flex: 1 1 auto;
+.buttons_container {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
 }
 
 @media only screen and (max-width: 1024px)  {
