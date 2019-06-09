@@ -1,3 +1,4 @@
+
 import { Pipe, PipeTransform } from '@angular/core';
 import { Song, TagsData } from '../models/song.model';
 @Pipe({
@@ -11,9 +12,7 @@ export class FilterTagsPipe implements PipeTransform {
     }
     const filterSongs = [];
 
-    songs.filter(song => song.tags.length);
-
-    songs.filter(song => (song.tags as TagsData[]).map(tag => {
+    songs.filter(song => song.tags.length).map(song => (song.tags as TagsData[]).map(tag => {
       if (tag.name === selectedTag) {
         filterSongs.push(song);
       }

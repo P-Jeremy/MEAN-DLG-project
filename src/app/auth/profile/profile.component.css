@@ -1,5 +1,6 @@
 .container {
   position: fixed;
+  top : 20vh;
   left: 0;
   right: 0
 }

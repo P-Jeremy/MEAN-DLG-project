@@ -6,6 +6,8 @@
 html,
 body {
   height: 100%;
+  margin: 0 0 60px 0;
+  padding: 0
 }
 
 html {
@@ -16,14 +18,7 @@ html {
 }
 
 body {
-  margin: 150px auto;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-}
-
-@media only screen and (max-width: 768px) {
-  body {
-    margin: 60px auto;
-  }
 }
 
 $mat-myapp-accent: (
@@ -93,11 +88,19 @@ $mat-myapp-primary: (
 );
 
 app-spinner {
-  position: absolute;
-  top: 25%;
+  position: fixed;
+  top: 15vh;
   left: 0;
   right: 0;
-  margin: 0 auto;
+}
+
+@media only screen and (max-width: 768px) {
+  body {
+    margin: 60px auto;
+  }
+  app-spinner {
+    top: 20vh;
+  }
 }
 
 $primary: mat-palette($mat-myapp-primary);

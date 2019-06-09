@@ -1,16 +1,24 @@
-mat-card {
-  width: 40%;
-  margin: 60px auto;
+.container {
+  position: fixed;
+  top : 20vh;
+  left: 0;
+  right: 0;
 }
 
-mat-form-field, textarea {
+mat-card {
+  width: 40%;
+  margin: 0 auto;
+}
+
+mat-form-field,
+textarea {
   width: 100%;
 }
 
 .buttons_container {
   margin: auto;
   display: flex;
-  justify-content: space-evenly
+  justify-content: space-evenly;
 }
 
 input[type="file"] {
@@ -40,8 +48,18 @@ input[type="file"] {
   background-color: rgb(116, 199, 116);
 }
 
-@media only screen and (max-width: 1024px)  {
+@media only screen and (max-width: 1024px) {
+  .container {
+    position: relative;
+    top: 8vh
+  }
   mat-card {
     width: 80%;
+  }
+}
+
+@media only screen and (max-width: 760px) {
+  .container {
+    top : 5vh;
   }
 }
