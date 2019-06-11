@@ -20,8 +20,8 @@
       <h4>Playlists</h4>
       <mat-form-field>
         <mat-label>Listes</mat-label>
-        <mat-select #tagValue  (selectionChange)="changeTag($event.value)">
-          <mat-option>Aucune</mat-option>
+        <mat-select #tagValue (selectionChange)="changeTag($event.value)">
+          <mat-option>Principale</mat-option>
           <mat-option *ngFor="let tag of tags" [value]="tag.name">{{
             tag.name
           }}</mat-option>
@@ -35,7 +35,11 @@
       <div class="list">
         <mat-accordion multi="false">
           <app-song
-            *ngFor="let song of songs | filterTitle: term:isTitle | filterTags: selectedTag"
+            *ngFor="
+              let song of songs
+                | filterTitle: term:isTitle
+                | filterTags: selectedTag
+            "
             [(ngClass)]="song.title"
             [song]="song"
             [userIsAdmin]="userIsAdmin"
