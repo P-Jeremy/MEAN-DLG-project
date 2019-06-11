@@ -1,5 +1,6 @@
 .global {
   width: 100%;
+  position: fixed;
 }
 mat-card {
   width: 40%;

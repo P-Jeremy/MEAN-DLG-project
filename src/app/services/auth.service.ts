@@ -132,7 +132,6 @@ export class AuthService {
         if (token) {
           this.isAdmin = response.isAdmin;
           this.adminStatusListener.next(response.isAdmin);
-          this.message.content = 'Vous êtes connecté';
           this.userId = response.userId;
           const expiresInDuration = response.expiresIn;
           this.setAuthTimer(expiresInDuration);
@@ -141,11 +140,10 @@ export class AuthService {
           const now = new Date();
           const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
           this.saveAuthData(token, expirationDate, this.userId, this.isAdmin);
-          this.dialog.open(AppMessagesComponent, { data: this.message });
           this.redirect(['/']);
         }
       },
-        error => {
+        () => {
           this.authStatusListener.next(false);
           this.redirect(['/']);
         });

@@ -21,11 +21,10 @@
             >Veuillez saisir un pseudo de 4 charactères minimum</mat-error
           >
         </mat-form-field>
-        <div>
+        <div class="buttons_container">
           <button *ngIf="isEdit" mat-raised-button color="accent" type="submit">
             Valider
           </button>
-          <span class="spacer"></span>
 
           <button
             *ngIf="isEdit"
@@ -74,7 +73,7 @@
     </div>
     <br />
     <mat-card-actions>
-      <div class="action_buttons">
+      <div class="buttons_container">
         <button
           *ngIf="!isEdit"
           mat-raised-button
@@ -83,7 +82,6 @@
         >
           Editer
         </button>
-        <span class="spacer"></span>
         <button
           *ngIf="!isEdit"
           mat-raised-button

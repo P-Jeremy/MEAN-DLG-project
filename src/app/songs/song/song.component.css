@@ -32,9 +32,9 @@ mat-expansion-panel-header :nth-child(3) {
   margin-right: 15px;
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 670px) {
   .lyrics {
-    font-size: 1em;
+    font-size: 1.5em;
     line-height: 1.6;
   }
 }
@@ -45,7 +45,7 @@ mat-expansion-panel-header :nth-child(3) {
   }
 
   .lyrics {
-    font-size: 0.95em;
+    font-size: 1em;
     line-height: 1.4;
   }
 

@@ -6,7 +6,7 @@ body {
 
 .global {
   padding-top: 60px;
-  height: 100%;
+  height: 100vh;
 }
 
 app-header {

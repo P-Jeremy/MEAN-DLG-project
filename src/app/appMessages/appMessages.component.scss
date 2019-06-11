@@ -3,8 +3,13 @@ img {
 }
 
 ::ng-deep .custom-modalbox {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
   max-width: none !important;
-  .mat-dialog-content {
-    padding: 0 !important;
+  .mat-dialog-container {
+    max-height: none !important;
+    .mat-dialog-content {
+      padding: 0 !important;
+    }
   }
 }
