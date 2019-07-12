@@ -161,7 +161,7 @@ export class SongListComponent implements OnInit, OnDestroy {
     }
   }
   private centerElement(el: HTMLElement, elInfo: ClientRect): number {
-    const offsetTop = (window.innerHeight - elInfo.top) / 2.5;
+    const offsetTop = (window.innerHeight - elInfo.top) / 2;
 
     return el.offsetTop - offsetTop;
   }

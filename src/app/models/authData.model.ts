@@ -3,4 +3,5 @@ export interface AuthData {
   pseudo?: string;
   password: string;
   passwordBis?: string;
+  token?: string;
 }

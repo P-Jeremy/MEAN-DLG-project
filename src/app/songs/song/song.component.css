@@ -36,6 +36,7 @@ mat-expansion-panel-header :nth-child(3) {
 @media only screen and (max-width: 670px) {
   .tab a img {
     width: 100%;
+    margin: 0 auto;
   }
   .lyrics {
     font-size: 1.5em;

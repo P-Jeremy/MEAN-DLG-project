@@ -148,10 +148,9 @@ exports.newPasswordAsk = async (req, res) => {
     const tokenInfo = {
       userId: result._id,
       email,
-      hash: result.password,
-      expiresIn: "1h"
+      hash: result.password
     };
-    const token = jwt.sign(tokenInfo, secretJwt);
+    const token = jwt.sign(tokenInfo, secretJwt, { expiresIn: "1h" });
     sendEmail(newPassword(email, `${clientDomain}/auth/newpassword/${token}`));
     return res.status(200).json({
       message: "Email envoyé"
@@ -220,9 +219,8 @@ exports.deleteUser = async (req, res, next) => {
 
 /** Allows to register a user's new password */
 exports.newPasswordSet = async (req, res, next) => {
-  const { password, passwordBis } = req.body;
+  const { password, passwordBis, token } = req.body;
   const { email } = req.userData;
-
   if (password !== passwordBis) {
     return res.status(403).json({
       message: `Les mots de passe ne sont pas identiques...${password}${passwordBis}`
@@ -230,13 +228,46 @@ exports.newPasswordSet = async (req, res, next) => {
   }
   try {
     const result = await User.findOne({ email: email });
-    if (result.email === email && result.isActive === true) {
-      const hash = await bcrypt.hash(password, 10);
-      await User.findByIdAndUpdate({ _id: result._id, password: hash });
-      return res.status(200).json({
-        message: "Nouveau mot de passe crée"
+    const decode = await jwt.verify(token, secretJwt);
+
+    const checkToken = async (result, token) => {
+      const found = await result.tokens.some(async el => {
+        return token === el.used_token;
       });
-    }
+
+      const { exp } = decode;
+
+      if (Date.now() >= exp * 1000) {
+        return res.status(403).json({
+          message: `Le lien n'est plus valable, veuillez renouveler votre demande`
+        });
+      }
+
+      if (!found && !(Date.now() >= exp * 1000)) {
+        if (result.email === email && result.isActive === true) {
+          const passwordHash = await bcrypt.hash(password, 10);
+          await User.findOneAndUpdate(
+            { _id: result._id },
+            {
+              password: passwordHash,
+              $push: {
+                tokens: {
+                  used_token: token
+                }
+              }
+            }
+          );
+          return res.status(200).json({
+            message: "Nouveau mot de passe crée"
+          });
+        }
+      } else {
+        return res.status(403).json({
+          message: `Ce lien a déjà été utilisé...`
+        });
+      }
+    };
+    return checkToken(result, token);
   } catch (error) {
     return res.status(400);
   }
@@ -283,7 +314,8 @@ exports.signIn = async (req, res, next) => {
       });
     } else {
       return res.status(403).json({
-        message: "Authentification impossible... Mot de passe ou identifiant incorrect"
+        message:
+          "Authentification impossible... Mot de passe ou identifiant incorrect"
       });
     }
   } catch {
