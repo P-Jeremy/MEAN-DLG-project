@@ -167,7 +167,7 @@ export class AuthService {
       /* expiresIn is in milliseconds so we need to convert in seconds */
       this.setAuthTimer(expiresIn / 1000);
       this.authStatusListener.next(true);
-      this.adminStatusListener.next(this.isAdmin)
+      this.adminStatusListener.next(this.isAdmin);
       this.redirect(['/']);
     }
   }
@@ -201,7 +201,8 @@ export class AuthService {
     this.clearAuthData();
     const authData: AuthData = {
       password,
-      passwordBis
+      passwordBis,
+      token
     };
     this.token = token;
     return this.http.put(API_DOMAIN + `newpassword`, authData)
