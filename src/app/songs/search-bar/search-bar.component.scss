@@ -21,7 +21,7 @@
 .search_bar_container {
   position: fixed;
   text-align: center;
-  width: 50%;
+  width: 300px;
   margin: auto;
   left: 0;
   right: 0;
@@ -80,11 +80,52 @@
   text-align: center;
 }
 
+@media only screen and (max-width: 1440px) {
+  .search_bar_container {
+    top: 15px;
+    width: 220px;
+    .search_bar {
+      width: 200px;
+      padding-bottom: 8px;
+      input {
+        height: 25px;
+      }
+    }
+    .toggle {
+      width: 50%;
+    }
+  }
+}
+
+@media only screen and (max-width: 1313px) {
+  .search_bar_container {
+    top: 15px;
+    width: 190px;
+    .search_bar {
+      width: 180px;
+      padding-bottom: 8px;
+      input {
+        height: 25px;
+      }
+    }
+    .toggle {
+      width: 50%;
+    }
+  }
+}
+
+@media only screen and (max-width: 1279px) {
+  .search_bar_container {
+    width: 300px;
+    .search_bar {
+      width: 280px;
+    }
+  }
+}
+
 @media only screen and (max-width: 530px) {
   .search_bar_container {
     top: 15px;
-    width: 70%;
-    position: fixed;
     .search_bar {
       width: 195px;
       padding-bottom: 8px;
