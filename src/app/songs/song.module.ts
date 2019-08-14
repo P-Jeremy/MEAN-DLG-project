@@ -15,6 +15,8 @@ import { TagCreateComponent } from './tag-create/tag-create.component';
 import { TagDisplayComponent } from './tag-display/tag-display.component';
 import { TagContainerComponent } from './tag-container/tag-container.component';
 import { FilterTagsPipe } from './filter-tags.pipe';
+import { AngularEditorModule } from '@kolkov/angular-editor';
+
 
 
 @NgModule({
@@ -36,7 +38,8 @@ import { FilterTagsPipe } from './filter-tags.pipe';
     AngularMaterialModule,
     RouterModule,
     StaticModule,
-    SongRoutingModule
+    SongRoutingModule,
+    AngularEditorModule
   ],
   providers: [SearchBarService]
 })
