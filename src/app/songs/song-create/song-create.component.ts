@@ -30,7 +30,7 @@ export class SongCreateComponent implements OnInit, OnDestroy {
       translate: 'yes',
       enableToolbar: true,
       showToolbar: true,
-      placeholder: 'Enter text here...',
+      placeholder: 'Saisir les paroles ici',
       defaultParagraphSeparator: '',
       defaultFontName: '',
       defaultFontSize: '',

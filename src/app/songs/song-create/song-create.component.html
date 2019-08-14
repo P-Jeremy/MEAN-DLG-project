@@ -13,6 +13,7 @@
           >Veuillez saisir le titre de la chanson</mat-error
         >
       </mat-form-field>
+      <br />
       <mat-form-field>
         <input
           matInput
@@ -25,6 +26,7 @@
           >Veuillez saisir un intereprète</mat-error
         >
       </mat-form-field>
+      <br />
       <angular-editor
         formControlName="lyrics"
         [config]="config"
@@ -51,7 +53,7 @@
           <br />
         </div>
       </div>
-      <h2>Playlists</h2>
+      <h3>Playlistes disponibles</h3>
       <mat-selection-list formControlName="selectedTags">
         <mat-list-option *ngFor="let tag of tags" [value]="tag._id">
           {{ tag.name }}
