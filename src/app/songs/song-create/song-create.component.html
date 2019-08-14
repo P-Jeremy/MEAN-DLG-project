@@ -25,7 +25,13 @@
           >Veuillez saisir un intereprète</mat-error
         >
       </mat-form-field>
-        <angular-editor formControlName="lyrics" [config]="config"></angular-editor>
+      <angular-editor
+        formControlName="lyrics"
+        [config]="config"
+      ></angular-editor>
+      <mat-error *ngIf="form.get('lyrics').invalid"
+        >Veuillez saisir des paroles</mat-error
+      >
       <div>
         <div class="upload_item_container">
           <button
@@ -62,3 +68,5 @@
       </div>
     </form>
   </mat-card>
+  y
+</div>
