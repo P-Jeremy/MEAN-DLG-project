@@ -16,6 +16,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { StaticModule } from './static/static.module';
 
+
 @NgModule({
   declarations: [
     AppComponent,
