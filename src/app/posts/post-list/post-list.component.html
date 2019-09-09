@@ -120,14 +120,6 @@
         </mat-card-footer>
       </mat-card>
     </div>
-    <mat-paginator
-      *ngIf="posts.length > 0 && !isLoading"
-      [length]="totalPosts"
-      [pageSize]="postsPerPage"
-      [pageSizeOptions]="pageSizeOptions"
-      (page)="onChangedPage($event)"
-    ></mat-paginator>
-  </div>
   <p class="mat-body-1 info-text" *ngIf="!posts.length && !isLoading">
     Nothing posted yet
   </p>

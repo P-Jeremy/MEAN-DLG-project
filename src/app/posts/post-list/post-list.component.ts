@@ -18,10 +18,6 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   posts: Post[] = [];
   isLoading = false;
-  totalPosts = 0;
-  postsPerPage = 5;
-  currentPage = 1;
-  pageSizeOptions = [5, 10, 20];
   userIsAuth = false;
   userId: string;
   commentInput = false;
@@ -41,11 +37,10 @@ export class PostListComponent implements OnInit, OnDestroy {
     });
     this.isLoading = true;
     this.userId = this.authService.getUserId();
-    this.postsService.getPosts(this.postsPerPage, this.currentPage);
+    this.postsService.getPosts();
     this.postsService.getPostUpdatedListener()
       .pipe(takeUntil(this.destroy$))
       .subscribe((postData: { posts: Post[], postCount: number }) => {
-        this.totalPosts = postData.postCount;
         this.posts = postData.posts;
         this.isLoading = false;
       });
@@ -65,15 +60,13 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.ioConnection = this.socketService.getNews()
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
-        this.postsService.getPosts(this.postsPerPage, this.currentPage);
+        this.postsService.getPosts();
       });
   }
 
   onChangedPage(pageData: PageEvent) {
     this.isLoading = true;
-    this.currentPage = pageData.pageIndex + 1;
-    this.postsPerPage = pageData.pageSize;
-    this.postsService.getPosts(this.postsPerPage, this.currentPage);
+    this.postsService.getPosts();
   }
 
   /* Callback to handle post delete in the DB */
@@ -82,7 +75,7 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.postsService.deletePost(postId)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
-        this.postsService.getPosts(this.postsPerPage, this.currentPage);
+        this.postsService.getPosts();
       }, error => {
         this.isLoading = false;
       });
@@ -96,7 +89,7 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.postsService.addComment(postId, this.form.value.comment);
     setTimeout(() => {
-      this.postsService.getPosts(this.postsPerPage, this.currentPage);
+      this.postsService.getPosts();
     }, 200);
     this.form.reset();
     this.commentInput = false;
@@ -109,7 +102,7 @@ export class PostListComponent implements OnInit, OnDestroy {
       this.postsService.deleteComment(commentId, postId)
         .pipe(takeUntil(this.destroy$))
         .subscribe(() => {
-          this.postsService.getPosts(this.postsPerPage, this.currentPage);
+          this.postsService.getPosts();
         }, error => {
           this.isLoading = false;
         });
