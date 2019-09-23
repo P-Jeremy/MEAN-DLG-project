@@ -1,5 +1,5 @@
 <div class="container">
-  <mat-card *ngIf="!isLoading && !help">
+  <mat-card *ngIf="!isLoading">
     <app-spinner *ngIf="isLoading"></app-spinner>
     <form [formGroup]="form" (submit)="onSaveSong()">
       <mat-form-field>
@@ -13,6 +13,7 @@
           >Veuillez saisir le titre de la chanson</mat-error
         >
       </mat-form-field>
+      <br />
       <mat-form-field>
         <input
           matInput
@@ -25,21 +26,14 @@
           >Veuillez saisir un intereprète</mat-error
         >
       </mat-form-field>
-      <mat-form-field>
-        <a class="question_mark" (click)="help = true"
-          ><mat-icon>help_outline</mat-icon></a
-        >
-        <textarea
-          class="lyrics"
-          matInput
-          type="text"
-          formControlName="lyrics"
-          placeholder="Paroles"
-        ></textarea>
-        <mat-error *ngIf="form.get('lyrics').invalid"
-          >Veuillez saisir des paroles</mat-error
-        >
-      </mat-form-field>
+      <br />
+      <angular-editor
+        formControlName="lyrics"
+        [config]="config"
+      ></angular-editor>
+      <mat-error *ngIf="form.get('lyrics').invalid"
+        >Veuillez saisir des paroles</mat-error
+      >
       <div>
         <div class="upload_item_container">
           <button
@@ -59,7 +53,7 @@
           <br />
         </div>
       </div>
-      <h2>Playlists</h2>
+      <h3>Playlistes disponibles</h3>
       <mat-selection-list formControlName="selectedTags">
         <mat-list-option *ngFor="let tag of tags" [value]="tag._id">
           {{ tag.name }}
@@ -76,46 +70,5 @@
       </div>
     </form>
   </mat-card>
-  <div *ngIf="help" class="help">
-    <mat-card>
-      <p>
-        L'éditeur de texte des paroles utilise les balises HTML pour le
-        formatage (gras, saut de ligne etc etc).
-        <br />
-        Cliquez sur le bouton pour en savoir plus:
-        <br />
-        <br />
-        <a
-          target="_blank"
-          mat-raised-button
-          color="accent"
-          href="http://formation-html.weebly.com/texte-html.html"
-          (clique)="help = false"
-        >
-          Balises html</a
-        >
-      </p>
-      <br />
-      <br />
-      <p>
-        Pour convertir un text au format HTML.
-        <br />
-        Cliquez sur le bouton suivant:
-        <br />
-        <br />
-        <a
-          target="_blank"
-          mat-raised-button
-          color="accent"
-          href="http://www.unit-conversion.info/texttools/text-to-html/"
-          (clique)="help = false"
-        >
-          Convertir</a
-        >
-      </p>
-      <br />
-      <br />
-      <a mat-raised-button color="primary" (click)="help = false">Fermer</a>
-    </mat-card>
-  </div>
+  y
 </div>
