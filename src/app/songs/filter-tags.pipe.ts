@@ -6,13 +6,19 @@ import { Song, TagsData } from '../models/song.model';
 })
 export class FilterTagsPipe implements PipeTransform {
 
-  transform(songs: Song[], selectedTag: string): any {
+
+  /**
+   * Filters songs depending on the selected tag
+   * @param songs
+   * @param selectedTag
+   */
+  transform(songs: Song[], selectedTag: string): Song[] {
     if (selectedTag === undefined) {
       return songs;
     }
-    const filterSongs = [];
+    const filterSongs: Song[] = [];
 
-    songs.filter(song => song.tags.length).map(song => (song.tags as TagsData[]).map(tag => {
+    songs.filter(song => song.tags.length).forEach(song => (song.tags as TagsData[]).forEach(tag => {
       if (tag.name === selectedTag) {
         filterSongs.push(song);
       }

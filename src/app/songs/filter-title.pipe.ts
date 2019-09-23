@@ -1,12 +1,22 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { Song } from '../models/song.model';
 
 @Pipe({
   name: 'filterTitle'
 })
+
 export class FilterTitlePipe implements PipeTransform {
 
-  transform(songs: any, term: any, isTitle: boolean): any {
-    if (!isTitle) {
+  /**
+   * Allows to arrange the songs array by title or author
+   * @param songs
+   * @param term
+   * @param orderByTitle
+   *
+   * @returns the songs array arranged
+   */
+  transform(songs: Song[], term: string, orderByTitle: boolean): Song[] {
+    if (!orderByTitle) {
       if (term === undefined) {
         return songs.sort((a, b) => {
           return a.author === b.author ? 0 : a.author < b.author ? -1 : 1;

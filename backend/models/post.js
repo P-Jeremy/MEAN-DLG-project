@@ -14,8 +14,8 @@ const postSchema = mongoose.Schema({
   image: {type: String || null},
   comments: [commentSchema],
   isActive: { type: Boolean, required: true, default: true },
-  creator_id: {type: mongoose.Schema.Types.ObjectId, ref: "User", required:true},
-  creator_pseudo: {type: String, ref: "User", required:true}
+  creator_id: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
+  creator_pseudo: {type: String, ref: "User"}
 });
 
 postSchema.set('timestamps', true);

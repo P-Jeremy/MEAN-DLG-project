@@ -6,8 +6,8 @@ export class SearchBarService {
 
   private term = new BehaviorSubject<string>('');
   currentTerm = this.term.asObservable();
-  private isTitle = new BehaviorSubject<boolean>(true);
-  currentIsTitleState = this.isTitle.asObservable();
+  private orderByTitle = new BehaviorSubject<boolean>(true);
+  currentIsTitleState = this.orderByTitle.asObservable();
   constructor() {
   }
 
@@ -15,9 +15,9 @@ export class SearchBarService {
     this.term.next(term);
   }
 
-  isTitleChange(ev: boolean) {
-    const newStatus = ev;
+  orderBy(title: boolean) {
+    const orderByTitle = title;
 
-    this.isTitle.next(newStatus);
+    this.orderByTitle.next(orderByTitle);
   }
 }
