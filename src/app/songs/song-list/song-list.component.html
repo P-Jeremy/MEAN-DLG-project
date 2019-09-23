@@ -1,7 +1,7 @@
 <div class="main_container">
   <app-spinner *ngIf="isLoading"></app-spinner>
 
-  <div *ngIf="!isLoading && songs.length" class="button_container">
+  <div *ngIf="!isLoading && songs.length && !selectedTag" class="button_container">
     <a
       class="shuffle_button"
       mat-raised-button
@@ -15,7 +15,7 @@
     *ngIf="!isShuffle && !isLoading && songs.length"
   ></app-search-bar>
 
-  <div *ngIf="!isShuffle" class="tags">
+  <div *ngIf="!isShuffle" [ngClass]="{'noShuffle': selectedTag, 'tags': !selectedTag}">
     <mat-card *ngIf="!isLoading && tags.length">
       <h4>Playlists</h4>
       <mat-form-field>
@@ -37,7 +37,7 @@
           <app-song
             *ngFor="
               let song of songs
-                | filterTitle: term:isTitle
+                | filterTitle: term:orderByTitle
                 | filterTags: selectedTag
             "
             [(ngClass)]="song.title"

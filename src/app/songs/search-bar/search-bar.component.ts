@@ -8,14 +8,14 @@ import { SearchBarService } from '../../services/search-bar.service';
 })
 export class SearchBarComponent {
 
-  isTitle = true;
+  orderBytitle = true;
 
   constructor(private searchBarService: SearchBarService) { }
 
   /** Allows to switch from title to artist for the search filter */
   onBoxChecked(ev: boolean) {
-    this.isTitle = !this.isTitle;
-    this.searchBarService.isTitleChange(ev);
+    this.orderBytitle = !this.orderBytitle;
+    this.searchBarService.orderBy(ev);
   }
 
   /** Allows to use the input for search */

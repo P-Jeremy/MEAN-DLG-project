@@ -25,7 +25,7 @@ export class SongListComponent implements OnInit, OnDestroy {
   isLoading: boolean;
   userIsAdmin = false;
   isShuffle = false;
-  isTitle: boolean;
+  orderByTitle: boolean;
   term: string;
   tags: TagsData[];
   selectedTag: string;
@@ -83,7 +83,7 @@ export class SongListComponent implements OnInit, OnDestroy {
     this.searchBarService.currentTerm.pipe(takeUntil(this.destroy$))
       .subscribe(currentTerm => this.term = currentTerm);
     this.searchBarService.currentIsTitleState.pipe(takeUntil(this.destroy$))
-      .subscribe(currentTitleState => this.isTitle = currentTitleState);
+      .subscribe(currentTitleState => this.orderByTitle = currentTitleState);
   }
 
   /** Init web socket connection */

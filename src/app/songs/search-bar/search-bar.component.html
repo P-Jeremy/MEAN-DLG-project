@@ -8,18 +8,18 @@
   </div>
   <div class="toggle" mat-raised-button color="accent">
     <div>
-      <mat-icon [ngClass]="{ selected: !isTitle, notSelected: isTitle }">perm_identity</mat-icon>
+      <mat-icon [ngClass]="{ selected: !orderBytitle, notSelected: orderBytitle }">perm_identity</mat-icon>
     </div>
     <mat-slide-toggle
       class="searchToggle"
       (change)="onBoxChecked($event.checked)"
-      [checked]="isTitle"
+      [checked]="orderBytitle"
       [disabled]="false"
     >
     </mat-slide-toggle>
 
     <div>
-      <mat-icon [ngClass]="{ selected: isTitle,  notSelected: !isTitle }">audiotrack</mat-icon>
+      <mat-icon [ngClass]="{ selected: orderBytitle,  notSelected: !orderBytitle }">audiotrack</mat-icon>
     </div>
   </div>
 </div>
